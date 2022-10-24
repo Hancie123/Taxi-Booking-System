@@ -5,11 +5,10 @@ from PIL import ImageTk, Image
 customtkinter.set_appearance_mode("dark")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 app = customtkinter.CTk()
-app.geometry("400x240")
-app.resizable(False, False)
+screen_width=app.winfo_screenwidth()
+screen_height=app.winfo_screenheight()
+app.minsize(screen_width, screen_height)
 app.state('zoomed')
-
-
 app.title("Taxi Booking System Login")
 app.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
 
@@ -54,8 +53,22 @@ email_txt.place(x=330,y=200)
 password_lbl=customtkinter.CTkLabel(master=frame2, text="Password: ", text_font=font1)
 password_lbl.place(x=200, y=250)
 
-password_txt=customtkinter.CTkEntry(master=frame2, corner_radius=10, text_font=font1, width=200, show="*")
+
+
+
+
+password_txt=customtkinter.CTkEntry(master=frame2,show="*", corner_radius=10, text_font=font1, width=200)
 password_txt.place(x=330,y=250)
+
+def show_password():
+    if password_txt.cget('show')=='*':
+        password_txt.config(show='')
+    else:
+        password_txt.config(show='*')
+
+
+password_show=customtkinter.CTkCheckBox(master=frame2, text="Show password", command=show_password)
+password_show.place(x=330, y=290)
 
 
 # Use CTkButton instead of tkinter Button
