@@ -17,8 +17,9 @@ def get_time():
 
     theme = AnalogThemes(time_picker)
     theme.setNavyBlue()
-    ok_btn = tk.Button(top, text="ok", command=lambda: updateTime(time_picker.time()))
+    ok_btn = customtkinter.CTkButton(master=top, text="ok", command=lambda: updateTime(time_picker.time()))
     ok_btn.pack()
+
 
 
 root = tk.Tk()

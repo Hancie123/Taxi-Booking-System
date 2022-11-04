@@ -73,13 +73,14 @@ password_show.place(x=330, y=290)
 
 # Use CTkButton instead of tkinter Button
 add_login_image = ImageTk.PhotoImage(Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\login.png").resize((50,50), Image.ANTIALIAS))
-button = customtkinter.CTkButton(master=frame2, text="Login", image=add_login_image, borderwidth=0, corner_radius=10, text_color="white", text_font=font1)
+button = customtkinter.CTkButton(master=frame2, text="Login", image=add_login_image, borderwidth=0, corner_radius=10,
+                                 text_color="white", text_font=font1, hover_color="black")
 button.place(x=340, y=350)
 
 signup_lbl=customtkinter.CTkLabel(master=frame2, text="No account yet")
 signup_lbl.place(x=300, y=420)
 
-signup_btn=customtkinter.CTkButton(master=frame2, text="SIGN UP NOW", width=50, height=20)
+signup_btn=customtkinter.CTkButton(master=frame2, text="SIGN UP NOW", width=50, height=20, hover_color="black")
 signup_btn.place(x=420, y=420)
 
 

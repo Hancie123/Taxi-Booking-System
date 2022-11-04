@@ -169,7 +169,7 @@ my_second()
 
 def my_time():
     time_string = strftime('%I:%M:%S %p')  # time format
-    l1.config(text=time_string)
+    l1.configure(text=time_string)
     l1.after(1000, my_time)  # time delay of 1000 milliseconds
 
 l1 = customtkinter.CTkLabel(master=left_frame, text_font=('Tahoma', 14))
@@ -260,7 +260,7 @@ frame4.place(x=920, y=20)
 frame4_image=ImageTk.PhotoImage(Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\book-regular-48.png'))
 frame4_label=Label(frame4, text="Total Customer", fg="white", image=frame2_image, bg='#343638')
 frame4_label.place(x=20, y=40)
-frame4_label2=customtkinter.CTkLabel(master=frame4, text="Total \nBookings", text_font=('', 19,'bold'))
+frame4_label2=customtkinter.CTkLabel(master=frame4, text="Total \nRides", text_font=('', 19,'bold'))
 frame4_label2.place(x=80, y=20)
 frame4_label3=customtkinter.CTkLabel(master=frame4, text="20", text_font=('', 19,'bold'))
 frame4_label3.place(x=80, y=100)
