@@ -7,9 +7,9 @@ import mysql.connector
 sqlEngine = create_engine('mysql+pymysql://root:@localhost/hancie')
 dbConnection = sqlEngine.connect()
 
-query = "SELECT  Receiver_Name, SUM(Amount) as Amount1 FROM loan"
-df = pandas.read_sql(query, dbConnection, index_col='Receiver_Name')
-fig2 = df.plot.line(title="Loan Amount", y='Amount1', figsize=(5, 4)).get_figure();
+query = "SELECT *  FROM daily_expenses"
+df = pandas.read_sql(query, dbConnection, index_col='date')
+fig2 = df.plot.line(title="Loan Amount", y='amount', figsize=(5, 4)).get_figure();
 
 import tkinter  as tk
 my_w = tk.Tk()

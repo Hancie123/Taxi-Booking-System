@@ -235,7 +235,7 @@ class Customer_Dashboard(customtkinter.CTk):
         dropoff_txt = customtkinter.CTkEntry(master=tab1_frame, text_font=form_font, width=250)
         dropoff_txt.place(x=230, y=320)
 
-        booking_btn=customtkinter.CTkButton(master=tab1_frame, text="Request Booking", text_font=form_font)
+        booking_btn=customtkinter.CTkButton(master=tab1_frame, text="Request Booking", text_font=('Bodoni',17,'normal'))
         booking_btn.place(x=230, y=400)
 
 
