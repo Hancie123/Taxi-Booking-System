@@ -156,6 +156,7 @@ class Customer_Dashboard(customtkinter.CTk):
         style.theme_use("MyStyle")
         style.configure('TNotebook.Tab', background="#2a2d2e")
         style.configure('TNotebook.Tab', foreground="white")
+        style.configure('.', font=('', 12))
 
 
 
@@ -163,10 +164,10 @@ class Customer_Dashboard(customtkinter.CTk):
         parent_tab.pack(side=TOP, fill=BOTH, padx=10, pady=(0,20), expand=TRUE)
 
         #++++++++++++++++++++++Home Tab Frame+++++++++++++++++++++++++++++++++++++++++++
-        tab1=Frame(parent_tab)
+        tab1=Frame(parent_tab, borderwidth=0, highlightthickness=0)
         parent_tab.add(tab1, text="Home")
 
-        tab1_frame=customtkinter.CTkFrame(master=tab1)
+        tab1_frame=customtkinter.CTkFrame(master=tab1, borderwidth=0, padx=0)
         tab1_frame.pack(fill=BOTH,expand=True)
 
         #+++++++++++++++++++++++++Welcome Label+++++++++++++++++++
@@ -240,7 +241,7 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
         myloc = geocoder.ip('me')
-        map_widget = TkinterMapView(tab1_frame, width=750, height=765, corner_radius=20)
+        map_widget = TkinterMapView(tab1_frame, width=750, height=775, corner_radius=20)
         map_widget.set_address(myloc, marker=True)
         map_widget.pack(side=RIGHT, fill=BOTH, pady=(10),padx=(0,10))
 
@@ -252,8 +253,6 @@ class Customer_Dashboard(customtkinter.CTk):
         tab5_frame=customtkinter.CTkFrame(master=tab5)
         tab5_frame.pack(fill=BOTH, expand=True)
 
-        tab1_frame=customtkinter.CTkFrame(master=tab1)
-        tab1_frame.pack(fill=BOTH, expand=True)
 
         tab2=Frame(parent_tab)
         parent_tab.add(tab2, text="Riding History")

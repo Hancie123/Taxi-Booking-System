@@ -1,118 +1,54 @@
-# from geopy.geocoders import Nominatim
-# from pprint import pprint
-# import time
-#
-# app = Nominatim(user_agent="tutorial")
-#
-# def get_address_by_location(latitude, longitude, language="en"):
-#     """This function returns an address as raw from a location
-#     will repeat until success"""
-#     # build coordinates string to pass to reverse() function
-#     coordinates = f"{latitude}, {longitude}"
-#     # sleep for a second to respect Usage Policy
-#     time.sleep(1)
-#     try:
-#         return app.reverse(coordinates, language=language).raw
-#     except:
-#         return get_address_by_location(latitude, longitude)
-#
-# # define your coordinates
-# latitude = 27.694738
-# longitude = 85.356566
-# # get the address info
-# address = get_address_by_location(latitude, longitude)
-# # print all returned data
-# pprint(address)
-
-
-# importing everything from tkinter
 from tkinter import *
 
-# the requests will be used for making requests to the API
-import requests
+class Sweksha:
+    def __init__(self, main):
+        self.main=main
+        self.main.title("Sweksha Basnet")
+        # self.main.state('zoomed')
+        self.main.resizable(FALSE,FALSE)
 
-# tkinter message box to display errors
-from tkinter.messagebox import showerror
-
-
-def predict_gender():
-    # executes when code has no errors
-    try:
-        # getting the input from entry
-        entered_name = name_entry.get()
-        # making a request to the API, the user's entered name is injected in the url
-        response = requests.get(f'https://api.genderize.io/?name={entered_name}').json()
-        # getting name from the response
-        name = response['name']
-        # getting gender from the response
-        gender = response['gender']
-        # getting probability from the response
-        probability = 100 * response['probability']
-        # adding name to the label that was empty, the name is being uppercased
-        name_label.config(text='The name is ' + name.upper())
-        # adding gender to the label that was empty, the gender is being uppercased
-        gender_label.config(text='The gender is ' + gender.upper())
-        # adding probability to the label that was empty
-        probability_label.config(text='Am ' + str(probability) + '%' + ' accurate')
-    # executes when errors are caught
-    # KeyError, ConnectionTimeoutError
-    except:
-        showerror(title='error', message='An error occurred!! Make sure you have internet connection or you have entered the correct data')
+        #Center window in screen
+        width=700
+        height=400
+        frameWidth=self.main.winfo_screenwidth()
+        frameHeight=self.main.winfo_screenheight()
+        xCordinate=int((frameWidth/2)-(width/2))
+        yCordinate=int((frameHeight/2)-(height/2))
+        self.main.geometry('{}x{}+{}+{}'.format(width,height,xCordinate,yCordinate-60))
 
 
-# colors for the application
-gold = '#dca714'
-brown = '#31251d'
+        myfont=('Helvetica', '16','bold')
 
-# creating the main window
-window = Tk()
-# defining the demensions of the window, width(325), height(300), 500+200 center the window
-window.geometry('325x300+500+200')
-# this is the title of the application
-window.title('Gender Predictor')
-# this makes the window unresizable
-window.resizable(height=FALSE, width=FALSE)
+        titlelbl=Label(self.main, text="TAXI BOOKING LOGIN", font=('Helvetica',20,'bold'))
+        titlelbl.place(x=100,y=20)
 
-"""The two frames"""
-# this is the top frame inside the main window
-top_frame = Frame(window, bg=brown, width=325, height=80)
-top_frame.grid(row=0, column=0)
 
-# this is the bottom frame inside the main window
-bottom_frame = Frame(window, width=300, height=250)
-bottom_frame.grid(row=1, column=0)
+        emaillbl=Label(self.main, text="Email: ", font=myfont)
+        emaillbl.grid(row=1, column=0, pady=(50,0))
 
-# the label for the big title inside the top_frame
-first_label = Label(top_frame, text='GENDER PREDICTOR', bg=brown, fg=gold, pady=10, padx=20, justify=CENTER, font=('Poppins 20 bold'))
-first_label.grid(row=0, column=0)
 
-# the label for the small text inside the top_frame
-second_label = Label(top_frame, text='Give me any name and i will predict its gender', bg=brown, fg=gold, font=('Poppins 10'))
-second_label.grid(row=1, column=0)
+        emailfield=Entry(self.main, font=myfont)
+        emailfield.grid(row=1,column=1)
 
-"""below are widgets inside the top_frame"""
-# the name label
-label = Label(bottom_frame, text='NAME:', font=('Poppins 10 bold'), justify=LEFT)
-label.place(x=4, y=10)
 
-# the entry for entering the user's name
-name_entry = Entry(bottom_frame, width=25, font=('Poppins 15 bold'))
-name_entry.place(x=5, y=35)
+        passwordlbl=Label(self.main, text="Password: ", font=myfont)
 
-# the empty name label, it will be used to display the name
-name_label = Label(bottom_frame, text='', font=('Poppins 10 bold'))
-name_label.place(x=5, y=70)
 
-# the empty gender label, it will be used to display the gender
-gender_label = Label(bottom_frame, text='', font=('Poppins 10 bold'))
-gender_label.place(x=5, y=90)
+        passwordField=Entry(self.main, font=myfont, show='*')
 
-# the empty probability label, it will be used to display the gender probalility
-probability_label = Label(bottom_frame, text='', font=('Poppins 10 bold'))
-probability_label.place(x=5, y=110)
 
-# the predict button
-predict_button = Button(bottom_frame, text="PREDICT", bg=gold, fg=brown, font=('Poppins 10 bold'), command=predict_gender)
-predict_button.place(x=5, y=140)
+        loginBT=Button(self.main, text="Login", font=myfont, bg="red", fg="white")
 
-window.mainloop()
+
+        registerBT=Button(self.main, text="Register", font=myfont , bg="red", fg="white")
+
+
+
+
+
+
+
+if __name__=='__main__':
+    main=Tk()
+    Sweksha(main)
+    main.mainloop()

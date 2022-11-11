@@ -62,7 +62,16 @@ class Login(customtkinter.CTk):
         password_lbl = customtkinter.CTkLabel(master=frame2, text="Password: ", text_font=font1)
         password_lbl.place(x=200, y=250)
 
+        def show_password():
+            if i.get()==1:
+                password_txt.configure(show='')
+            else:
+                password_txt.configure(show='*')
 
+
+
+
+        i=customtkinter.IntVar()
 
         password_txt = customtkinter.CTkEntry(master=frame2, show="*", corner_radius=10, text_font=font1, width=200)
         password_txt.place(x=330, y=250)
@@ -71,7 +80,7 @@ class Login(customtkinter.CTk):
 
 
 
-        password_show = customtkinter.CTkCheckBox(master=frame2, text="Show password")
+        password_show = customtkinter.CTkCheckBox(master=frame2, text="Show password", variable=i, command=show_password)
         password_show.place(x=330, y=290)
 
         # Use CTkButton instead of tkinter Button

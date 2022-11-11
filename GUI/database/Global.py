@@ -1,0 +1,2 @@
+
+currentUser=None
