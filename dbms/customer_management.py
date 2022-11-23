@@ -1,6 +1,6 @@
 import mysql.connector
 import sys
-from dbms.connection import connect
+from dbms.connection import Connect
 from libs.customer_libs import Customer_Libs
 
 
@@ -11,7 +11,7 @@ def insert_record(customerInfo):
             customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(), customerInfo.getPassword(), customerInfo.getCredit())
     result=False
     try:
-        conn=connect()
+        conn=Connect()
         cursor=conn.cursor()
         cursor.execute(sql,values)
         conn.commit()

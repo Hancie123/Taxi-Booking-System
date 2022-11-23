@@ -1,7 +1,7 @@
 import mysql.connector
 import sys
 
-def connect():
+def Connect():
     conn=None
     try:
         conn=mysql.connector.connect(

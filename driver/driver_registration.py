@@ -2,6 +2,9 @@ from tkinter import *
 import customtkinter
 from tkinter import ttk
 from PIL import ImageTk, Image
+from dbms.driver_management import insert_record
+from libs.driver_libs import Driver_Libs
+from tkinter import messagebox
 
 #++++++++++++++++++++++++++++++++++++++++++++GUI+++++++++++++++++++++++++++++++++++++++++++
 
@@ -77,8 +80,8 @@ class DriverRegistration():
         emaillbl.place(x=40, y=130)
 
         # ++++++++++++++++++++++++++++++Email TextField++++++++++++++++++++++++++++++++++++++++++++++++++
-        mobiletxt = customtkinter.CTkEntry(master=centerFrame2,  text_font=font720, width=250)
-        mobiletxt.place(x=200, y=130)
+        emailtxt = customtkinter.CTkEntry(master=centerFrame2,  text_font=font720, width=250)
+        emailtxt.place(x=200, y=130)
 
         # +++++++++++++++++++++++++++++License Label++++++++++++++++++++++++++++
         licenselbl = customtkinter.CTkLabel(master=centerFrame2, text="License no: ", text_font=font720)
@@ -101,8 +104,16 @@ class DriverRegistration():
         innerFrame=customtkinter.CTkFrame(master=centerFrame, width=250, height=340)
         innerFrame.place(x=580, y=20)
 
+        def save_record():
+            driver=Driver_Libs(name=nametxt.get(), mobile=mobiletxt.get(), email=emailtxt.get(),license= licensetxt.get(), password=passwordtxt.get(), status='Driver')
+            result=insert_record(driver)
+            if result==True:
+                msg1=messagebox.showinfo("Taxi Booking System","Driver is registered successfully!")
+            else:
+                msg2=messagebox.showerror("Taxi Booking System","Driver register is unsuccessfull!")
+
         save_image = ImageTk.PhotoImage(Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\check-square-regular-24.png"))
-        savebtn=customtkinter.CTkButton(master=innerFrame,image=save_image, text="Save Record", text_font=font720,width=180, hover_color="black")
+        savebtn=customtkinter.CTkButton(master=innerFrame,command=save_record, image=save_image, text="Save Record", text_font=font720,width=180, hover_color="black")
         savebtn.place(x=35,y=80)
 
         update_image=ImageTk.PhotoImage(Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit-alt-regular-24.png"))
