@@ -15,6 +15,8 @@ class DriverHistory:
         x_cordinate = int((screen_width / 2) - (frame_width / 2))
         y_cordinate = int((screen_height / 2) - (frame_height / 2))
         self.main.geometry('{}x{}+{}+{}'.format(frame_width, frame_height, x_cordinate-50, y_cordinate-90))
+        self.main.bind("<Escape>", lambda e:self.main.destroy())
+        self.main.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
 
 
 

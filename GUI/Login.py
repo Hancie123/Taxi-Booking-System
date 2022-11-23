@@ -86,7 +86,7 @@ class Login(customtkinter.CTk):
         # Use CTkButton instead of tkinter Button
         add_login_image = ImageTk.PhotoImage(
             Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\login.png").resize(
-                (50, 50), Image.ANTIALIAS))
+                (50, 50)))
         button = customtkinter.CTkButton(master=frame2, text="Login", image=add_login_image, borderwidth=0,
                                          corner_radius=10,
                                          text_color="white", text_font=font1, hover_color="black")
@@ -110,7 +110,10 @@ class Login(customtkinter.CTk):
 
 
 
-
+if __name__ == '__main__':
+    root = customtkinter.CTk()
+    Login(root)
+    root.mainloop()
 
 
 

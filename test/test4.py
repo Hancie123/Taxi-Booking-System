@@ -1,54 +1,34 @@
+import tkinter as tk
+from tkinter import filedialog
+from tkinter.filedialog import askopenfile
+from PIL import Image, ImageTk
+from PIL.ImageTk import PhotoImage
 from tkinter import *
 
-class Sweksha:
-    def __init__(self, main):
-        self.main=main
-        self.main.title("Sweksha Basnet")
-        # self.main.state('zoomed')
-        self.main.resizable(FALSE,FALSE)
-
-        #Center window in screen
-        width=700
-        height=400
-        frameWidth=self.main.winfo_screenwidth()
-        frameHeight=self.main.winfo_screenheight()
-        xCordinate=int((frameWidth/2)-(width/2))
-        yCordinate=int((frameHeight/2)-(height/2))
-        self.main.geometry('{}x{}+{}+{}'.format(width,height,xCordinate,yCordinate-60))
+my_w = tk.Tk()
+my_w.geometry("400x300")  # Size of the window
+my_w.title('www.plus2net.com')
 
 
-        myfont=('Helvetica', '16','bold')
-
-        titlelbl=Label(self.main, text="TAXI BOOKING LOGIN", font=('Helvetica',20,'bold'))
-        titlelbl.place(x=100,y=20)
+my_font1=('times', 18, 'bold')
 
 
-        emaillbl=Label(self.main, text="Email: ", font=myfont)
-        emaillbl.grid(row=1, column=0, pady=(50,0))
+l1 = tk.Label(my_w,text='Add Student Data with Photo',width=30,font=my_font1)
+l1.grid(row=1,column=1)
 
+b1 = tk.Button(my_w, text='Upload File',
+   width=20,command = lambda:upload_file())
+b1.grid(row=2,column=1)
 
-        emailfield=Entry(self.main, font=myfont)
-        emailfield.grid(row=1,column=1)
+def upload_file():
+    global img
+    f_types = [('JPG Files', '*.jpg') ,('PNG Files','*.png')]
+    filename = filedialog.askopenfilename(  filetypes=f_types)
 
+    img = ImageTk.PhotoImage(file=filename)
 
-        passwordlbl=Label(self.main, text="Password: ", font=myfont)
+    canca=Canvas(my_w, width=256, height=256)
+    image=canca.create_image(10,10,image=img, anchor=NW)
+    canca.grid(row=3,column=1)
 
-
-        passwordField=Entry(self.main, font=myfont, show='*')
-
-
-        loginBT=Button(self.main, text="Login", font=myfont, bg="red", fg="white")
-
-
-        registerBT=Button(self.main, text="Register", font=myfont , bg="red", fg="white")
-
-
-
-
-
-
-
-if __name__=='__main__':
-    main=Tk()
-    Sweksha(main)
-    main.mainloop()
+my_w.mainloop()  # Keep the window open
