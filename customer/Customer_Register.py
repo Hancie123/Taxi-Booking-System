@@ -5,7 +5,7 @@ import customtkinter
 from tkcalendar import *
 from PIL import ImageTk, Image
 from datetime import date
-from GUI import Login
+from customer import Login
 from tkinter import messagebox, ttk
 
 

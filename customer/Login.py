@@ -1,8 +1,11 @@
-
+from tkinter import messagebox
 import customtkinter
 from tkinter import *
 from PIL import ImageTk, Image
-from customer import Customer_Register
+from customer import Customer_Register, customer_dashboard
+from customer.customer_dashboard import Customer_Dashboard
+from libs.customer_libs import Customer_Libs
+from dbms.login_management import login
 
 
 
@@ -83,11 +86,24 @@ class Login(customtkinter.CTk):
         password_show = customtkinter.CTkCheckBox(master=frame2, text="Show password", variable=i, command=show_password)
         password_show.place(x=330, y=290)
 
+        def login_customer():
+            login720=Customer_Libs(email=email_txt.get(), password=password_txt.get())
+            user=login(login720)
+            if user==None:
+                msg=messagebox.showerror("Taxi Booking System","Incorrect email and password!")
+                msg.config(bg='pink', font=('times', 16, 'italic'))
+
+            else:
+                self.root.destroy()
+                root = customtkinter.CTk()
+                obj2 = customer_dashboard.Customer_Dashboard(root)
+                root.mainloop()
+
+
+
         # Use CTkButton instead of tkinter Button
-        add_login_image = ImageTk.PhotoImage(
-            Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\login.png").resize(
-                (50, 50)))
-        button = customtkinter.CTkButton(master=frame2, text="Login", image=add_login_image, borderwidth=0,
+        add_login_image = ImageTk.PhotoImage(Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\login.png").resize((50, 50)))
+        button = customtkinter.CTkButton(master=frame2,command=login_customer, text="Login", image=add_login_image, borderwidth=0,
                                          corner_radius=10,
                                          text_color="white", text_font=font1, hover_color="black")
         button.place(x=340, y=350)

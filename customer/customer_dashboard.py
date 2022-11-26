@@ -16,7 +16,6 @@ import pymysql
 from PIL import ImageTk, Image
 import pandas
 from tkintermapview import TkinterMapView
-from GUI import Login
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
 
