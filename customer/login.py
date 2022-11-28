@@ -4,6 +4,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from customer import Customer_Register, customer_dashboard
 from customer.customer_dashboard import Customer_Dashboard
+from libs import Global
 from libs.customer_libs import Customer_Libs
 from dbms.login_management import login
 
@@ -89,15 +90,18 @@ class Login(customtkinter.CTk):
         def login_customer():
             login720=Customer_Libs(email=email_txt.get(), password=password_txt.get())
             user=login(login720)
+            Global.currentUser = user
             if user==None:
                 msg=messagebox.showerror("Taxi Booking System","Incorrect email and password!")
-                msg.config(bg='pink', font=('times', 16, 'italic'))
+
 
             else:
+                Global.currentUser = user
                 self.root.destroy()
                 root = customtkinter.CTk()
                 obj2 = customer_dashboard.Customer_Dashboard(root)
                 root.mainloop()
+                Global.currentUser=user
 
 
 

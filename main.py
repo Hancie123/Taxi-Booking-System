@@ -1,5 +1,5 @@
 from customer.Customer_Register import Register
-from customer.Login import Login
+from customer.login import Login
 from tkinter import *
 import customtkinter
 

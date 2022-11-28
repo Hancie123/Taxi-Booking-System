@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import *
 import customtkinter
 from datetime import date, time
@@ -18,6 +19,10 @@ import pandas
 from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
+from customer import login, customerprofile
+from libs import Global
+
+
 
 
 class Customer_Dashboard(customtkinter.CTk):
@@ -43,7 +48,7 @@ class Customer_Dashboard(customtkinter.CTk):
         def logout():
             self.root.destroy()
             root=customtkinter.CTk()
-            login2=Login.Login(root)
+            login2=login.Login(root)
             root.mainloop()
 
         file=Menu(parent_menu, tearoff=0)
@@ -81,12 +86,17 @@ class Customer_Dashboard(customtkinter.CTk):
                                                    image=assigndriver_btn_image, fg_color='#2a2d2e')
         assigndriver_btn.place(x=40, y=250)
 
-        payment_btn_image = ImageTk.PhotoImage(
-            Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-account-solid-24.png'))
-        payment_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',
+        def open_profile():
+            main = customtkinter.CTkToplevel()
+            customerprofile.CustomerProfile(main)
+            main.mainloop()
+
+        profile_img = ImageTk.PhotoImage(
+        Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-account-solid-24.png'))
+        profile_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',
                                               text_font=('Times New Roman', 14, 'normal'), width=200,
-                                              image=payment_btn_image, fg_color='#2a2d2e')
-        payment_btn.place(x=40, y=300)
+                                             command=open_profile, image=profile_img, fg_color='#2a2d2e')
+        profile_btn.place(x=40, y=300)
 
         managecustomers_btn_image = ImageTk.PhotoImage(Image.open(
             'E:\\College Assignments\\Second Semester\Python\\Taxi Booking System\\Images\\user-regular-24.png'))
@@ -123,12 +133,18 @@ class Customer_Dashboard(customtkinter.CTk):
                                                  image=viewdriver_btn_image, fg_color='#2a2d2e')
         viewdriver_btn.place(x=40, y=550)
 
+        def logout():
+            self.root.destroy()
+            root=customtkinter.CTk()
+            login.Login(root)
+            root.mainloop()
+
         logout_btn_image = ImageTk.PhotoImage(Image.open(
             'E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
         logout_btn = customtkinter.CTkButton(master=left_frame, text="Logout                 ", fg_color='#2a2d2e',
                                              hover_color='black',
                                              text_font=('Times New Roman', 14, 'normal'), width=200,
-                                             image=logout_btn_image)
+                                           command=logout,  image=logout_btn_image)
         logout_btn.place(x=40, y=600)
 
         #++++++++++++++++++++++++++++++++Top Frame+++++++++++++++++++++++++++++++++++
@@ -138,7 +154,7 @@ class Customer_Dashboard(customtkinter.CTk):
         title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM",text_font=('', 16, 'bold'))
         title_lbl.pack(side=LEFT, pady=20, padx=10)
 
-        log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Logged in as: Hancie Phago",
+        log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Logged in as: {}".format(Global.currentUser[1]),
                                             text_font=('',14,'bold'))
         log_name_lbl.pack(side=RIGHT, pady=20, padx=10)
 
@@ -155,7 +171,7 @@ class Customer_Dashboard(customtkinter.CTk):
         style.theme_use("MyStyle")
         style.configure('TNotebook.Tab', background="#2a2d2e")
         style.configure('TNotebook.Tab', foreground="white")
-        style.configure('.', font=('', 12))
+        style.configure('.', font=('Times New Roman', 14, 'normal'))
 
 
 
@@ -170,18 +186,18 @@ class Customer_Dashboard(customtkinter.CTk):
         tab1_frame.pack(fill=BOTH,expand=True)
 
         #+++++++++++++++++++++++++Welcome Label+++++++++++++++++++
-        welcome_lbl=customtkinter.CTkLabel(master=tab1_frame, text="Welcome Hancie Phago!", text_font=('', 16,'bold'))
+        welcome_lbl=customtkinter.CTkLabel(master=tab1_frame, text="Welcome {}".format(Global.currentUser[1]), text_font=('', 16,'bold'))
         welcome_lbl.place(x=10,y=20)
 
         form_font=('Bodoni',15,'normal')
 
-        pickup_address_lbl=Label(tab1_frame, text="Pick up address: ", bg="#2a2d2e", fg="white", font=form_font)
+        pickup_address_lbl=Label(tab1_frame, text="Pick up address: ", bg="#2a2d2e", fg="white", font=('Times New Roman', 16, 'normal'))
         pickup_address_lbl.place(x=50, y=180)
 
-        pickup_address_txt=customtkinter.CTkEntry(master=tab1_frame, text_font=form_font, width=250)
+        pickup_address_txt=customtkinter.CTkEntry(master=tab1_frame, text_font=('Times New Roman', 16, 'normal'), width=250)
         pickup_address_txt.place(x=230, y=140)
 
-        date_lbl = Label(tab1_frame, text="Pick up date: ", bg="#2a2d2e", fg="white", font=form_font)
+        date_lbl = Label(tab1_frame, text="Pick up date: ", bg="#2a2d2e", fg="white", font=('Times New Roman', 16, 'normal'))
         date_lbl.place(x=50, y=260)
 
         dt=date.today()
@@ -192,12 +208,12 @@ class Customer_Dashboard(customtkinter.CTk):
                         foreground='white',
                         arrowcolor='white')
 
-        date_lbl_txt = DateEntry(tab1_frame, font=form_font,width=20,date_pattern='yyyy-MM-dd',
+        date_lbl_txt = DateEntry(tab1_frame, font=('Times New Roman', 16, 'normal'),width=20,date_pattern='yyyy-MM-dd',
                                  selectmode='day', style='my.DateEntry', background="green", bordercolor="red",
                                  selectbackground="green", mindate=dt, disableddaybackground ="grey")
         date_lbl_txt.place(x=285, y=260)
 
-        pickup_lbl=Label(tab1_frame, text="Pickup time:", font=form_font, bg="#2a2d2e", fg="white",)
+        pickup_lbl=Label(tab1_frame, text="Pickup time:", font=('Times New Roman', 16, 'normal'), bg="#2a2d2e", fg="white",)
         pickup_lbl.place(x=50, y=340)
 
         def updateTime(time):
@@ -222,20 +238,20 @@ class Customer_Dashboard(customtkinter.CTk):
 
         time = ()
 
-        pick_up_time_lbl = customtkinter.CTkEntry(master=tab1_frame,text_font=form_font,  width=250)
+        pick_up_time_lbl = customtkinter.CTkEntry(master=tab1_frame,text_font=('Times New Roman', 16, 'normal'),  width=250)
         pick_up_time_lbl.place(x=230, y=260)
 
         time_img=ImageTk.PhotoImage(Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
-        pic_up_time_btn = customtkinter.CTkButton(master=tab1_frame,image=time_img,text="", fg_color="black", command=time720, text_font=form_font, width=50)
+        pic_up_time_btn = customtkinter.CTkButton(master=tab1_frame,image=time_img,text="", fg_color="black", command=time720, text_font=('Times New Roman', 16, 'normal'), width=50)
         pic_up_time_btn.place(x=490, y=260)
 
-        dropoff_lbl = Label(tab1_frame, text="Drop off address:", font=('Bodoni',15,'normal'),bg="#2a2d2e", fg="white", )
+        dropoff_lbl = Label(tab1_frame, text="Drop off address:", font=('Times New Roman', 16, 'normal'),bg="#2a2d2e", fg="white", )
         dropoff_lbl.place(x=50, y=410)
 
-        dropoff_txt = customtkinter.CTkEntry(master=tab1_frame, text_font=form_font, width=250)
+        dropoff_txt = customtkinter.CTkEntry(master=tab1_frame, text_font=('Times New Roman', 16, 'normal'), width=250)
         dropoff_txt.place(x=230, y=320)
 
-        booking_btn=customtkinter.CTkButton(master=tab1_frame, text="Request Booking", text_font=('Bodoni',17,'normal'))
+        booking_btn=customtkinter.CTkButton(master=tab1_frame, text="Request Booking", text_font=('Times New Roman', 16, 'normal'))
         booking_btn.place(x=230, y=400)
 
 

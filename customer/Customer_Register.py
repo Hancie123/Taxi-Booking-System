@@ -5,7 +5,7 @@ import customtkinter
 from tkcalendar import *
 from PIL import ImageTk, Image
 from datetime import date
-from customer import Login
+from customer import login
 from tkinter import messagebox, ttk
 
 
@@ -33,7 +33,7 @@ class Register(customtkinter.CTk):
         def signin():
             self.root.destroy()
             root=customtkinter.CTk()
-            obj1=Login.Login(root)
+            obj1=login.Login(root)
             root.mainloop()
 
 
