@@ -92,55 +92,38 @@ class Login(customtkinter.CTk):
         def login_customer():
             login720=Customer_Libs(email=email_txt.get(), password=password_txt.get())
             user=login(login720)
-            Global.currentUser = user
             result=driverlogin(login720)
 
-            if user!=None:
-                if user[9]=='Customer':
-                    Global.currentUser = user
-                    self.root.destroy()
-                    root = customtkinter.CTk()
-                    obj2 = customer_dashboard.Customer_Dashboard(root)
-                    root.mainloop()
-                    Global.currentUser = user
-
-                elif user[9]=='Admin':
-                    Global.currentUser = user
-                    self.root.destroy()
-                    root = customtkinter.CTk()
-                    obj2 = DriverDashboard.Driver_Dashboard(root)
-                    root.mainloop()
-                    Global.currentUser = user
-
-            elif result != None:
-                Global.currentUser = user
-                self.root.destroy()
-                root = customtkinter.CTk()
-                driverhistory.DriverHistory(root)
-                root.mainloop()
-                Global.currentUser = user
-
-
-
-
-
-
-
+            if email_txt.get()=="" or password_txt.get()=='':
+                msg22=messagebox.showerror("Taxi Booking System","Please enter email and password!")
 
             else:
-                msg = messagebox.showerror("Taxi Booking System", "Incorrect email and password!")
+                if user != None:
+                    if user[9] == 'Customer':
+                        Global.currentUser = user
+                        self.root.destroy()
+                        root = customtkinter.CTk()
+                        obj2 = customer_dashboard.Customer_Dashboard(root)
+                        root.mainloop()
+
+                    elif user[9] == 'Admin':
+                        Global.currentUser = user
+                        self.root.destroy()
+                        root = customtkinter.CTk()
+                        obj2 = DriverDashboard.Driver_Dashboard(root)
+                        root.mainloop()
 
 
+                elif result != None:
+                    Global.currentUser = user
+                    self.root.destroy()
+                    root = customtkinter.CTk()
+                    driverhistory.DriverHistory(root)
+                    root.mainloop()
+                    
 
-
-
-
-
-
-
-
-
-
+                else:
+                    msg = messagebox.showerror("Taxi Booking System", "Incorrect email and password!")
 
 
         # Use CTkButton instead of tkinter Button
