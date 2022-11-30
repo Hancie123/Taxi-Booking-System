@@ -105,7 +105,7 @@ class DriverRegistration():
         innerFrame.place(x=580, y=20)
 
         def save_record():
-            driver=Driver_Libs(name=nametxt.get(), mobile=mobiletxt.get(), email=emailtxt.get(),license= licensetxt.get(), password=passwordtxt.get(), status='Driver')
+            driver=Driver_Libs(name=nametxt.get(), mobile=mobiletxt.get(), email=emailtxt.get(),license= licensetxt.get(), password=passwordtxt.get(), status='Driver', driverstatus='')
             result=insert_record(driver)
             if result==True:
                 msg1=messagebox.showinfo("Taxi Booking System","Driver is registered successfully!")

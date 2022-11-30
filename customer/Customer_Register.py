@@ -147,7 +147,7 @@ class Register(customtkinter.CTk):
             else:
                 customer_info = Customer_Libs('', name_txt.get(), dob_txt.get(), gender_txt.get(),
                                               mobile_txt.get(), email_txt.get(), address_txt.get(),
-                                              password_txt.get(), credit_txt.get())
+                                              password_txt.get(), credit_txt.get(), status="Customer")
                 result = insert_record(customer_info)
                 if result == True:
                     promt = messagebox.showinfo('Taxi Booking System', "Customer is registered successfully")

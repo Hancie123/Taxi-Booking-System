@@ -6,9 +6,9 @@ from libs.customer_libs import Customer_Libs
 
 def insert_record(customerInfo):
     conn=None
-    sql="""INSERT INTO customers VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    sql="""INSERT INTO customers VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)"""
     values=(customerInfo.getCid(), customerInfo.getName(), customerInfo.getDob(), customerInfo.getGender(),
-            customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(), customerInfo.getPassword(), customerInfo.getCredit())
+            customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(), customerInfo.getPassword(), customerInfo.getCredit(), customerInfo.getStatus())
     result=False
     try:
         conn=Connect()

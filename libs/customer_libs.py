@@ -1,6 +1,6 @@
 
 class Customer_Libs():
-    def __init__(self, cid=0, name=None, dob=None, gender=None, mobile=None, email=None, address=None, password=None, credit=None):
+    def __init__(self, cid=0, name=None, dob=None, gender=None, mobile=None, email=None, address=None, password=None, credit=None, status=None):
         self.cid=cid
         self.name=name
         self.dob=dob
@@ -10,6 +10,7 @@ class Customer_Libs():
         self.address=address
         self.password=password
         self.credit=credit
+        self.status=status
 
     #Getters
     def getCid(self):
@@ -39,6 +40,9 @@ class Customer_Libs():
     def getCredit(self):
         return self.credit
 
+    def getStatus(self):
+        return self.status
+
     #setter
     def setCid(self, cid):
         self.cid=cid
@@ -67,6 +71,9 @@ class Customer_Libs():
     def setCredit(self, credit):
         self.credit=credit
 
+    def setStatus(self, status):
+        self.status=status
+
     def __str__(self):
-        return ('{},{},{},{},{},{},{},{},{}'.format(self.cid, self.name, self.dob, self.gender, self.mobile, self.email, self.address, self.password, self.credit))
+        return ('{},{},{},{},{},{},{},{},{},{}'.format(self.cid, self.name, self.dob, self.gender, self.mobile, self.email, self.address, self.password, self.credit, self.status))
 

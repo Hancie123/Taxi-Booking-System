@@ -17,6 +17,7 @@ def login(loginInfo):
         cursor.close()
         conn.close()
 
+
     except:
         print("Error", sys.exc_info())
 
@@ -25,3 +26,24 @@ def login(loginInfo):
         del conn
         return user
         return values
+
+def driverlogin(driverInfo):
+
+    sql="""SELECT * FROM drivers WHERE email=%s and password=%s"""
+    values=(driverInfo.getEmail(), driverInfo.getPassword())
+    result=None
+
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        result=cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql
+        return result

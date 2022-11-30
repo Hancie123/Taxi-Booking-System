@@ -28,18 +28,12 @@ def search720():
         txtPages.delete(0, len(txtPages.get()))
         txtPages.insert(0, record[1])
 
-def editcopy():
+def deleteCopy():
     # reading value from entry and send to library/middleware
     cid = int(txtNID.get())  #Read value from textbox
-    pages=txtPages.get()
-    price=txtPrice.get()
-    email=txtemail.get()
-    password=txtPass.get()
-
-    cust=Libs(cid, pages, price, email, password)
-    result=edit(cust)
+    result=delete(cid)
     if result==True:
-        lblmessage['text']="Edit Record"
+        lblmessage['text']="Delete Record"
 
     else:
         lblmessage['text']="Error"
@@ -63,8 +57,8 @@ txtPrice = Entry(window, width=20)
 txtemail = Entry(window, width=20)
 txtPass = Entry(window, width=20)
 
-btnSave = Button(window, text="Edit", command=editcopy) # calling save function
-btnsearch = Button(window, text="Search", command=search720)
+btnSave = Button(window, text="Delete", command=deleteCopy) # calling save function
+btnsearch = Button(window, text="Delete", command=search720)
 btnClose=Button(window, text="CLOSE", command=close)
 
 lblNID.place(x=20, y=10)

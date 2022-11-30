@@ -4,9 +4,11 @@ from tkinter import *
 from PIL import ImageTk, Image
 from customer import Customer_Register, customer_dashboard
 from customer.customer_dashboard import Customer_Dashboard
+from driver import DriverDashboard, driverhistory
+from driver.driverhistory import DriverHistory
 from libs import Global
 from libs.customer_libs import Customer_Libs
-from dbms.login_management import login
+from dbms.login_management import login, driverlogin
 
 
 
@@ -52,10 +54,10 @@ class Login(customtkinter.CTk):
         photo = ImageTk.PhotoImage(sign_in_image)
         sign_in_image_label = Label(frame2, image=photo, bg="#2a2d2e")
         sign_in_image_label.image = photo
-        sign_in_image_label.place(x=380, y=50)
+        sign_in_image_label.place(x=380, y=40)
 
         signin_lbl = customtkinter.CTkLabel(master=frame2, text="Sign In", text_font=font1)
-        signin_lbl.place(x=295, y=130)
+        signin_lbl.place(x=295, y=150)
 
         email_lbl = customtkinter.CTkLabel(master=frame2, text="Email: ", text_font=font1)
         email_lbl.place(x=200, y=200)
@@ -91,17 +93,53 @@ class Login(customtkinter.CTk):
             login720=Customer_Libs(email=email_txt.get(), password=password_txt.get())
             user=login(login720)
             Global.currentUser = user
-            if user==None:
-                msg=messagebox.showerror("Taxi Booking System","Incorrect email and password!")
+            result=driverlogin(login720)
 
+            if user!=None:
+                if user[9]=='Customer':
+                    Global.currentUser = user
+                    self.root.destroy()
+                    root = customtkinter.CTk()
+                    obj2 = customer_dashboard.Customer_Dashboard(root)
+                    root.mainloop()
+                    Global.currentUser = user
 
-            else:
+                elif user[9]=='Admin':
+                    Global.currentUser = user
+                    self.root.destroy()
+                    root = customtkinter.CTk()
+                    obj2 = DriverDashboard.Driver_Dashboard(root)
+                    root.mainloop()
+                    Global.currentUser = user
+
+            elif result != None:
                 Global.currentUser = user
                 self.root.destroy()
                 root = customtkinter.CTk()
-                obj2 = customer_dashboard.Customer_Dashboard(root)
+                driverhistory.DriverHistory(root)
                 root.mainloop()
-                Global.currentUser=user
+                Global.currentUser = user
+
+
+
+
+
+
+
+
+            else:
+                msg = messagebox.showerror("Taxi Booking System", "Incorrect email and password!")
+
+
+
+
+
+
+
+
+
+
+
 
 
 

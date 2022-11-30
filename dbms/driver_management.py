@@ -5,10 +5,9 @@ import sys
 
 def insert_record(driverInfo):
     conn=None
-    sql="""INSERT INTO `drivers`(`did`, `name`, `mobile`, `email`, `license`, `password`, `status`)
-     VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+    sql="""INSERT INTO `drivers`VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
     values=(driverInfo.getDid(), driverInfo.getName(), driverInfo.getMobile(), driverInfo.getEmail(),
-            driverInfo.getLicense(), driverInfo.getPassword(),driverInfo.getStatus())
+            driverInfo.getLicense(), driverInfo.getPassword(),driverInfo.getStatus(), driverInfo.getDriverstatus())
     result=False
     try:
         conn=Connect()

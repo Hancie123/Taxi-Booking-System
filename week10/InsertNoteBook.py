@@ -1,29 +1,35 @@
 # pip install tk
 import sys
 # Import Library
-from tkinter import * # Window
+from tkinter import Tk # Window
+from tkinter import Label # Label
+from tkinter import Entry # Text Box
+from tkinter import Button # Button
 from cusInfo import Libs
-from notebookmanager import all
+from CopyManager import insert
 
 def close():
     sys.exit()
 
-def getAll():
-
-    cust=all()
-    if cust==None:
-        print("Record not found")
-
+def save():
+    # reading value from entry and send to library/middleware
+    nid = int(txtNID.get())
+    pages = txtPages.get()
+    price = txtPrice.get()
+    email=txtemail.get()
+    password=txtPass.get()
+    nb1 = Libs(nid, pages, price, email, password)
+    result = insert(nb1)
+    if(result['status']==True):
+        lblmessage['text']="Save Record"
     else:
-        print(cust)
-
-
+        lblmessage.config(text="Error")
 
 # Decalre and initialize
 window = Tk() # Declare window
 window.geometry("250x250")
 window.resizable(False, False)
-window.title("Dispaly All")
+window.title("Insert New Record")
 
 lblNID = Label(window, text="ID: ")
 lblPages = Label(window, text="Name: ")
@@ -37,7 +43,7 @@ txtPrice = Entry(window, width=20)
 txtemail = Entry(window, width=20)
 txtPass = Entry(window, width=20)
 
-btnSave = Button(window, text="All", command=getAll) # calling save function
+btnSave = Button(window, text="SAVE", command=save) # calling save function
 btnClose=Button(window, text="CLOSE", command=close)
 
 lblNID.place(x=20, y=10)
