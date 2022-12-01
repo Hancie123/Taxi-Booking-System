@@ -38,14 +38,14 @@ class Register(customtkinter.CTk):
 
 
 
-        font = ('Bodoni',15,'bold')
-        font1 = ('Bodoni',16,'normal')
+        font = customtkinter.CTkFont(family='Times New Roman',size= 25,weight='normal')
+        font1 = customtkinter.CTkFont(family='Times New Roman',size= 25,weight='normal')
 
         North_Frame = customtkinter.CTkFrame(master=root, height=100, corner_radius=0)
         North_Frame.pack(side=TOP, fill=BOTH)
 
         title_lbl = customtkinter.CTkLabel(master=North_Frame, text="CUSTOMER REGISTRATION FORM",
-                                           text_font=('Cambria', 26, 'bold'))
+                                           font=('Cambria', 26, 'bold'))
         title_lbl.place(x=500, y=25)
 
         back_image = Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\back.png')
@@ -68,15 +68,15 @@ class Register(customtkinter.CTk):
         Cover_Image_label.place(x=0, y=0)
 
         name_lbl = Label(root, text="Name: ",bg="#212325", fg="white",font=font)
-        name_lbl.place(x=630, y=240)
+        name_lbl.place(x=630, y=250)
 
-        name_txt = customtkinter.CTkEntry(master=root, text="", fg_color='white',  text_color='black', text_font=font1,
+        name_txt = customtkinter.CTkEntry(master=root, fg_color='white',  text_color='black', font=font1,
                                           width=250)
         name_txt.configure(textvariable=self.name_txt)
         name_txt.place(x=650, y=200)
 
         dob_lbl = Label(root, text="DOB: ",bg="#212325", fg="white", font=font)
-        dob_lbl.place(x=630, y=310)
+        dob_lbl.place(x=630, y=320)
 
         style = ttk.Style()
         style.configure('my.DateEntry',
@@ -90,49 +90,49 @@ class Register(customtkinter.CTk):
         dob_txt.place(x=820, y=320)
 
         gender_lbl = Label(root, text="Gender: ",bg="#212325", fg="white", font=font)
-        gender_lbl.place(x=1350, y=240)
+        gender_lbl.place(x=1350, y=250)
 
         gender_txt = customtkinter.CTkOptionMenu(master=root, fg_color='white',variable=self.gender_txt, text_color='black',
-                                                 values=['Male', 'Female', 'Others'], text_font=font1, width=250)
+                                                 values=['Male', 'Female', 'Others'], font=font1, width=250)
         gender_txt.set('Male')
         gender_txt.place(x=1240, y=200)
 
         mobile_lbl = Label(root, text="Mobile: ",bg="#212325", fg="white", font=font)
-        mobile_lbl.place(x=1350, y=310)
+        mobile_lbl.place(x=1350, y=320)
 
-        mobile_txt = customtkinter.CTkEntry(master=root, text="", fg_color='white', text_color='black', text_font=font1,
+        mobile_txt = customtkinter.CTkEntry(master=root, fg_color='white', text_color='black', font=font1,
                                             width=250)
         mobile_txt.configure(textvariable=self.mobile_txt)
         mobile_txt.place(x=1240, y=250)
 
         address_lbl = Label(root, text="Address: ",bg="#212325", fg="white", font=font)
-        address_lbl.place(x=630, y=385)
+        address_lbl.place(x=630, y=395)
 
-        address_txt = customtkinter.CTkEntry(master=root, text="", fg_color='white', text_color='black',
-                                             text_font=font1, width=250)
+        address_txt = customtkinter.CTkEntry(master=root, fg_color='white', text_color='black',
+                                             font=font1, width=250)
         address_txt.configure(textvariable=self.address_txt)
         address_txt.place(x=650, y=310)
 
         email_lbl = Label(root, text="Email: ", bg="#212325", fg="white", font=font)
-        email_lbl.place(x=1350, y=380)
+        email_lbl.place(x=1350, y=390)
 
-        email_txt = customtkinter.CTkEntry(master=root, text="", fg_color='white', text_color='black', text_font=font1,
+        email_txt = customtkinter.CTkEntry(master=root, fg_color='white', text_color='black', font=font1,
                                            width=250)
         email_txt.configure(textvariable=self.email_txt)
         email_txt.place(x=1240, y=305)
 
         password_lbl = Label(root, text="Password: ", bg="#212325", fg="white",font=font)
-        password_lbl.place(x=630, y=455)
+        password_lbl.place(x=630, y=465)
 
-        password_txt = customtkinter.CTkEntry(master=root, text="",  fg_color='white', text_color='black',
-                                              text_font=font1, width=250)
+        password_txt = customtkinter.CTkEntry(master=root,  fg_color='white', text_color='black',
+                                              font=font1, width=250)
         password_txt.configure(textvariable=self.password_txt)
         password_txt.place(x=650, y=365)
 
         credit_lbl = Label(root, text="Credit No: ",bg="#212325", fg="white", font=font)
-        credit_lbl.place(x=1350, y=450)
+        credit_lbl.place(x=1350, y=460)
 
-        credit_txt = customtkinter.CTkEntry(master=root, text="",  fg_color='white', text_color='black', text_font=font1,
+        credit_txt = customtkinter.CTkEntry(master=root,  fg_color='white', text_color='black', font=font1,
                                             width=250)
         credit_txt.configure(textvariable=self.credit_txt)
         credit_txt.place(x=1240, y=360)
@@ -158,11 +158,10 @@ class Register(customtkinter.CTk):
 
 
 
-        register_btn_image = ImageTk.PhotoImage(
-            Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit.png"))
+        register_btn_image = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit.png"))
 
         register_btn = customtkinter.CTkButton(master=root,command=save_customer_info,  text="Register", image=register_btn_image,
-                                               hover_color='black', text_font=('Tahoma', 20, 'bold'))
+                                               hover_color='black', font=('Tahoma', 20, 'bold'))
         register_btn.place(x=900, y=500)
 
         def clear():
@@ -184,23 +183,18 @@ class Register(customtkinter.CTk):
 
 
 
-
-
-
-
-
         #Clear btn image and button
-        clear_btn_image = ImageTk.PhotoImage(Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\cleaning.png"))
-        clear_btn = customtkinter.CTkButton(master=root, command=clear, text="Clear",image=clear_btn_image,hover_color='black', text_font=('Tahoma', 20, 'bold'))
+        clear_btn_image = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\cleaning.png"))
+        clear_btn = customtkinter.CTkButton(master=root, command=clear, text="Clear",image=clear_btn_image,hover_color='black', font=('Tahoma', 20, 'bold'))
         clear_btn.place(x=1080, y=500)
 
         #Back button and label widget
         back_lbl = customtkinter.CTkLabel(master=root, text="Already have an account",
-                                          text_font=('', 14, 'normal'),
+                                          font=('', 14, 'normal'),
                                           text_color='white')
         back_lbl.place(x=920, y=550)
 
-        back_btn = customtkinter.CTkButton(master=root, text="SIGN IN", width=100, text_font=('Tahoma', 14, 'bold'),
+        back_btn = customtkinter.CTkButton(master=root, text="SIGN IN", width=100, font=('Tahoma', 14, 'bold'),
                                            hover_color='black', command=signin)
         back_btn.place(x=1130, y=550)
 

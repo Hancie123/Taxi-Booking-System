@@ -17,7 +17,21 @@ class test():
             test1.test720(main)
             main.mainloop()
 
-        btn=Button(self.main720, text="Open", command=open)
+
+
+        tabview = customtkinter.CTkTabview(main720)
+        tabview.pack(padx=20, pady=20)
+
+        tabview.add("tab 1")  # add tab at the end
+        tabview.add("tab 2")  # add tab at the end
+        tabview.set("tab 2")  # set currently visible tab
+
+        tab=customtkinter.CTkTabview(main720)
+        tab.pack()
+        tab.add("Hancie1")
+        tab.add("Nitesh")
+
+        btn = Button(tab.tab('Hancie1'), text="Open", command=open)
         btn.pack()
 
 
