@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from tkinter import messagebox, ttk
 import customtkinter
 from tkinter import *
@@ -7,12 +8,15 @@ from admin import admin_dashboard
 from customer import Customer_Register, customer_dashboard
 from customer.customer_dashboard import Customer_Dashboard
 from dbms.customer_management import insert_record
+from dbms.myactivity_backend import activity_insert
 from driver import DriverDashboard, driverhistory
 from driver.driverhistory import DriverHistory
 from libs import Global
 from libs.customer_libs import Customer_Libs
 from dbms.login_management import login, driverlogin, adminLogin
+import platform
 
+from libs.myactivity_libs import MyActivity
 
 
 class Login(customtkinter.CTk):
@@ -109,6 +113,26 @@ class Login(customtkinter.CTk):
                         root = customtkinter.CTk()
                         obj2 = customer_dashboard.Customer_Dashboard(root)
                         root.mainloop()
+
+                        myid=user[0]
+
+                        my_system = platform.uname()
+
+                        system11=(f"{my_system.system}")
+                        model11=(f"{my_system.node}")
+                        machine11=(f"{my_system.machine}")
+                        processor11=(f"{my_system.processor}")
+
+                        date11=date.today()
+                        now = datetime.now()
+                        current_time = now.strftime("%I:%M:%S")
+
+                        LoginActivity=MyActivity('', system=system11, model=model11,machine=machine11, processor=processor11, date=date11,date2=current_time, cid=myid )
+                        activityResult=activity_insert(LoginActivity)
+
+
+
+
 
 
                 elif driverresult != None:

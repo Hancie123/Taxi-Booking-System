@@ -20,7 +20,7 @@ import pandas
 from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
-from customer import login, customerprofile
+from customer import login, customerprofile, Change_Password
 from libs import Global
 
 
@@ -114,8 +114,14 @@ class Customer_Dashboard(customtkinter.CTk):
         billing_btn = customtkinter.CTkButton(master=left_frame, text="Billing                   ", hover_color='black',font=sidemenufont, width=200,image=billing_btn_image, fg_color='#2a2d2e')
         billing_btn.place(x=40, y=450)
 
+        def change_password_gui():
+            password=customtkinter.CTkToplevel()
+            Change_Password.Password_Change(password)
+            password.mainloop()
+
+
         viewcustomer_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\key-solid-24.png'))
-        viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Change Password     ", hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2a2d2e')
+        viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Change Password     ",command=change_password_gui, hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2a2d2e')
         viewcustomer_btn.place(x=40, y=500)
 
         viewdriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\export-regular-24.png'))
@@ -129,10 +135,7 @@ class Customer_Dashboard(customtkinter.CTk):
             root.mainloop()
 
         logout_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
-        logout_btn = customtkinter.CTkButton(master=left_frame, text="Logout                 ", fg_color='#2a2d2e',
-                                             hover_color='black',
-                                             font=sidemenufont, width=200,
-                                           command=logout,  image=logout_btn_image)
+        logout_btn = customtkinter.CTkButton(master=left_frame, text="Logout                 ", fg_color='#2a2d2e',hover_color='black',font=sidemenufont, width=200,command=logout,  image=logout_btn_image)
         logout_btn.place(x=40, y=600)
 
         themelbl=customtkinter.CTkLabel(left_frame, text="Appearance Mode:", font=sidemenufont)
@@ -187,7 +190,7 @@ class Customer_Dashboard(customtkinter.CTk):
         style.configure('my.DateEntry',
                         fieldbackground='#2a2d2e',
                         background='red',
-                        foreground='white',
+                        foreground='black',
                         arrowcolor='white')
 
         date_lbl_txt = DateEntry(parent_tab.tab('Home'), font=('Times New Roman', 20,'normal'), width=22, date_pattern='yyyy-MM-dd',
