@@ -24,7 +24,7 @@ class DriverRegistration():
         xCordinate=int((screenWidth/2)-(myWidth/2))
         yCordinate=int((screenHeight/2)-(myHeight/2))
         #+++++++++++++++++++++++++Center Window in to screen++++++++++++++++++++++++++++++
-        self.driver.geometry('{}x{}+{}+{}'.format(myWidth, myHeight, xCordinate-30, yCordinate-70))
+        self.driver.geometry('{}x{}+{}+{}'.format(myWidth, myHeight, xCordinate+200, yCordinate))
         #+++++++++++++++++++++++++++++++Set Icon in window++++++++++++++++++++++++++++++++++++
         self.driver.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
 
@@ -166,7 +166,7 @@ class DriverRegistration():
 
         save_image = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\check-square-regular-24.png"))
         savebtn=customtkinter.CTkButton(master=innerFrame,command=save_record, image=save_image, text="Save Record", font=font720,width=180, hover_color="black")
-        savebtn.place(x=35,y=80)
+        savebtn.place(x=30,y=80)
 
         def update():
             driver = Driver_Libs(name=nametxt.get(), mobile=mobiletxt.get(), email=emailtxt.get(),
@@ -182,7 +182,7 @@ class DriverRegistration():
 
         update_image=customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit-alt-regular-24.png"))
         updatebtn = customtkinter.CTkButton(master=innerFrame,command=update, text="Update Record",image=update_image, font=font720, width=180, hover_color="black")
-        updatebtn.place(x=25, y=140)
+        updatebtn.place(x=30, y=140)
 
         def delete():
             id=idtxt.get()

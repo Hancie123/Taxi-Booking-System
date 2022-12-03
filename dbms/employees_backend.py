@@ -1,14 +1,14 @@
 import mysql.connector
 import sys
 from dbms.connection import Connect
-from libs.customer_libs import Customer_Libs
+from libs.employees_libs import EmployeesLibs
 
 
-def insert_record(customerInfo):
+def insert_record(employeesInfo):
     conn=None
-    sql="""INSERT INTO customers VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)"""
-    values=(customerInfo.getCid(), customerInfo.getName(), customerInfo.getDob(), customerInfo.getGender(),
-            customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(), customerInfo.getPassword(), customerInfo.getCredit(), customerInfo.getStatus())
+    sql="""INSERT INTO employees VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+    values=(employeesInfo.getEmid(), employeesInfo.getName(), employeesInfo.getDob(), employeesInfo.getGender(),
+            employeesInfo.getMobile(), employeesInfo.getEmail(), employeesInfo.getAddress())
     result=False
     try:
         conn=Connect()
@@ -30,11 +30,11 @@ def insert_record(customerInfo):
         return result
         return values
 
-def update_record(customerInfo):
+def update_record(employeesInfo):
     conn=None
-    sql="""UPDATE customers SET name=%s, dob=%s, gender=%s, mobile=%s, email=%s, address=%s, password=%s, credit=%s, status=%s WHERE cid=%s"""
-    values=(customerInfo.getName(), customerInfo.getDob(), customerInfo.getGender(),
-            customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(), customerInfo.getPassword(), customerInfo.getCredit(), customerInfo.getStatus(), customerInfo.getCid())
+    sql="""UPDATE employees SET name=%s, dob=%s, gender=%s, mobile=%s, email=%s, address=%s WHERE emid=%s"""
+    values=(employeesInfo.getName(), employeesInfo.getDob(), employeesInfo.getGender(),
+            employeesInfo.getMobile(), employeesInfo.getEmail(), employeesInfo.getAddress(),employeesInfo.getEmid())
     updateResult=False
     try:
         conn=Connect()
@@ -57,16 +57,16 @@ def update_record(customerInfo):
         return values
 
 
-def search_customer(cid):
+def search_employees(emid):
     conn=None
-    sql="""SELECT * FROM customers WHERE cid=%s"""
-    values=(cid,)
-    customerResult=None
+    sql="""SELECT * FROM employees WHERE emid=%s"""
+    values=(emid,)
+    employeesResult=None
     try:
         conn=Connect()
         cursor=conn.cursor()
         cursor.execute(sql, values)
-        customerResult=cursor.fetchone()
+        employeesResult=cursor.fetchone()
         cursor.close()
         conn.close()
 
@@ -76,12 +76,12 @@ def search_customer(cid):
 
     finally:
         del values, sql, conn
-        return customerResult
+        return employeesResult
 
-def delete_record(cid):
+def delete_record(emid):
     conn=None
-    sql="""DELETE FROM customers WHERE cid=%s"""
-    values=(cid,)
+    sql="""DELETE FROM employees WHERE emid=%s"""
+    values=(emid,)
     deleteResult=False
 
     try:

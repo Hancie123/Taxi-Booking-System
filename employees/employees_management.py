@@ -2,26 +2,25 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk,Image
 import customtkinter
+from dbms.employees_backend import insert_record, search_employees, update_record, delete_record
+from libs.employees_libs import EmployeesLibs
 
-from dbms.customer_management import insert_record, search_customer, update_record, delete_record
-from libs.customer_libs import Customer_Libs
 
-
-class CustomerManagement(customtkinter.CTk):
+class EmployeesManagement(customtkinter.CTk):
     def __init__(self, main):
         self.main=main
         customtkinter.set_appearance_mode('dark')
         customtkinter.set_default_color_theme('blue')
-        self.main.title("Customer Management System")
+        self.main.title("Employees Management System")
         self.main.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
         width = 1050
-        height = 450
+        height = 400
         myscreenwidth = self.main.winfo_screenwidth()
         myscreenheight = self.main.winfo_screenheight()
         xCordinate = int((myscreenwidth / 2) - (width / 2))
         yCordinate = int((myscreenheight / 2) - (height / 2))
-        self.main.geometry('{}x{}+{}+{}'.format(width, height, xCordinate, yCordinate - 50))
-        self.main.maxsize(1050, 450)
+        self.main.geometry('{}x{}+{}+{}'.format(width, height, xCordinate+200, yCordinate))
+        self.main.maxsize(1050, 400)
 
         # font
         font720 = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
@@ -34,52 +33,46 @@ class CustomerManagement(customtkinter.CTk):
         self.emailtxt = StringVar()
         self.addresstxt=StringVar()
         self.dobtxt = StringVar()
-        self.passwordtxt = StringVar()
-        self.credittxt=StringVar()
 
         # +++++++++++++++++++++++++++++++Center Frame+++++++++++++++++++++++++++++++++++++++++++++++++
         topFrame = customtkinter.CTkFrame(master=self.main, height=70)
         topFrame.pack(side=TOP, fill=BOTH, padx=20, pady=(10, 20))
 
         # +++++++++++++++++++++++++++++++++++Title Label+++++++++++++++++++++++++++++++++++++
-        titleLabel = customtkinter.CTkLabel(master=topFrame, text="CUSTOMER MANAGEMENT SYSTEM", font=('Times New Roman', 25, 'bold'))
+        titleLabel = customtkinter.CTkLabel(master=topFrame, text="EMPLOYEES MANAGEMENT SYSTEM", font=('Times New Roman', 25, 'bold'))
         titleLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         # ++++++++++++++++++++++++++++++++Center Frame++++++++++++++++++++++++++++++++++
-        centerFrame = customtkinter.CTkFrame(master=self.main, width=1000, height=340)
+        centerFrame = customtkinter.CTkFrame(master=self.main, width=1000, height=290)
         centerFrame.pack(anchor=CENTER)
 
-        def searchCustomer():
+        def searchEmployees():
 
-            customerid=idtxt.get()
-            customerResult=search_customer(customerid)
-            if customerResult==None:
-                messagebox.showwarning("Taxi Booking System", "The Customer ID {} is not found".format(customerid))
+            employeesid=idtxt.get()
+            employeesResult=search_employees(employeesid)
+            if employeesResult==None:
+                messagebox.showwarning("Taxi Booking System", "The Employees ID {} is not found".format(employeesid))
 
             else:
                 nametxt.delete(0, len(nametxt.get()))
-                nametxt.insert(0, customerResult[1])
+                nametxt.insert(0, employeesResult[1])
 
                 dobtxt.delete(0, len(dobtxt.get()))
-                dobtxt.insert(0, customerResult[2])
+                dobtxt.insert(0, employeesResult[2])
 
                 gendertxt.delete(0, len(gendertxt.get()))
-                gendertxt.insert(0, customerResult[3])
+                gendertxt.insert(0, employeesResult[3])
 
                 mobiletxt.delete(0, len(mobiletxt.get()))
-                mobiletxt.insert(0, customerResult[4])
+                mobiletxt.insert(0, employeesResult[4])
 
                 emailtxt.delete(0, len(emailtxt.get()))
-                emailtxt.insert(0, customerResult[5])
+                emailtxt.insert(0, employeesResult[5])
 
                 addresstxt.delete(0, len(addresstxt.get()))
-                addresstxt.insert(0, customerResult[6])
+                addresstxt.insert(0, employeesResult[6])
 
-                passwordtxt.delete(0, len(passwordtxt.get()))
-                passwordtxt.insert(0, customerResult[7])
 
-                credittxt.delete(0, len(credittxt.get()))
-                credittxt.insert(0, customerResult[8])
 
 
         # ++++++++++++++++++++++++++++ID Label+++++++++++++++++++++++++++++++++++++
@@ -91,12 +84,12 @@ class CustomerManagement(customtkinter.CTk):
         idtxt.place(x=100, y=15)
 
         search_image = customtkinter.CTkImage(light_image=Image.open("E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\search-alt-2-regular-24.png"))
-        deletebtn = customtkinter.CTkButton(master=centerFrame, image=search_image, text="Search",command=searchCustomer, font=font720, width=180)
+        deletebtn = customtkinter.CTkButton(master=centerFrame, image=search_image, text="Search",command=searchEmployees, font=font720, width=180)
         deletebtn.place(x=320, y=15)
 
 
         #++++++++++++++++++++++++Center Frame 2+++++++++++++++++++++++++++++++++++
-        centerFrame2 = customtkinter.CTkFrame(master=centerFrame, height=255, width=690)
+        centerFrame2 = customtkinter.CTkFrame(master=centerFrame, height=200, width=690)
         centerFrame2.place(x=20, y=65)
 
         # ++++++++++++++++++++++++++++Name Label+++++++++++++++++++++++++++++++++++++
@@ -131,14 +124,6 @@ class CustomerManagement(customtkinter.CTk):
         addresstxt = customtkinter.CTkEntry(master=centerFrame2,textvariable=self.addresstxt, font=font720, width=200)
         addresstxt.place(x=470, y=130)
 
-        # ++++++++++++++++++++++++++++Credit Label+++++++++++++++++++++++++++++++++++++
-        creditlbl = customtkinter.CTkLabel(master=centerFrame2, text="Credit: ", font=font720)
-        creditlbl.place(x=380, y=180)
-
-        # ++++++++++++++++++++++++++++++Credit TextField++++++++++++++++++++++++++++++++++++++++++++++++++
-        credittxt = customtkinter.CTkEntry(master=centerFrame2,textvariable=self.credittxt, font=font720, width=200)
-        credittxt.place(x=470, y=180)
-
         # +++++++++++++++++++++++++++++Mobile Label++++++++++++++++++++++++++++
         mobilelbl = customtkinter.CTkLabel(master=centerFrame2, text="Mobile: ", font=font720)
         mobilelbl.place(x=40, y=80)
@@ -155,46 +140,35 @@ class CustomerManagement(customtkinter.CTk):
         emailtxt = customtkinter.CTkEntry(master=centerFrame2,textvariable=self.emailtxt, font=font720, width=200)
         emailtxt.place(x=150, y=130)
 
-        # +++++++++++++++++++++++++++++Password Label++++++++++++++++++++++++++++
-        passwordlbl = customtkinter.CTkLabel(master=centerFrame2, text="Password: ", font=font720)
-        passwordlbl.place(x=40, y=180)
 
-        # ++++++++++++++++++++++++++++++Password TextField++++++++++++++++++++++++++++++++++++++++++++++++++
-        passwordtxt = customtkinter.CTkEntry(master=centerFrame2,textvariable=self.passwordtxt,  font=font720,width=200)
-        passwordtxt.place(x=150, y=180)
-
-
-        sideFrame = customtkinter.CTkFrame(master=centerFrame, width=250, height=300)
+        sideFrame = customtkinter.CTkFrame(master=centerFrame, width=250, height=250)
         sideFrame.place(x=730, y=20)
 
-        def save_customer_info():
+        def save_employees_info():
 
             if (nametxt.get() == '') or (dobtxt.get() == '') or (gendertxt.get() == '') or (mobiletxt.get() == '') \
-                    or (emailtxt.get() == '') or (addresstxt.get() == '') or (passwordtxt.get() == '') or (
-                    credittxt.get() == 0):
+                    or (emailtxt.get() == '') or (addresstxt.get() == ''):
                 warning = messagebox.showwarning("Taxi Booking System", "Please enter all the field!")
 
             else:
-                customer_info = Customer_Libs('', nametxt.get(), dobtxt.get(), gendertxt.get(),
-                                              mobiletxt.get(), emailtxt.get(), addresstxt.get(),
-                                              passwordtxt.get(), credittxt.get(), status="Customer")
+                customer_info = EmployeesLibs('', nametxt.get(), dobtxt.get(), gendertxt.get(),
+                                              mobiletxt.get(), emailtxt.get(), addresstxt.get())
                 result = insert_record(customer_info)
                 if result == True:
-                    promt = messagebox.showinfo('Taxi Booking System', "Customer is registered successfully")
+                    promt = messagebox.showinfo('Taxi Booking System', "Employees detail is registered successfully")
                 else:
-                    promt1 = messagebox.showerror("Error!", "Registration of customer info is unsuccessful!")
+                    promt1 = messagebox.showerror("Error!", "Registration of employees info is unsuccessful!")
 
 
 
         save_image = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\check-square-regular-24.png"))
-        savebtn = customtkinter.CTkButton(master=sideFrame, command=save_customer_info, image=save_image, text="Save Record",font=font720, width=180, hover_color="black")
+        savebtn = customtkinter.CTkButton(master=sideFrame, command=save_employees_info, image=save_image, text="Save Record",font=font720, width=180, hover_color="black")
         savebtn.place(x=35, y=50)
 
         def update():
-            customer_info = Customer_Libs(cid=idtxt.get(), name=nametxt.get(), dob=dobtxt.get(), gender=gendertxt.get(),
-                                          mobile=mobiletxt.get(), email=emailtxt.get(), address=addresstxt.get(),
-                                          password=passwordtxt.get(), credit=credittxt.get(), status="Customer")
-            updateResult=update_record(customer_info)
+            employees_info = EmployeesLibs(emid=idtxt.get(), name=nametxt.get(), dob=dobtxt.get(), gender=gendertxt.get(),
+                                          mobile=mobiletxt.get(), email=emailtxt.get(), address=addresstxt.get())
+            updateResult=update_record(employees_info)
             if updateResult==True:
                 messagebox.showinfo("Taxi Booking System","The record is updated")
 
@@ -209,10 +183,10 @@ class CustomerManagement(customtkinter.CTk):
 
         def delete():
 
-            customerid=idtxt.get()
-            deleteResult=delete_record(customerid)
+            employeesid=idtxt.get()
+            deleteResult=delete_record(employeesid)
             if deleteResult==True:
-                messagebox.showinfo("Taxi Booking System","The customer ID {} is deleted successfully".format(customerid))
+                messagebox.showinfo("Taxi Booking System","The employees ID {} is deleted successfully".format(employeesid))
 
             else:
                 messagebox.showerror("Taxi Booking System","Error occurred!")
@@ -231,10 +205,8 @@ class CustomerManagement(customtkinter.CTk):
             self.emailtxt.set('')
             self.mobiletxt.set('')
             self.addresstxt.set('')
-            self.passwordtxt.set('')
             self.dobtxt.set('')
             self.gendertxt.set('')
-            self.credittxt.set('')
 
         clear_image = customtkinter.CTkImage(light_image=Image.open("E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-x-regular-24.png"))
         clearbtn = customtkinter.CTkButton(master=sideFrame, image=clear_image, text="Clear Record",command=clear, font=font720, width=180, hover_color="black")
@@ -243,5 +215,5 @@ class CustomerManagement(customtkinter.CTk):
 
 if __name__=='__main__':
     main=customtkinter.CTk()
-    CustomerManagement(main)
+    EmployeesManagement(main)
     main.mainloop()

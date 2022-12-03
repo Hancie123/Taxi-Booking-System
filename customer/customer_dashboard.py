@@ -61,7 +61,7 @@ class Customer_Dashboard(customtkinter.CTk):
         self.root.config(menu=parent_menu)
 
         #++++++++++++++++++++++++++++++++Font Collection+++++++++++++++++++++++++++++++++++++++++++
-        titlefont = customtkinter.CTkFont(family='Times New Roman', size=25, weight='normal')
+        titlefont = customtkinter.CTkFont(family='Times New Roman', size=30, weight='bold')
         font720 = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
         labelfont=customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
         sidemenufont = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
@@ -154,7 +154,7 @@ class Customer_Dashboard(customtkinter.CTk):
         Top_Frame=customtkinter.CTkFrame(master=self.root, height=100)
         Top_Frame.pack(side=TOP,fill=BOTH, padx=10, pady=10)
 
-        title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM",font=('', 16, 'bold'))
+        title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM",font=titlefont)
         title_lbl.pack(side=LEFT, pady=20, padx=10)
 
         # log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),
@@ -241,11 +241,13 @@ class Customer_Dashboard(customtkinter.CTk):
         booking_btn=customtkinter.CTkButton(master=parent_tab.tab('Home'), text="Request Booking", font=labelfont)
         booking_btn.place(x=230, y=400)
 
+        mapFrame=Frame(parent_tab.tab('Home'), bg="white")
+        mapFrame.place(x=700, y=80)
 
-        # myloc = geocoder.ip('me')
-        # map_widget = tkintermapview.TkinterMapView(parent_tab.tab('Home'), width=300)
-        # map_widget.set_address(myloc, marker=True)
-        # map_widget.pack(side=RIGHT, fill=BOTH, pady=(10),padx=(0,10))
+        myloc = geocoder.ip('me')
+        map_widget = tkintermapview.TkinterMapView(mapFrame, width=770, height=600)
+        map_widget.set_address(myloc, marker=True)
+        map_widget.pack(side=RIGHT, fill=BOTH, pady=(10),padx=(10))
 
 
         #++++++++++++++++++++++Update Booking+++++++++++++++++++++++++

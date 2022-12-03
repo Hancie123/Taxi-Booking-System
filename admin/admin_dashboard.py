@@ -12,6 +12,7 @@ from time import strftime
 from customer import customer_management
 from dbms.customer_backend import total_customer
 from driver import driver_registration
+from employees import employees_management
 
 
 class Admin_Dashboard(customtkinter.CTk):
@@ -23,7 +24,7 @@ class Admin_Dashboard(customtkinter.CTk):
         screen_width = self.main.winfo_screenwidth()
         screen_height = self.main.winfo_screenheight()
         self.main.minsize(screen_width, screen_height)
-        self.main.title("Taxi Booking System Admin Dashboard")
+        self.main.title("Taxi Booking System Admin Dashboard | Designed by Hancie Phago")
         self.main.state('zoomed')
         self.main.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
 
@@ -108,8 +109,13 @@ class Admin_Dashboard(customtkinter.CTk):
         managedrivers_btn = customtkinter.CTkButton(master=left_frame,command=add_driver_gui, text="Add Drivers     ", hover_color='black',font=sidemenufont, width=200,image=managedrivers_btn_image, fg_color='#2b2b2b')
         managedrivers_btn.place(x=40, y=350)
 
+        def employess_gui():
+            root=customtkinter.CTkToplevel()
+            employees_management.EmployeesManagement(root)
+            root.mainloop()
+
         manageemployees_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\id-card-regular-24.png'))
-        manageemployees_btn = customtkinter.CTkButton(master=left_frame, text="Add Employees", hover_color='black',font=sidemenufont, width=200,image=manageemployees_btn_image, fg_color='#2b2b2b')
+        manageemployees_btn = customtkinter.CTkButton(master=left_frame,command=employess_gui, text="Add Employees", hover_color='black',font=sidemenufont, width=200,image=manageemployees_btn_image, fg_color='#2b2b2b')
         manageemployees_btn.place(x=40, y=400)
 
         viewcustomer_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\trip-advisor-logo-24.png'))

@@ -1,5 +1,7 @@
 import tkinter
 from tkinter import *
+import geocoder
+import tkintermapview
 from PIL import ImageTk, Image
 from test import test1
 import customtkinter
@@ -12,28 +14,13 @@ class test():
         self.main720=main720
         self.main720.geometry("500x400")
 
-        def open():
-            main=customtkinter.CTkToplevel()
-            test1.test720(main)
-            main.mainloop()
+        frame=customtkinter.CTkFrame(self.main720, bg_color="red")
+        frame.pack()
 
-
-
-        tabview = customtkinter.CTkTabview(main720)
-        tabview.pack(padx=20, pady=20)
-
-        tabview.add("tab 1")  # add tab at the end
-        tabview.add("tab 2")  # add tab at the end
-        tabview.set("tab 2")  # set currently visible tab
-
-        tab=customtkinter.CTkTabview(main720)
-        tab.pack()
-        tab.add("Hancie1")
-        tab.add("Nitesh")
-
-        btn = Button(tab.tab('Hancie1'), text="Open", command=open)
-        btn.pack()
-
+        myloc = geocoder.ip('me')
+        map_widget = tkintermapview.TkinterMapView(frame, width=300)
+        map_widget.set_address(myloc, marker=True)
+        map_widget.pack(side=RIGHT, fill=BOTH, pady=(10),padx=(0,10))
 
 if __name__=='__main__':
     main720=customtkinter.CTk()

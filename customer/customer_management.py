@@ -20,7 +20,7 @@ class CustomerManagement(customtkinter.CTk):
         myscreenheight = self.main.winfo_screenheight()
         xCordinate = int((myscreenwidth / 2) - (width / 2))
         yCordinate = int((myscreenheight / 2) - (height / 2))
-        self.main.geometry('{}x{}+{}+{}'.format(width, height, xCordinate, yCordinate - 50))
+        self.main.geometry('{}x{}+{}+{}'.format(width, height, xCordinate+200, yCordinate))
         self.main.maxsize(1050, 450)
 
         # font
