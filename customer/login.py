@@ -131,12 +131,8 @@ class Login(customtkinter.CTk):
                         activityResult=activity_insert(LoginActivity)
 
 
-
-
-
-
                 elif driverresult != None:
-                    Global.currentUser = user
+                    Global.currentDriver=driverresult
                     self.root.destroy()
                     root = customtkinter.CTk()
                     DriverDashboard.Driver_Dashboard(root)

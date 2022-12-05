@@ -90,6 +90,49 @@ def update_record(driverInfo):
         del values, sql, conn
         return updateresult
 
+def update_DriverStatus(driverInfo):
+    conn=None
+    sql="""UPDATE drivers SET driverstatus=%s WHERE did=%s"""
+    values=(driverInfo.getDriverstatus(),driverInfo.getDid())
+    updateresult=False
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        updateresult=True
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql, conn
+        return updateresult
+
+def driver_select_all(driverID):
+    conn=None
+    sql="""SELECT * FROM drivers WHERE did=%s"""
+    values=(driverID,)
+    selectResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        selectResult=cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql, conn
+        return selectResult
+
+
 
 
 

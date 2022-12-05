@@ -71,8 +71,8 @@ class Customer_Dashboard(customtkinter.CTk):
         sidemenufont = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
 
         #+++++++++++++++++++++++++++++Getting customer id using global++++++++++++++++++++++++++++
-        customerid=customtkinter.CTkEntry(master=self.root)
-        customerid.insert(0, Global.currentUser[0])
+        # customerid=customtkinter.CTkEntry(master=self.root)
+        # customerid.insert(0, Global.currentUser[0])
 
         # ++++++++++++++++++++++++++++++++Top Frame+++++++++++++++++++++++++++++++++++
         Top_Frame = customtkinter.CTkFrame(master=self.root, height=100)
@@ -109,8 +109,8 @@ class Customer_Dashboard(customtkinter.CTk):
         assigndriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit-alt-regular-24.png'))
         assigndriver_btn = customtkinter.CTkButton(master=left_frame, text="Dashboard             ", hover_color='black',
                                                    font=sidemenufont, width=200,
-                                                   image=assigndriver_btn_image, fg_color='#2a2d2e')
-        assigndriver_btn.place(x=40, y=250)
+                                                   image=assigndriver_btn_image, fg_color='#2b2b2b')
+        assigndriver_btn.place(x=50, y=200)
 
         def open_profile():
             main = customtkinter.CTkToplevel()
@@ -118,20 +118,20 @@ class Customer_Dashboard(customtkinter.CTk):
             main.mainloop()
 
         profile_img = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-account-solid-24.png'))
-        profile_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',font=sidemenufont, width=200,command=open_profile, image=profile_img, fg_color='#2a2d2e')
-        profile_btn.place(x=40, y=300)
+        profile_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',font=sidemenufont, width=200,command=open_profile, image=profile_img, fg_color='#2b2b2b')
+        profile_btn.place(x=50, y=250)
 
         managecustomers_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\Python\\Taxi Booking System\\Images\\user-regular-24.png'))
-        managecustomers_btn = customtkinter.CTkButton(master=left_frame, text="Booking History     ", hover_color='black',font=sidemenufont, width=200,image=managecustomers_btn_image, fg_color='#2a2d2e')
-        managecustomers_btn.place(x=40, y=350)
+        managecustomers_btn = customtkinter.CTkButton(master=left_frame, text="Booking History     ", hover_color='black',font=sidemenufont, width=200,image=managecustomers_btn_image, fg_color='#2b2b2b')
+        managecustomers_btn.place(x=50, y=300)
 
         managedrivers_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\car-regular-24.png'))
-        managedrivers_btn = customtkinter.CTkButton(master=left_frame, text="Drivers History     ", hover_color='black',font=sidemenufont, width=200,image=managedrivers_btn_image, fg_color='#2a2d2e')
-        managedrivers_btn.place(x=40, y=400)
+        managedrivers_btn = customtkinter.CTkButton(master=left_frame, text="Drivers History     ", hover_color='black',font=sidemenufont, width=200,image=managedrivers_btn_image, fg_color='#2b2b2b')
+        managedrivers_btn.place(x=50, y=350)
 
         billing_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\id-card-regular-24.png'))
-        billing_btn = customtkinter.CTkButton(master=left_frame, text="Billing                   ", hover_color='black',font=sidemenufont, width=200,image=billing_btn_image, fg_color='#2a2d2e')
-        billing_btn.place(x=40, y=450)
+        billing_btn = customtkinter.CTkButton(master=left_frame, text="Billing                   ", hover_color='black',font=sidemenufont, width=200,image=billing_btn_image, fg_color='#2b2b2b')
+        billing_btn.place(x=50, y=400)
 
         def change_password_gui():
             password=customtkinter.CTkToplevel()
@@ -140,8 +140,8 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
         viewcustomer_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\key-solid-24.png'))
-        viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Change Password     ",command=change_password_gui, hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2a2d2e')
-        viewcustomer_btn.place(x=40, y=500)
+        viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Change Password     ",command=change_password_gui, hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2b2b2b')
+        viewcustomer_btn.place(x=50, y=450)
 
         def delete_account():
             delete_account_dialog = customtkinter.CTkInputDialog(text="Do you want to delete you account? if you want to delete then type YES or NO to cancel", title="Delete an account")
@@ -163,8 +163,8 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
         delete_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\user-x-regular-24.png'))
-        detete_account_btn = customtkinter.CTkButton(master=left_frame,command=delete_account, text="Delete Account           ", hover_color='black',font=sidemenufont, width=200,image=delete_btn_image, fg_color='#2a2d2e')
-        detete_account_btn.place(x=40, y=550)
+        detete_account_btn = customtkinter.CTkButton(master=left_frame,command=delete_account, text="Delete Account         ", hover_color='black',font=sidemenufont, width=200,image=delete_btn_image, fg_color='#2b2b2b')
+        detete_account_btn.place(x=50, y=500)
 
         def logout():
             self.root.destroy()
@@ -173,18 +173,21 @@ class Customer_Dashboard(customtkinter.CTk):
             root.mainloop()
 
         logout_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
-        logout_btn = customtkinter.CTkButton(master=left_frame, text="Logout                 ", fg_color='#2a2d2e',hover_color='black',font=sidemenufont, width=200,command=logout,  image=logout_btn_image)
-        logout_btn.place(x=40, y=600)
-
-        themelbl=customtkinter.CTkLabel(left_frame, text="Appearance Mode:", font=sidemenufont)
-        themelbl.place(x=50, y=650)
+        logout_btn = customtkinter.CTkButton(master=left_frame, text="Logout                   ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,command=logout,  image=logout_btn_image)
+        logout_btn.place(x=50, y=550)
 
         def combobox_callback(choice):
             customtkinter.set_appearance_mode(choice)
+            if choice == 'light':
+                Cover_Image_label['bg'] = "#dbdbdb"
 
-        combobox = customtkinter.CTkComboBox(master=left_frame,values=["dark", "system", 'light'],command=combobox_callback, font=sidemenufont)
-        combobox.place(x=55, y=690)
-        combobox.set("dark")  # set initial value
+            if choice == 'dark':
+                Cover_Image_label['bg'] = "#2b2b2b"
+
+
+        combobox = customtkinter.CTkComboBox(master=left_frame, values=["dark", 'light'],command=combobox_callback, font=sidemenufont, width=200)
+        combobox.place(x=55, y=600)
+        combobox.set("Appearance Mode")
 
 
 
@@ -231,6 +234,7 @@ class Customer_Dashboard(customtkinter.CTk):
         pickup_lbl.place(x=50, y=270)
 
         def updateTime(time):
+            pick_up_time_lbl.delete(0, len(pick_up_time_lbl.get()))
             pick_up_time_lbl.insert(0, str("{}:{} {}".format(*time)))
 
         def time720():
@@ -302,8 +306,99 @@ class Customer_Dashboard(customtkinter.CTk):
         #++++++++++++++++++++++Update Booking+++++++++++++++++++++++++
         parent_tab.add("Update Booking")
 
-        tab5_frame=customtkinter.CTkFrame(master=parent_tab.tab('Update Booking'))
-        tab5_frame.pack(fill=BOTH, expand=True)
+        pickup_address_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Pick up address: ", font=labelfont)
+        pickup_address_lbl.place(x=20, y=100)
+
+        picuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
+        picuptxt.place(x=170, y=100)
+
+        date_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Pick up date: ", font=labelfont)
+        date_lbl.place(x=20, y=150)
+
+        dt = date.today()
+        style = ttk.Style()
+        style.configure('my.DateEntry',
+                        fieldbackground='#2a2d2e',
+                        background='red',
+                        foreground='black',
+                        arrowcolor='white')
+
+        datetxt = DateEntry(parent_tab.tab('Update Booking'), font=('Times New Roman', 20, 'normal'), width=22,
+                                 date_pattern='yyyy-MM-dd',
+                                 selectmode='day', style='my.DateEntry', background="green", bordercolor="red",
+                                 selectbackground="green", mindate=dt, disableddaybackground="grey")
+        datetxt.place(x=210, y=190)
+
+        pickup_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Pickup time:", font=labelfont)
+        pickup_lbl.place(x=20, y=200)
+
+        def updateTime2(time):
+            pickuptxt.delete(0, len(pickuptxt.get()))
+            pickuptxt.insert(0, str("{}:{} {}".format(*time)))
+
+        def time720():
+            top = customtkinter.CTkToplevel(parent_tab.tab('Update Booking'))
+            top.title("Taxi Booking System")
+            top.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
+            top.resizable(0, 0)
+            frame_width = 400
+            frame_height = 500
+            screen_width = top.winfo_screenwidth()
+            screen_height = top.winfo_screenheight()
+            x_cordinate = int((screen_width / 2) - (frame_width / 2))
+            y_cordinate = int((screen_height / 2) - (frame_height / 2))
+            top.geometry("{}x{}+{}+{}".format(frame_width, frame_height, x_cordinate, y_cordinate))
+            time_picker = AnalogPicker(top, type=constants.HOURS12)
+            time_picker.pack(expand=True, fill="both")
+            theme = AnalogThemes(time_picker)
+            theme.setDracula()
+            ok_btn = customtkinter.CTkButton(master=top, text="Ok", command=lambda: updateTime2(time_picker.time()))
+            ok_btn.pack()
+
+        time = ()
+
+        pickuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
+        pickuptxt.place(x=170, y=200)
+
+        time_img = customtkinter.CTkImage(light_image=Image.open(
+            "E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
+        pic_up_time_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), image=time_img, text="",
+                                                  fg_color="black", command=time720, font=font720, width=40)
+        pic_up_time_btn.place(x=423, y=202)
+
+        dropoff_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Drop off address:", font=labelfont)
+        dropoff_lbl.place(x=20, y=250)
+
+        dropoff_txt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
+        dropoff_txt.place(x=170, y=250)
+
+        update_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'),text="Update", font=labelfont)
+        update_booking_btn.place(x=170, y=300)
+
+        cancel_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), text="Cancel",font=labelfont)
+        cancel_booking_btn.place(x=320, y=300)
+
+        updatebookingtable=ttk.Treeview(parent_tab.tab('Update Booking'))
+        updatebookingtable.pack(side=RIGHT, fill=BOTH)
+
+        updatebookingtable['columns']=('id', 'pickupaddress','date','time','dropoffaddress','driverid','status')
+        updatebookingtable.column('#0', width=0, stretch=0)
+        updatebookingtable.column('id', width=100, anchor=CENTER)
+        updatebookingtable.column('pickupaddress', width=200, anchor=CENTER)
+        updatebookingtable.column('date', width=100, anchor=CENTER)
+        updatebookingtable.column('time', width=100, anchor=CENTER)
+        updatebookingtable.column('dropoffaddress', width=200, anchor=CENTER)
+        updatebookingtable.column('driverid', width=100, anchor=CENTER)
+        updatebookingtable.column('status', width=100, anchor=CENTER)
+
+        updatebookingtable.heading('#0', text='', anchor=CENTER)
+        updatebookingtable.heading('id', text="ID", anchor=CENTER)
+        updatebookingtable.heading('pickupaddress', text="Pickup address", anchor=CENTER)
+        updatebookingtable.heading('date', text="Date", anchor=CENTER)
+        updatebookingtable.heading('time', text="Time", anchor=CENTER)
+        updatebookingtable.heading('dropoffaddress', text="Drop off address", anchor=CENTER)
+        updatebookingtable.heading('driverid', text="Driver ID", anchor=CENTER)
+        updatebookingtable.heading('status', text="Status", anchor=CENTER)
 
 
         parent_tab.add("Riding History")
@@ -327,14 +422,14 @@ class Customer_Dashboard(customtkinter.CTk):
                         fieldbackground="#343638",
                         bordercolor="#343638",
                         borderwidth=0,
-                        font=('Times New Roman',16))
+                        font=('Times New Roman',14))
         style1.map('Treeview', background=[('selected', '#22559b')])
 
         style1.configure("Treeview.Heading",
                         background="#565b5e",
                         foreground="white",
                         relief="flat",
-                        font=('Times New Roman', 20))
+                        font=('Times New Roman', 16))
         style1.map("Treeview.Heading",
                   background=[('active', '#3484F0')],)
 

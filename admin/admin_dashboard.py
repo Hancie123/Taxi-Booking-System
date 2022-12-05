@@ -83,8 +83,22 @@ class Admin_Dashboard(customtkinter.CTk):
         l1.place(x=90, y=150)
         my_time()
 
+        def assign_driver():
+            root=customtkinter.CTkToplevel()
+            root.title("Taxi Booking System")
+            width = 1050
+            height = 450
+            myscreenwidth = self.main.winfo_screenwidth()
+            myscreenheight = self.main.winfo_screenheight()
+            xCordinate = int((myscreenwidth / 2) - (width / 2))
+            yCordinate = int((myscreenheight / 2) - (height / 2))
+            root.geometry('{}x{}+{}+{}'.format(width, height, xCordinate + 200, yCordinate))
+            root.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
+            root.resizable(0,0)
+            root.mainloop()
+
         assigndriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit-alt-regular-24.png'))
-        assigndriver_btn = customtkinter.CTkButton(master=left_frame, text="Assign Drivers   ", hover_color='black', font=sidemenufont, width=200,image=assigndriver_btn_image, fg_color='#2b2b2b')
+        assigndriver_btn = customtkinter.CTkButton(master=left_frame, text="Assign Drivers   ",command=assign_driver, hover_color='black', font=sidemenufont, width=200,image=assigndriver_btn_image, fg_color='#2b2b2b')
         assigndriver_btn.place(x=40, y=200)
 
         payment_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\paypal-logo-24.png'))
@@ -135,8 +149,13 @@ class Admin_Dashboard(customtkinter.CTk):
 
         def combobox_callback(choice):
             customtkinter.set_appearance_mode(choice)
+            if choice == 'light':
+                user_image_label['bg'] = "#dbdbdb"
 
-        combobox = customtkinter.CTkComboBox(master=left_frame, values=["dark", "system", 'light'],
+            if choice == 'dark':
+                user_image_label['bg'] = "#2b2b2b"
+
+        combobox = customtkinter.CTkComboBox(master=left_frame, values=["dark",'light'],
                                              command=combobox_callback, font=sidemenufont)
         combobox.place(x=65, y=630)
         combobox.set("dark")  # set initi

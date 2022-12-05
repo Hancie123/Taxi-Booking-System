@@ -1,2 +1,4 @@
 
 currentUser=None
+
+currentDriver=None
