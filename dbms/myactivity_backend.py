@@ -25,3 +25,25 @@ def activity_insert(activityInfo):
     finally:
         del values,sql,conn
         return activityResult
+
+
+def delete_myactivity(cid):
+    conn=None
+    sql="""DELETE FROM myactivity  WHERE cid=%s"""
+    values=(cid,)
+    deleteActivityResult=False
+
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        deleteActivityResult=True
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values,sql,conn
+        return deleteActivityResult

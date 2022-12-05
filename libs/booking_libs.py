@@ -36,3 +36,30 @@ class BookingLibs():
 
     def getDid(self):
         return self.did
+
+    def setBookingid(self, bookingid):
+        self.bookingid=bookingid
+
+    def setPickupaddress(self, pickupaddress):
+        self.pickupaddress=pickupaddress
+
+    def setDate(self, date):
+        self.date=date
+
+    def setTime(self, time):
+        self.time=time
+
+    def setDropoffaddress(self, dropoffaddress):
+        self.dropoffaddress=dropoffaddress
+
+    def setBookingstatus(self, bookingstatus):
+        self.bookingstatus=bookingstatus
+
+    def setCid(self, cid):
+        self.cid=cid
+
+    def setDid(self, did):
+        self.did=did
+
+    def __str__(self):
+        return ('{},{},{},{},{},{},{},{}'.format(self.bookingstatus, self.pickupaddress, self.date, self.time, self.dropoffaddress, self.bookingstatus, self.cid, self.did))

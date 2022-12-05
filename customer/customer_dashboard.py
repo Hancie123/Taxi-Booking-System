@@ -21,9 +21,13 @@ from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
 from customer import login, customerprofile, Change_Password
+from dbms.booking_backend import insert_booking
+from dbms.customer_management import delete_record
+from dbms.myactivity_backend import delete_myactivity
 from libs import Global
-
-
+from libs.booking_libs import BookingLibs
+from tkinter import messagebox
+from sqlalchemy import create_engine
 
 
 class Customer_Dashboard(customtkinter.CTk):
@@ -65,6 +69,21 @@ class Customer_Dashboard(customtkinter.CTk):
         font720 = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
         labelfont=customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
         sidemenufont = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
+
+        #+++++++++++++++++++++++++++++Getting customer id using global++++++++++++++++++++++++++++
+        customerid=customtkinter.CTkEntry(master=self.root)
+        customerid.insert(0, Global.currentUser[0])
+
+        # ++++++++++++++++++++++++++++++++Top Frame+++++++++++++++++++++++++++++++++++
+        Top_Frame = customtkinter.CTkFrame(master=self.root, height=100)
+        Top_Frame.pack(side=TOP, fill=BOTH, padx=10, pady=10)
+
+        title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM", font=titlefont)
+        title_lbl.pack(side=LEFT, pady=20, padx=10)
+
+        # log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),
+        #                                     font=titlefont)
+        # log_name_lbl.pack(side=RIGHT, pady=20, padx=10)
 
 
 
@@ -124,9 +143,28 @@ class Customer_Dashboard(customtkinter.CTk):
         viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Change Password     ",command=change_password_gui, hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2a2d2e')
         viewcustomer_btn.place(x=40, y=500)
 
-        viewdriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\export-regular-24.png'))
-        viewdriver_btn = customtkinter.CTkButton(master=left_frame, text="Export Data           ", hover_color='black',font=sidemenufont, width=200,image=viewdriver_btn_image, fg_color='#2a2d2e')
-        viewdriver_btn.place(x=40, y=550)
+        def delete_account():
+            delete_account_dialog = customtkinter.CTkInputDialog(text="Do you want to delete you account? if you want to delete then type YES or NO to cancel", title="Delete an account")
+            dialogResult=delete_account_dialog.get_input()
+            if dialogResult=='YES':
+                customeridd = customerid.get()
+                deleteActivityResult = delete_myactivity(customeridd)
+                deleteResult = delete_record(customeridd)
+                if deleteResult and deleteActivityResult == True:
+                    messagebox.showinfo("Taxi Booking System", "The account is deleted successfully")
+                    self.root.destroy()
+                    root=customtkinter.CTk()
+                    login.Login(root)
+                    root.mainloop()
+            else:
+                messagebox.showinfo("Taxi Booking System", "The account delete is cancelled")
+
+
+
+
+        delete_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\user-x-regular-24.png'))
+        detete_account_btn = customtkinter.CTkButton(master=left_frame,command=delete_account, text="Delete Account           ", hover_color='black',font=sidemenufont, width=200,image=delete_btn_image, fg_color='#2a2d2e')
+        detete_account_btn.place(x=40, y=550)
 
         def logout():
             self.root.destroy()
@@ -150,16 +188,7 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
 
-        #++++++++++++++++++++++++++++++++Top Frame+++++++++++++++++++++++++++++++++++
-        Top_Frame=customtkinter.CTkFrame(master=self.root, height=100)
-        Top_Frame.pack(side=TOP,fill=BOTH, padx=10, pady=10)
 
-        title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM",font=titlefont)
-        title_lbl.pack(side=LEFT, pady=20, padx=10)
-
-        # log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),
-        #                                     font=titlefont)
-        # log_name_lbl.pack(side=RIGHT, pady=20, padx=10)
 
         #+++++++++++++++++++++++++++++++Bottom Frame++++++++++++++++++++++++++++++++++++++++
 
@@ -238,7 +267,27 @@ class Customer_Dashboard(customtkinter.CTk):
         dropoff_txt = customtkinter.CTkEntry(master=parent_tab.tab('Home'), font=font720, width=250)
         dropoff_txt.place(x=230, y=330)
 
-        booking_btn=customtkinter.CTkButton(master=parent_tab.tab('Home'), text="Request Booking", font=labelfont)
+
+
+        def request_booking():
+            pickup=pickup_address_txt.get()
+            date720=date_lbl_txt.get()
+            picuptime=pick_up_time_lbl.get()
+            dropoff=dropoff_txt.get()
+            cid11=customerid.get()
+
+            booking=BookingLibs(bookingid='', pickupaddress=pickup, date=date720, time=picuptime, dropoffaddress=dropoff, bookingstatus='Pending', cid=cid11)
+            insertResult=insert_booking(booking)
+            if insertResult==True:
+                messagebox.showinfo("Taxi Booking System", "The booking is requested successfully!")
+
+            else:
+                messagebox.showerror("Taxi Booking System", "Error Occurred!")
+
+
+
+
+        booking_btn=customtkinter.CTkButton(master=parent_tab.tab('Home'),command=request_booking, text="Request Booking", font=labelfont)
         booking_btn.place(x=230, y=400)
 
         mapFrame=Frame(parent_tab.tab('Home'), bg="white")
@@ -269,32 +318,84 @@ class Customer_Dashboard(customtkinter.CTk):
         tab4_frame=customtkinter.CTkFrame(master=parent_tab.tab('Activity'))
         tab4_frame.pack(fill=BOTH, expand=True)
 
+        style1 = ttk.Style()
+        style1.theme_use("default")
+        style1.configure("Treeview",
+                        background="#2a2d2e",
+                        foreground="white",
+                        rowheight=25,
+                        fieldbackground="#343638",
+                        bordercolor="#343638",
+                        borderwidth=0,
+                        font=('Times New Roman',16))
+        style1.map('Treeview', background=[('selected', '#22559b')])
+
+        style1.configure("Treeview.Heading",
+                        background="#565b5e",
+                        foreground="white",
+                        relief="flat",
+                        font=('Times New Roman', 20))
+        style1.map("Treeview.Heading",
+                  background=[('active', '#3484F0')],)
+
+
+        treeView=ttk.Treeview(tab4_frame,)
+        treeView['columns']=('myid',"system","model","machine","processor","date","date2")
+        treeView.column('#0', width=0, stretch=0)
+        treeView.column('myid', width=50, anchor=CENTER)
+        treeView.column('system', width=100, anchor=CENTER)
+        treeView.column('model', width=150, anchor=CENTER)
+        treeView.column('machine', width=100, anchor=CENTER)
+        treeView.column('processor', width=300, anchor=CENTER)
+        treeView.column('date', width=100, anchor=CENTER)
+        treeView.column('date2', width=100, anchor=CENTER)
+
+        treeView.heading('#0', text='', anchor=CENTER)
+        treeView.heading('myid', text='ID', anchor=CENTER)
+        treeView.heading('system', text='System', anchor=CENTER)
+        treeView.heading('model', text='System Username', anchor=CENTER)
+        treeView.heading('machine', text='Machine', anchor=CENTER)
+        treeView.heading('processor', text='Processor', anchor=CENTER)
+        treeView.heading('date', text='Date', anchor=CENTER)
+        treeView.heading('date2', text='Time', anchor=CENTER)
+
+        # cusidd = Entry(self.root)
+        # cusidd.insert(0, Global.currentUser[0])
+        # iddd = cusidd.get()
+        #
+        # myconn=create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
+        #
+        # sqldata="SELECT * FROM myactivity WHERE cid="+iddd+" order by myid desc"
+        # dataExecute=myconn.execute(sqldata)
+        # for dt in dataExecute:
+        #     treeView.insert("", 'end', iid=dt[0], text=dt[0],
+        #                     values=(dt[0], dt[1], dt[2], dt[3], dt[4], dt[5], dt[6]))
+
+        treeView.pack(side=TOP, fill=BOTH, expand=TRUE)
 
 
 
 
-        sql_engine = create_engine('mysql+pymysql://root:@localhost/hancie')
+
+
+
+        sql_engine = create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
         db_connection = sql_engine.connect()
 
         my_colors = [(.9, .4, .6), (.1, .3, .8)]
-        query = 'SELECT * FROM daily_expenses'
-        df = pandas.read_sql(query, db_connection, index_col='category')
-        fig = df.plot.bar(title="Hancie Phago", y='amount', figsize=(6, 6), color=my_colors, legend=True,
+        query = 'SELECT *,count(myid) as ID FROM myactivity group by date '
+        df = pandas.read_sql(query, db_connection, index_col='date')
+        fig = df.plot.bar(title="No of times account accessed", y='ID', figsize=(6, 6), color=my_colors, legend=True,
                           grid=False).get_figure()
-
-
         plot = FigureCanvasTkAgg(fig, parent_tab.tab('Report'))
         plot.get_tk_widget().place(x=5, y=5)
 
 
-        query = "SELECT *  FROM daily_expenses"
-        df = pandas.read_sql(query, db_connection, index_col='date')
-        fig2 = df.plot.line(title="Loan Amount", y='amount', figsize=(5.5, 6)).get_figure();
-
-
-
-        plot2 = FigureCanvasTkAgg(fig2, parent_tab.tab('Report'))
-        plot2.get_tk_widget().place(x=800, y=5)
+        # query720 = "SELECT *, count(bookingid) as ID  FROM booking WHERE cid="+iddd+" group by date"
+        # df = pandas.read_sql(query720, db_connection, index_col='date')
+        # fig2 = df.plot.line(title="Booking Records", y='ID', figsize=(5.5, 6)).get_figure();
+        # plot2 = FigureCanvasTkAgg(fig2, parent_tab.tab('Report'))
+        # plot2.get_tk_widget().place(x=800, y=5)
 
 
 
