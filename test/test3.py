@@ -1,28 +1,19 @@
-import tkinter
-from tkinter import *
-import geocoder
-import tkintermapview
-from PIL import ImageTk, Image
-from test import test1
+from sqlalchemy import create_engine
 import customtkinter
+my_conn = create_engine("mysql+pymysql://root:@localhost/taxi_booking_system")
 
+query = "SELECT DISTINCT(bookingid) as class FROM booking"
 
-class test():
-    def __init__(self, main720):
-        customtkinter.set_appearance_mode('dark')
-        customtkinter.set_default_color_theme('blue')
-        self.main720=main720
-        self.main720.geometry("500x400")
+my_data = my_conn.execute(query)  # SQLAlchem engine result
+my_list = [r for r, in my_data]  # create a  list
 
-        frame=customtkinter.CTkFrame(self.main720, bg_color="red")
-        frame.pack()
+import tkinter as tk
+from tkinter import ttk
 
-        myloc = geocoder.ip('me')
-        map_widget = tkintermapview.TkinterMapView(frame, width=300)
-        map_widget.set_address(myloc, marker=True)
-        map_widget.pack(side=RIGHT, fill=BOTH, pady=(10),padx=(0,10))
+my_w = tk.Tk()
+my_w.geometry("300x150")  # Size of the window
+my_w.title("www.plus2net.com")  # Adding a title
 
-if __name__=='__main__':
-    main720=customtkinter.CTk()
-    test(main720)
-    main720.mainloop()
+cb1 = customtkinter.CTkComboBox(my_w, values=my_list, width=15)
+cb1.grid(row=1, column=1, padx=30, pady=30)
+my_w.mainloop()  # Keep the window open

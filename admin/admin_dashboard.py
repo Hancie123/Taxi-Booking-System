@@ -9,6 +9,7 @@ import tkinter as tk
 import time
 from time import strftime
 
+from sqlalchemy import create_engine
 from tktimepicker import AnalogPicker, AnalogThemes,constants
 
 from customer import customer_management
@@ -162,8 +163,13 @@ class Admin_Dashboard(customtkinter.CTk):
             driveridlabel = customtkinter.CTkLabel(assignbookingFrame, text="Driver id:", font=font720)
             driveridlabel.place(x=30, y=300)
 
-            driverData=('1','4','10')
-            driveridcombo = customtkinter.CTkComboBox(assignbookingFrame,font=font720,values=driverData, width=200)
+
+            my_conn = create_engine("mysql+pymysql://root:@localhost/taxi_booking_system")
+            query = "SELECT DISTINCT(bookingid) as class FROM booking"
+
+            my_data = my_conn.execute(query)  # SQLAlchem engine result
+            my_list = (r for r, in my_data) # create a  list
+            driveridcombo = customtkinter.CTkComboBox(assignbookingFrame,font=font720, width=200, dropdown_font=font720)
             driveridcombo.place(x=140, y=300)
 
             assign_btn = customtkinter.CTkButton(assignbookingFrame, text="Assign Driver", font=font720, width=150)

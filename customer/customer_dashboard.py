@@ -310,6 +310,8 @@ class Customer_Dashboard(customtkinter.CTk):
         updatebbokingframe=customtkinter.CTkFrame(master=parent_tab.tab('Update Booking'), width=470)
         updatebbokingframe.pack(side=LEFT, fill=BOTH, pady=(50,100))
 
+        self.pickuptxt1=StringVar()
+
         pickup_address_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333" ,text="Pick up address: ", font=labelfont)
         pickup_address_lbl.place(x=20, y=150)
 
@@ -337,8 +339,8 @@ class Customer_Dashboard(customtkinter.CTk):
         pickup_lbl.place(x=20, y=250)
 
         def updateTime2(time):
-            pickuptxt.delete(0, len(pickuptxt.get()))
-            pickuptxt.insert(0, str("{}:{} {}".format(*time)))
+            pickuptxt1.delete(0, len(pickuptxt1.get()))
+            pickuptxt1.insert(0, str("{}:{} {}".format(*time)))
 
         def time720():
             top = customtkinter.CTkToplevel(parent_tab.tab('Update Booking'))
@@ -361,8 +363,8 @@ class Customer_Dashboard(customtkinter.CTk):
 
         time = ()
 
-        pickuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
-        pickuptxt.place(x=170, y=250)
+        pickuptxt1 = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'),textvariable=self.pickuptxt1, font=font720, width=250)
+        pickuptxt1.place(x=170, y=250)
 
         time_img = customtkinter.CTkImage(light_image=Image.open(
             "E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
@@ -381,6 +383,8 @@ class Customer_Dashboard(customtkinter.CTk):
 
         cancel_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), text="Cancel",font=labelfont)
         cancel_booking_btn.place(x=320, y=350)
+
+
 
         updatebookingtable=ttk.Treeview(parent_tab.tab('Update Booking'))
         updatebookingtable.pack(side=RIGHT, fill=BOTH, pady=(70,0))
@@ -403,6 +407,25 @@ class Customer_Dashboard(customtkinter.CTk):
         updatebookingtable.heading('dropoffaddress', text="Drop off address", anchor=CENTER)
         updatebookingtable.heading('status', text="Status", anchor=CENTER)
         updatebookingtable.heading('driverid', text="Driver ID", anchor=CENTER)
+
+        def displaySelectedItem(a):
+
+            dropoff_txt.delete(0, END)
+            pickuptxt1.delete(0, END)
+
+            selectedItem = updatebookingtable.selection()[0]
+            dropoff_txt.insert(0, updatebookingtable.item(selectedItem)['values'][0])
+            pickuptxt1.insert(0, updatebookingtable.item(selectedItem)['values'][1])
+
+
+        updatebookingtable.bind("<<TreeviewSelect>>", displaySelectedItem)
+
+
+
+
+
+
+
 
         def bookingtable():
             cusidd = Entry(self.root)

@@ -11,10 +11,13 @@ def Connect():
             database='taxi_booking_system'
         )
 
+
     except:
         print("Error", sys.exc_info())
 
     finally:
 
         return conn
+
+
 
