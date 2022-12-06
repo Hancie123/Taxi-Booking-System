@@ -9,7 +9,10 @@ import tkinter as tk
 import time
 from time import strftime
 
+from tktimepicker import AnalogPicker, AnalogThemes,constants
+
 from customer import customer_management
+from dbms.booking_backend import total_booking
 from dbms.customer_backend import total_customer
 from driver import driver_registration
 from employees import employees_management
@@ -86,15 +89,86 @@ class Admin_Dashboard(customtkinter.CTk):
         def assign_driver():
             root=customtkinter.CTkToplevel()
             root.title("Taxi Booking System")
-            width = 1050
+            width = 1250
             height = 450
             myscreenwidth = self.main.winfo_screenwidth()
             myscreenheight = self.main.winfo_screenheight()
             xCordinate = int((myscreenwidth / 2) - (width / 2))
             yCordinate = int((myscreenheight / 2) - (height / 2))
-            root.geometry('{}x{}+{}+{}'.format(width, height, xCordinate + 200, yCordinate))
+            root.geometry('{}x{}+{}+{}'.format(width, height, xCordinate + 100, yCordinate))
             root.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
             root.resizable(0,0)
+
+            assignbookingFrame=customtkinter.CTkFrame(root, width=400, corner_radius=20)
+            assignbookingFrame.pack(side=LEFT, fill=BOTH, padx=10, pady=10)
+
+            title11lbl=customtkinter.CTkLabel(master=assignbookingFrame, text="ASSIGN DRIVERS", font=font720)
+            title11lbl.place(x=110, y=20)
+
+            pickup_address_lbl = customtkinter.CTkLabel(assignbookingFrame, text="Pick up: ",font=font720)
+            pickup_address_lbl.place(x=30, y=100)
+
+            picuptxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            picuptxt.place(x=140, y=100)
+
+            date_lbl = customtkinter.CTkLabel(assignbookingFrame, text="Date: ", font=font720)
+            date_lbl.place(x=30, y=150)
+
+            date_txt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            date_txt.place(x=140, y=150)
+
+            pickup_lbl = customtkinter.CTkLabel(assignbookingFrame, text="Time:", font=font720)
+            pickup_lbl.place(x=30, y=200)
+
+            def updateTime2(time):
+                pickuptxt.delete(0, len(pickuptxt.get()))
+                pickuptxt.insert(0, str("{}:{} {}".format(*time)))
+
+            def time720():
+                top = customtkinter.CTkToplevel(assignbookingFrame)
+                top.title("Taxi Booking System")
+                top.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
+                top.resizable(0, 0)
+                frame_width = 400
+                frame_height = 500
+                screen_width = top.winfo_screenwidth()
+                screen_height = top.winfo_screenheight()
+                x_cordinate = int((screen_width / 2) - (frame_width / 2))
+                y_cordinate = int((screen_height / 2) - (frame_height / 2))
+                top.geometry("{}x{}+{}+{}".format(frame_width, frame_height, x_cordinate, y_cordinate))
+                time_picker = AnalogPicker(top, type=constants.HOURS12)
+                time_picker.pack(expand=True, fill="both")
+                theme = AnalogThemes(time_picker)
+                theme.setDracula()
+                ok_btn = customtkinter.CTkButton(master=top, text="Ok", command=lambda: updateTime2(time_picker.time()))
+                ok_btn.pack()
+
+
+            pickuptxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            pickuptxt.place(x=140, y=200)
+
+            time_img = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
+            pic_up_time_btn = customtkinter.CTkButton(assignbookingFrame, image=time_img, text="",fg_color="black", command=time720, font=font720, width=40)
+            pic_up_time_btn.place(x=350, y=202)
+
+            dropoff_lbl = customtkinter.CTkLabel(assignbookingFrame, text="Drop Off:", font=font720)
+            dropoff_lbl.place(x=30, y=250)
+
+            dropoff_txt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            dropoff_txt.place(x=140, y=250)
+
+            driveridlabel = customtkinter.CTkLabel(assignbookingFrame, text="Driver id:", font=font720)
+            driveridlabel.place(x=30, y=300)
+
+            driverData=('1','4','10')
+            driveridcombo = customtkinter.CTkComboBox(assignbookingFrame,font=font720,values=driverData, width=200)
+            driveridcombo.place(x=140, y=300)
+
+            assign_btn = customtkinter.CTkButton(assignbookingFrame, text="Assign Driver", font=font720, width=150)
+            assign_btn.place(x=150, y=350)
+
+
+
             root.mainloop()
 
         assigndriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit-alt-regular-24.png'))
@@ -173,14 +247,20 @@ class Admin_Dashboard(customtkinter.CTk):
 
         frame1 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame1.place(x=30, y=20)
+
         result = total_customer()
-        frame1_label2 = customtkinter.CTkLabel(master=frame1, text="Total \nCustomers \n\n{}".format(result[0]), font=labelfont)
+        tmpResult = result[0]
+        frame1_label2 = customtkinter.CTkLabel(master=frame1, text="Total \nCustomers \n\n{}".format(tmpResult[0]), font=labelfont)
         frame1_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 
 
         frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame2.place(x=310, y=20)
+        bookingResult=total_booking()
+        bookingresult2=bookingResult[0]
+        frame2_label2 = customtkinter.CTkLabel(master=frame2, text="Total \nBookings \n\n{}".format(bookingresult2[0]),font=labelfont)
+        frame2_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame3.place(x=590, y=20)

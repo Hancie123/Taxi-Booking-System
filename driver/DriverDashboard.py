@@ -15,6 +15,7 @@ from libs.driver_libs import Driver_Libs
 
 #++++++++++++++++++++++++++++++++GUI DESIGNING++++++++++++++++++++++++++++++++
 class Driver_Dashboard():
+
     def __init__(self, main):
         self.main=main
         customtkinter.set_appearance_mode('dark')
@@ -30,8 +31,8 @@ class Driver_Dashboard():
         sidemenufont = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
         messagefont = customtkinter.CTkFont(family='Times New Roman', size=16, weight='normal')
 
-        # driverid=Entry(self.main)
-        # driverid.insert(0, Global.currentDriver[0])
+        driverid=Entry(self.main)
+        driverid.insert(0, Global.currentDriver[0])
 
 #++++++++++++++++++++++++++++++++Left Frame+++++++++++++++++++++++++++++++++++++
         leftFrame=customtkinter.CTkFrame(self.main, width=300)
@@ -43,20 +44,6 @@ class Driver_Dashboard():
         Cover_Image_label.image = photo1
         Cover_Image_label.place(x=100, y=40)
 
-        def my_time():
-
-            time_string = strftime('%I:%M:%S %p')  # time format
-            l1.configure(text=time_string)
-            l1.after(1000, my_time)  # time delay of 1000 milliseconds
-
-        l1 = customtkinter.CTkLabel(master=leftFrame, font=sidemenufont)
-        l1.place(x=90, y=150)
-        my_time()
-
-        global is_on
-        is_on = True
-
-        # Define our switch function
         def switch():
             global is_on
 
@@ -78,6 +65,29 @@ class Driver_Dashboard():
                 if updateresult == True:
                     toogleLABEL.configure(text="Driver {} is Active".format(Global.currentDriver[0]))
 
+
+        on = ImageTk.PhotoImage(
+            Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\left.png'))
+        off = ImageTk.PhotoImage(
+            Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\right.png'))
+
+        toggleButton = Button(leftFrame, bg="#2a2d2e", image=on, bd=0, command=switch, activebackground="#2a2d2e")
+        toggleButton.place(x=80, y=300)
+        def my_time():
+
+            time_string = strftime('%I:%M:%S %p')  # time format
+            l1.configure(text=time_string)
+            l1.after(1000, my_time)  # time delay of 1000 milliseconds
+
+        l1 = customtkinter.CTkLabel(master=leftFrame, font=sidemenufont)
+        l1.place(x=90, y=150)
+        my_time()
+
+        global is_on
+        is_on = True
+
+        # Define our switch function
+
         def switch2():
             global is_on
             driverid1=driverid.get()
@@ -85,25 +95,17 @@ class Driver_Dashboard():
             if selectResult!=None:
                 if selectResult[7]=='Active':
                     toggleButton.config(image=on)
-                else:
+                elif selectResult[7]=='Inactive':
                     toggleButton.config(image=off)
-
-
-
+                    print("This is inactive")
             else:
                 pass
 
 
+        switch2()
 
 
-        # switch2()
-        # Define Our Images
-        on = ImageTk.PhotoImage(Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\left.png'))
-        off = ImageTk.PhotoImage(Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\right.png'))
 
-        # Create A Button
-        toggleButton = Button(leftFrame,bg="#2a2d2e", image=on, bd=0, command=switch, activebackground="#2a2d2e")
-        toggleButton.place(x=80, y=300)
 
         toogleLABEL=customtkinter.CTkLabel(leftFrame, text='', font=sidemenufont)
         toogleLABEL.place(x=80, y=350)
@@ -158,9 +160,6 @@ class Driver_Dashboard():
 #++++++++++++++++++++++++++++++++Center Frame++++++++++++++++++++++++++++++++++
         centerFrame=customtkinter.CTkFrame(self.main)
         centerFrame.pack(side=TOP, fill=BOTH, expand=True, pady=(0,10), padx=10)
-
-
-
 
 if __name__=='__main__':
     main=customtkinter.CTk()

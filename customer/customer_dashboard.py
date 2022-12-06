@@ -71,8 +71,8 @@ class Customer_Dashboard(customtkinter.CTk):
         sidemenufont = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
 
         #+++++++++++++++++++++++++++++Getting customer id using global++++++++++++++++++++++++++++
-        # customerid=customtkinter.CTkEntry(master=self.root)
-        # customerid.insert(0, Global.currentUser[0])
+        customerid=customtkinter.CTkEntry(master=self.root)
+        customerid.insert(0, Global.currentUser[0])
 
         # ++++++++++++++++++++++++++++++++Top Frame+++++++++++++++++++++++++++++++++++
         Top_Frame = customtkinter.CTkFrame(master=self.root, height=100)
@@ -410,63 +410,65 @@ class Customer_Dashboard(customtkinter.CTk):
         #++++++++++++++++++++++++++Activity Tab Frame++++++++++++++++++++++
         parent_tab.add("Activity")
 
-        tab4_frame=customtkinter.CTkFrame(master=parent_tab.tab('Activity'))
-        tab4_frame.pack(fill=BOTH, expand=True)
+        def tabel():
+            tab4_frame = customtkinter.CTkFrame(master=parent_tab.tab('Activity'))
+            tab4_frame.pack(fill=BOTH, expand=True)
 
-        style1 = ttk.Style()
-        style1.theme_use("default")
-        style1.configure("Treeview",
-                        background="#2a2d2e",
-                        foreground="white",
-                        rowheight=25,
-                        fieldbackground="#343638",
-                        bordercolor="#343638",
-                        borderwidth=0,
-                        font=('Times New Roman',14))
-        style1.map('Treeview', background=[('selected', '#22559b')])
+            style1 = ttk.Style()
+            style1.theme_use("default")
+            style1.configure("Treeview",
+                             background="#2a2d2e",
+                             foreground="white",
+                             rowheight=25,
+                             fieldbackground="#343638",
+                             bordercolor="#343638",
+                             borderwidth=0,
+                             font=('Times New Roman', 14))
+            style1.map('Treeview', background=[('selected', '#22559b')])
 
-        style1.configure("Treeview.Heading",
-                        background="#565b5e",
-                        foreground="white",
-                        relief="flat",
-                        font=('Times New Roman', 16))
-        style1.map("Treeview.Heading",
-                  background=[('active', '#3484F0')],)
+            style1.configure("Treeview.Heading",
+                             background="#565b5e",
+                             foreground="white",
+                             relief="flat",
+                             font=('Times New Roman', 16))
+            style1.map("Treeview.Heading",
+                       background=[('active', '#3484F0')], )
+
+            treeView = ttk.Treeview(tab4_frame, )
+            treeView['columns'] = ('myid', "system", "model", "machine", "processor", "date", "date2")
+            treeView.column('#0', width=0, stretch=0)
+            treeView.column('myid', width=50, anchor=CENTER)
+            treeView.column('system', width=100, anchor=CENTER)
+            treeView.column('model', width=150, anchor=CENTER)
+            treeView.column('machine', width=100, anchor=CENTER)
+            treeView.column('processor', width=300, anchor=CENTER)
+            treeView.column('date', width=100, anchor=CENTER)
+            treeView.column('date2', width=100, anchor=CENTER)
+
+            treeView.heading('#0', text='', anchor=CENTER)
+            treeView.heading('myid', text='ID', anchor=CENTER)
+            treeView.heading('system', text='System', anchor=CENTER)
+            treeView.heading('model', text='System Username', anchor=CENTER)
+            treeView.heading('machine', text='Machine', anchor=CENTER)
+            treeView.heading('processor', text='Processor', anchor=CENTER)
+            treeView.heading('date', text='Date', anchor=CENTER)
+            treeView.heading('date2', text='Time', anchor=CENTER)
+
+            cusidd = Entry(self.root)
+            cusidd.insert(0, Global.currentUser[0])
+            iddd = cusidd.get()
+
+            myconn = create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
+
+            sqldata = "SELECT * FROM myactivity WHERE cid=" + iddd + " order by myid desc"
+            dataExecute = myconn.execute(sqldata)
+            for dt in dataExecute:
+                treeView.insert("", 'end', iid=dt[0], text=dt[0],
+                                values=(dt[0], dt[1], dt[2], dt[3], dt[4], dt[5], dt[6]))
+
+            treeView.pack(side=TOP, fill=BOTH, expand=TRUE)
 
 
-        treeView=ttk.Treeview(tab4_frame,)
-        treeView['columns']=('myid',"system","model","machine","processor","date","date2")
-        treeView.column('#0', width=0, stretch=0)
-        treeView.column('myid', width=50, anchor=CENTER)
-        treeView.column('system', width=100, anchor=CENTER)
-        treeView.column('model', width=150, anchor=CENTER)
-        treeView.column('machine', width=100, anchor=CENTER)
-        treeView.column('processor', width=300, anchor=CENTER)
-        treeView.column('date', width=100, anchor=CENTER)
-        treeView.column('date2', width=100, anchor=CENTER)
-
-        treeView.heading('#0', text='', anchor=CENTER)
-        treeView.heading('myid', text='ID', anchor=CENTER)
-        treeView.heading('system', text='System', anchor=CENTER)
-        treeView.heading('model', text='System Username', anchor=CENTER)
-        treeView.heading('machine', text='Machine', anchor=CENTER)
-        treeView.heading('processor', text='Processor', anchor=CENTER)
-        treeView.heading('date', text='Date', anchor=CENTER)
-        treeView.heading('date2', text='Time', anchor=CENTER)
-
-        # cusidd = Entry(self.root)
-        # cusidd.insert(0, Global.currentUser[0])
-        # iddd = cusidd.get()
-        #
-        # myconn=create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
-        #
-        # sqldata="SELECT * FROM myactivity WHERE cid="+iddd+" order by myid desc"
-        # dataExecute=myconn.execute(sqldata)
-        # for dt in dataExecute:
-        #     treeView.insert("", 'end', iid=dt[0], text=dt[0],
-        #                     values=(dt[0], dt[1], dt[2], dt[3], dt[4], dt[5], dt[6]))
-
-        treeView.pack(side=TOP, fill=BOTH, expand=TRUE)
 
 
 
@@ -486,11 +488,11 @@ class Customer_Dashboard(customtkinter.CTk):
         plot.get_tk_widget().place(x=5, y=5)
 
 
-        # query720 = "SELECT *, count(bookingid) as ID  FROM booking WHERE cid="+iddd+" group by date"
-        # df = pandas.read_sql(query720, db_connection, index_col='date')
-        # fig2 = df.plot.line(title="Booking Records", y='ID', figsize=(5.5, 6)).get_figure();
-        # plot2 = FigureCanvasTkAgg(fig2, parent_tab.tab('Report'))
-        # plot2.get_tk_widget().place(x=800, y=5)
+        query720 = "SELECT *, count(bookingid) as ID  FROM booking WHERE cid="+iddd+" group by date"
+        df = pandas.read_sql(query720, db_connection, index_col='date')
+        fig2 = df.plot.line(title="Booking Records", y='ID', figsize=(5.5, 6)).get_figure();
+        plot2 = FigureCanvasTkAgg(fig2, parent_tab.tab('Report'))
+        plot2.get_tk_widget().place(x=800, y=5)
 
 
 

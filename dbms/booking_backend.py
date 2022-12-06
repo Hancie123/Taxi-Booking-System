@@ -47,3 +47,23 @@ def insert_booking(bookingInfo):
 #     finally:
 #         del values, sql, conn
 #         return Bookresult
+
+
+def total_booking():
+    conn=None
+    sql="""SELECT count(bookingid) from booking"""
+    bookingResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        bookingResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return bookingResult
