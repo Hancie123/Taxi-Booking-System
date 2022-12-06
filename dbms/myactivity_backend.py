@@ -47,3 +47,24 @@ def delete_myactivity(cid):
     finally:
         del values,sql,conn
         return deleteActivityResult
+
+def selectall_myactivity(cid):
+    conn=None
+    sql="""SELECT * from myactivity WHERE cid=%s order by myid desc"""
+    values=(cid,)
+    myActivityResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        myActivityResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql, conn
+        return myActivityResult

@@ -133,6 +133,23 @@ def driver_select_all(driverID):
         return selectResult
 
 
+def total_driver():
+    conn=None
+    sql="""SELECT count(did) from drivers"""
+    driverResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        driverResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
 
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return driverResult
 
 

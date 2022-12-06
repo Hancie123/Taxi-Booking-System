@@ -12,8 +12,10 @@ from time import strftime
 from tktimepicker import AnalogPicker, AnalogThemes,constants
 
 from customer import customer_management
-from dbms.booking_backend import total_booking
+from dbms.booking_backend import total_booking, select_all
 from dbms.customer_backend import total_customer
+from dbms.driver_management import total_driver
+from dbms.employees_backend import total_employees
 from driver import driver_registration
 from employees import employees_management
 
@@ -167,6 +169,42 @@ class Admin_Dashboard(customtkinter.CTk):
             assign_btn = customtkinter.CTkButton(assignbookingFrame, text="Assign Driver", font=font720, width=150)
             assign_btn.place(x=150, y=350)
 
+            assinbookingframe2=customtkinter.CTkFrame(master=root, width=840)
+            assinbookingframe2.pack(side=LEFT, fill=BOTH, padx=(0,10), pady=10)
+
+            bookingTable = ttk.Treeview(assinbookingframe2)
+            bookingTable['columns'] = ('bookingid', 'pickup', 'date', 'time', 'dropoff', 'status', 'customerid', 'driverid')
+            bookingTable.column('#0', width=0, stretch=0)
+            bookingTable.column('bookingid', width=50, anchor=CENTER)
+            bookingTable.column('pickup', width=220, anchor=CENTER)
+            bookingTable.column('date', width=100, anchor=CENTER)
+            bookingTable.column('time', width=100, anchor=CENTER)
+            bookingTable.column('dropoff', width=200, anchor=CENTER)
+            bookingTable.column('status', width=180, anchor=CENTER)
+            bookingTable.column('customerid', width=70, anchor=CENTER)
+            bookingTable.column('driverid', width=80, anchor=CENTER)
+
+            bookingTable.heading('#0', text='', anchor=CENTER)
+            bookingTable.heading('bookingid', text="ID", anchor=CENTER)
+            bookingTable.heading('pickup', text="Pickup", anchor=CENTER)
+            bookingTable.heading('date', text="Date", anchor=CENTER)
+            bookingTable.heading('time', text="Time", anchor=CENTER)
+            bookingTable.heading('dropoff', text="Drop Off", anchor=CENTER)
+            bookingTable.heading('status', text="Status", anchor=CENTER)
+            bookingTable.heading('customerid', text="Cus ID", anchor=CENTER)
+            bookingTable.heading('driverid', text="ID", anchor=CENTER)
+
+            def bookingtable():
+                Bookresult = select_all()
+                i = 0
+                for ro in Bookresult:
+                    bookingTable.insert(parent='', index='end',
+                                        values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[5], ro[6], ro[7]))
+                    i = i + 1
+
+            bookingtable()
+            bookingTable.pack(padx=10, pady=10)
+
 
 
             root.mainloop()
@@ -235,10 +273,10 @@ class Admin_Dashboard(customtkinter.CTk):
         combobox.set("dark")  # set initi
 
         # +++++++++++++++++++++++++++++Center Frame+++++++++++++++++++++++++++++++++++++++
-        frame = customtkinter.CTkFrame(master=self.main, width=1200, height=650, corner_radius=20)
-        frame.place(x=320, y=100)
+        frameCenter = customtkinter.CTkFrame(master=self.main, width=1200, height=650, corner_radius=20)
+        frameCenter.place(x=320, y=100)
 
-        parent_tab=customtkinter.CTkTabview(frame, width=1170)
+        parent_tab=customtkinter.CTkTabview(frameCenter, width=1170)
         parent_tab.place(x=15,y=10)
 
         parent_tab.add('Home')
@@ -264,11 +302,73 @@ class Admin_Dashboard(customtkinter.CTk):
 
         frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame3.place(x=590, y=20)
+        driverResult=total_driver()
+        driveresult2=driverResult[0]
+        frame3_label2 = customtkinter.CTkLabel(master=frame3, text="Total \nDrivers \n\n{}".format(driveresult2[0]),font=labelfont)
+        frame3_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 
 
         frame4 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame4.place(x=870, y=20)
+        employeesResult=total_employees()
+        employeesResult2=employeesResult[0]
+        frame4_label2 = customtkinter.CTkLabel(master=frame4, text="Total \nEmployees \n\n{}".format(employeesResult2[0]),
+                                               font=labelfont)
+        frame4_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        style1 = ttk.Style()
+        style1.theme_use("default")
+        style1.configure("Treeview",
+                         background="#2b2b2b",
+                         foreground="white",
+                         rowheight=25,
+                         fieldbackground="#2b2b2b",
+                         bordercolor="#343638",
+                         borderwidth=0,
+                         font=('Times New Roman', 16))
+        style1.map('Treeview', background=[('selected', '#22559b')])
+
+        style1.configure("Treeview.Heading",
+                         background="#565b5e",
+                         foreground="white",
+                         relief="flat",
+                         font=('Times New Roman', 17))
+        style1.map("Treeview.Heading",
+                   background=[('active', '#3484F0')], )
+
+        bookingTable=ttk.Treeview(frameCenter)
+        bookingTable['columns']=('bookingid', 'pickup', 'date','time','dropoff','status', 'customerid', 'driverid')
+        bookingTable.column('#0', width=0, stretch=0)
+        bookingTable.column('bookingid', width=180, anchor=CENTER)
+        bookingTable.column('pickup', width=240, anchor=CENTER)
+        bookingTable.column('date', width=150, anchor=CENTER)
+        bookingTable.column('time', width=150, anchor=CENTER)
+        bookingTable.column('dropoff', width=220, anchor=CENTER)
+        bookingTable.column('status', width=220, anchor=CENTER)
+        bookingTable.column('customerid', width=150, anchor=CENTER)
+        bookingTable.column('driverid', width=150, anchor=CENTER)
+
+        bookingTable.heading('#0', text='', anchor=CENTER)
+        bookingTable.heading('bookingid', text="ID", anchor=CENTER)
+        bookingTable.heading('pickup', text="Pickup", anchor=CENTER)
+        bookingTable.heading('date', text="Date", anchor=CENTER)
+        bookingTable.heading('time', text="Time", anchor=CENTER)
+        bookingTable.heading('dropoff', text="Drop Off", anchor=CENTER)
+        bookingTable.heading('status', text="Status", anchor=CENTER)
+        bookingTable.heading('customerid', text="ID", anchor=CENTER)
+        bookingTable.heading('driverid', text="ID", anchor=CENTER)
+
+        def bookingtable():
+            Bookresult = select_all()
+            i = 0
+            for ro in Bookresult:
+                bookingTable.insert(parent='', index='end',
+                                    values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[5], ro[6], ro[7]))
+                i = i + 1
+
+        bookingtable()
+        bookingTable.place(x=15, y=360)
 
 
 

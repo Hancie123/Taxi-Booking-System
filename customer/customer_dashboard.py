@@ -21,9 +21,9 @@ from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
 from customer import login, customerprofile, Change_Password
-from dbms.booking_backend import insert_booking
+from dbms.booking_backend import insert_booking, customerbooking_selectall
 from dbms.customer_management import delete_record
-from dbms.myactivity_backend import delete_myactivity
+from dbms.myactivity_backend import delete_myactivity, selectall_myactivity
 from libs import Global
 from libs.booking_libs import BookingLibs
 from tkinter import messagebox
@@ -81,9 +81,9 @@ class Customer_Dashboard(customtkinter.CTk):
         title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM", font=titlefont)
         title_lbl.pack(side=LEFT, pady=20, padx=10)
 
-        # log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),
-        #                                     font=titlefont)
-        # log_name_lbl.pack(side=RIGHT, pady=20, padx=10)
+        log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),
+                                            font=titlefont)
+        log_name_lbl.pack(side=RIGHT, pady=20, padx=10)
 
 
 
@@ -205,8 +205,8 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
         #+++++++++++++++++++++++++Welcome Label+++++++++++++++++++
-        # welcome_lbl=customtkinter.CTkLabel(master=parent_tab.tab('Home'), text="Welcome {}".format(Global.currentUser[1]), font=titlefont)
-        # welcome_lbl.place(x=10,y=20)
+        welcome_lbl=customtkinter.CTkLabel(master=parent_tab.tab('Home'), text="Welcome {}".format(Global.currentUser[1]), font=titlefont)
+        welcome_lbl.place(x=10,y=20)
 
         pickup_address_lbl=customtkinter.CTkLabel(parent_tab.tab('Home'), text="Pick up address: ",font=labelfont)
         pickup_address_lbl.place(x=50, y=140)
@@ -268,8 +268,8 @@ class Customer_Dashboard(customtkinter.CTk):
         dropoff_lbl = customtkinter.CTkLabel(parent_tab.tab('Home'), text="Drop off address:", font=labelfont )
         dropoff_lbl.place(x=50, y=330)
 
-        dropoff_txt = customtkinter.CTkEntry(master=parent_tab.tab('Home'), font=font720, width=250)
-        dropoff_txt.place(x=230, y=330)
+        dropoff_txt1 = customtkinter.CTkEntry(master=parent_tab.tab('Home'), font=font720, width=250)
+        dropoff_txt1.place(x=230, y=330)
 
 
 
@@ -277,13 +277,14 @@ class Customer_Dashboard(customtkinter.CTk):
             pickup=pickup_address_txt.get()
             date720=date_lbl_txt.get()
             picuptime=pick_up_time_lbl.get()
-            dropoff=dropoff_txt.get()
+            dropoff=dropoff_txt1.get()
             cid11=customerid.get()
 
             booking=BookingLibs(bookingid='', pickupaddress=pickup, date=date720, time=picuptime, dropoffaddress=dropoff, bookingstatus='Pending', cid=cid11)
             insertResult=insert_booking(booking)
             if insertResult==True:
                 messagebox.showinfo("Taxi Booking System", "The booking is requested successfully!")
+                bookingtable()
 
             else:
                 messagebox.showerror("Taxi Booking System", "Error Occurred!")
@@ -306,14 +307,17 @@ class Customer_Dashboard(customtkinter.CTk):
         #++++++++++++++++++++++Update Booking+++++++++++++++++++++++++
         parent_tab.add("Update Booking")
 
-        pickup_address_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Pick up address: ", font=labelfont)
-        pickup_address_lbl.place(x=20, y=100)
+        updatebbokingframe=customtkinter.CTkFrame(master=parent_tab.tab('Update Booking'), width=470)
+        updatebbokingframe.pack(side=LEFT, fill=BOTH, pady=(50,100))
+
+        pickup_address_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333" ,text="Pick up address: ", font=labelfont)
+        pickup_address_lbl.place(x=20, y=150)
 
         picuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
-        picuptxt.place(x=170, y=100)
+        picuptxt.place(x=170, y=150)
 
-        date_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Pick up date: ", font=labelfont)
-        date_lbl.place(x=20, y=150)
+        date_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333", text="Pick up date: ", font=labelfont)
+        date_lbl.place(x=20, y=200)
 
         dt = date.today()
         style = ttk.Style()
@@ -327,10 +331,10 @@ class Customer_Dashboard(customtkinter.CTk):
                                  date_pattern='yyyy-MM-dd',
                                  selectmode='day', style='my.DateEntry', background="green", bordercolor="red",
                                  selectbackground="green", mindate=dt, disableddaybackground="grey")
-        datetxt.place(x=210, y=190)
+        datetxt.place(x=210, y=240)
 
-        pickup_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Pickup time:", font=labelfont)
-        pickup_lbl.place(x=20, y=200)
+        pickup_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333", text="Pickup time:", font=labelfont)
+        pickup_lbl.place(x=20, y=250)
 
         def updateTime2(time):
             pickuptxt.delete(0, len(pickuptxt.get()))
@@ -358,28 +362,28 @@ class Customer_Dashboard(customtkinter.CTk):
         time = ()
 
         pickuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
-        pickuptxt.place(x=170, y=200)
+        pickuptxt.place(x=170, y=250)
 
         time_img = customtkinter.CTkImage(light_image=Image.open(
             "E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
         pic_up_time_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), image=time_img, text="",
                                                   fg_color="black", command=time720, font=font720, width=40)
-        pic_up_time_btn.place(x=423, y=202)
+        pic_up_time_btn.place(x=423, y=252)
 
-        dropoff_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'), text="Drop off address:", font=labelfont)
-        dropoff_lbl.place(x=20, y=250)
+        dropoff_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333", text="Drop off address:", font=labelfont)
+        dropoff_lbl.place(x=20, y=300)
 
         dropoff_txt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
-        dropoff_txt.place(x=170, y=250)
+        dropoff_txt.place(x=170, y=300)
 
         update_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'),text="Update", font=labelfont)
-        update_booking_btn.place(x=170, y=300)
+        update_booking_btn.place(x=170, y=350)
 
         cancel_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), text="Cancel",font=labelfont)
-        cancel_booking_btn.place(x=320, y=300)
+        cancel_booking_btn.place(x=320, y=350)
 
         updatebookingtable=ttk.Treeview(parent_tab.tab('Update Booking'))
-        updatebookingtable.pack(side=RIGHT, fill=BOTH)
+        updatebookingtable.pack(side=RIGHT, fill=BOTH, pady=(70,0))
 
         updatebookingtable['columns']=('id', 'pickupaddress','date','time','dropoffaddress','driverid','status')
         updatebookingtable.column('#0', width=0, stretch=0)
@@ -388,8 +392,8 @@ class Customer_Dashboard(customtkinter.CTk):
         updatebookingtable.column('date', width=100, anchor=CENTER)
         updatebookingtable.column('time', width=100, anchor=CENTER)
         updatebookingtable.column('dropoffaddress', width=200, anchor=CENTER)
-        updatebookingtable.column('driverid', width=100, anchor=CENTER)
         updatebookingtable.column('status', width=100, anchor=CENTER)
+        updatebookingtable.column('driverid', width=100, anchor=CENTER)
 
         updatebookingtable.heading('#0', text='', anchor=CENTER)
         updatebookingtable.heading('id', text="ID", anchor=CENTER)
@@ -397,8 +401,21 @@ class Customer_Dashboard(customtkinter.CTk):
         updatebookingtable.heading('date', text="Date", anchor=CENTER)
         updatebookingtable.heading('time', text="Time", anchor=CENTER)
         updatebookingtable.heading('dropoffaddress', text="Drop off address", anchor=CENTER)
-        updatebookingtable.heading('driverid', text="Driver ID", anchor=CENTER)
         updatebookingtable.heading('status', text="Status", anchor=CENTER)
+        updatebookingtable.heading('driverid', text="Driver ID", anchor=CENTER)
+
+        def bookingtable():
+            cusidd = Entry(self.root)
+            cusidd.insert(0, Global.currentUser[0])
+            iddd = cusidd.get()
+            Bookresult = customerbooking_selectall(iddd)
+            i = 0
+            for ro in Bookresult:
+                updatebookingtable.insert(parent='', index='end',
+                                    values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[5], ro[7]))
+                i = i + 1
+
+
 
 
         parent_tab.add("Riding History")
@@ -410,71 +427,66 @@ class Customer_Dashboard(customtkinter.CTk):
         #++++++++++++++++++++++++++Activity Tab Frame++++++++++++++++++++++
         parent_tab.add("Activity")
 
-        def tabel():
-            tab4_frame = customtkinter.CTkFrame(master=parent_tab.tab('Activity'))
-            tab4_frame.pack(fill=BOTH, expand=True)
+        tab4_frame = customtkinter.CTkFrame(master=parent_tab.tab('Activity'))
+        tab4_frame.pack(fill=BOTH, expand=True)
 
-            style1 = ttk.Style()
-            style1.theme_use("default")
-            style1.configure("Treeview",
-                             background="#2a2d2e",
-                             foreground="white",
-                             rowheight=25,
-                             fieldbackground="#343638",
-                             bordercolor="#343638",
-                             borderwidth=0,
-                             font=('Times New Roman', 14))
-            style1.map('Treeview', background=[('selected', '#22559b')])
+        style1 = ttk.Style()
+        style1.theme_use("default")
+        style1.configure("Treeview",
+                         background="#2b2b2b",
+                         foreground="white",
+                         rowheight=25,
+                         fieldbackground="#2b2b2b",
+                         bordercolor="#343638",
+                         borderwidth=0,
+                         font=('Times New Roman', 16))
+        style1.map('Treeview', background=[('selected', '#22559b')])
 
-            style1.configure("Treeview.Heading",
-                             background="#565b5e",
-                             foreground="white",
-                             relief="flat",
-                             font=('Times New Roman', 16))
-            style1.map("Treeview.Heading",
-                       background=[('active', '#3484F0')], )
+        style1.configure("Treeview.Heading",
+                         background="#565b5e",
+                         foreground="white",
+                         relief="flat",
+                         font=('Times New Roman', 17))
+        style1.map("Treeview.Heading",
+                   background=[('active', '#3484F0')], )
 
-            treeView = ttk.Treeview(tab4_frame, )
-            treeView['columns'] = ('myid', "system", "model", "machine", "processor", "date", "date2")
-            treeView.column('#0', width=0, stretch=0)
-            treeView.column('myid', width=50, anchor=CENTER)
-            treeView.column('system', width=100, anchor=CENTER)
-            treeView.column('model', width=150, anchor=CENTER)
-            treeView.column('machine', width=100, anchor=CENTER)
-            treeView.column('processor', width=300, anchor=CENTER)
-            treeView.column('date', width=100, anchor=CENTER)
-            treeView.column('date2', width=100, anchor=CENTER)
+        treeView = ttk.Treeview(tab4_frame, )
+        treeView['columns'] = ('myid', "system", "model", "machine", "processor", "date", "date2")
+        treeView.column('#0', width=0, stretch=0)
+        treeView.column('myid', width=50, anchor=CENTER)
+        treeView.column('system', width=100, anchor=CENTER)
+        treeView.column('model', width=150, anchor=CENTER)
+        treeView.column('machine', width=100, anchor=CENTER)
+        treeView.column('processor', width=300, anchor=CENTER)
+        treeView.column('date', width=100, anchor=CENTER)
+        treeView.column('date2', width=100, anchor=CENTER)
 
-            treeView.heading('#0', text='', anchor=CENTER)
-            treeView.heading('myid', text='ID', anchor=CENTER)
-            treeView.heading('system', text='System', anchor=CENTER)
-            treeView.heading('model', text='System Username', anchor=CENTER)
-            treeView.heading('machine', text='Machine', anchor=CENTER)
-            treeView.heading('processor', text='Processor', anchor=CENTER)
-            treeView.heading('date', text='Date', anchor=CENTER)
-            treeView.heading('date2', text='Time', anchor=CENTER)
+        treeView.heading('#0', text='', anchor=CENTER)
+        treeView.heading('myid', text='ID', anchor=CENTER)
+        treeView.heading('system', text='System', anchor=CENTER)
+        treeView.heading('model', text='System Username', anchor=CENTER)
+        treeView.heading('machine', text='Machine', anchor=CENTER)
+        treeView.heading('processor', text='Processor', anchor=CENTER)
+        treeView.heading('date', text='Date', anchor=CENTER)
+        treeView.heading('date2', text='Time', anchor=CENTER)
 
+        treeView.pack(side=TOP, fill=BOTH, expand=TRUE)
+        cusidd = Entry(self.root)
+        cusidd.insert(0, Global.currentUser[0])
+        iddd = cusidd.get()
+
+        def activitytable():
             cusidd = Entry(self.root)
             cusidd.insert(0, Global.currentUser[0])
             iddd = cusidd.get()
+            Bookresult = selectall_myactivity(iddd)
+            i = 0
+            for ro in Bookresult:
+                treeView.insert(parent='', index='end',
+                                    values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[5], ro[6]))
+                i = i + 1
 
-            myconn = create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
-
-            sqldata = "SELECT * FROM myactivity WHERE cid=" + iddd + " order by myid desc"
-            dataExecute = myconn.execute(sqldata)
-            for dt in dataExecute:
-                treeView.insert("", 'end', iid=dt[0], text=dt[0],
-                                values=(dt[0], dt[1], dt[2], dt[3], dt[4], dt[5], dt[6]))
-
-            treeView.pack(side=TOP, fill=BOTH, expand=TRUE)
-
-
-
-
-
-
-
-
+        activitytable()
 
         sql_engine = create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
         db_connection = sql_engine.connect()
@@ -482,13 +494,11 @@ class Customer_Dashboard(customtkinter.CTk):
         my_colors = [(.9, .4, .6), (.1, .3, .8)]
         query = 'SELECT *,count(myid) as ID FROM myactivity group by date '
         df = pandas.read_sql(query, db_connection, index_col='date')
-        fig = df.plot.bar(title="No of times account accessed", y='ID', figsize=(6, 6), color=my_colors, legend=True,
-                          grid=False).get_figure()
+        fig = df.plot.bar(title="No of times account accessed", y='ID', figsize=(6, 6), color=my_colors, legend=True,grid=False).get_figure()
         plot = FigureCanvasTkAgg(fig, parent_tab.tab('Report'))
         plot.get_tk_widget().place(x=5, y=5)
 
-
-        query720 = "SELECT *, count(bookingid) as ID  FROM booking WHERE cid="+iddd+" group by date"
+        query720 = "SELECT *, count(bookingid) as ID  FROM booking WHERE cid=" + iddd + " group by date"
         df = pandas.read_sql(query720, db_connection, index_col='date')
         fig2 = df.plot.line(title="Booking Records", y='ID', figsize=(5.5, 6)).get_figure();
         plot2 = FigureCanvasTkAgg(fig2, parent_tab.tab('Report'))
@@ -497,7 +507,7 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
 
-
+        bookingtable()
 
 
 if __name__=='__main__':

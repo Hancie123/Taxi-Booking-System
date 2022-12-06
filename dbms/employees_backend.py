@@ -99,5 +99,24 @@ def delete_record(emid):
         del values,sql,conn
         return deleteResult
 
+def total_employees():
+    conn=None
+    sql="""SELECT count(emid) from employees"""
+    employeesResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        employeesResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return employeesResult
+
 
 

@@ -27,26 +27,25 @@ def insert_booking(bookingInfo):
         return insertResult
 
 #
-# def select_all(cid):
-#     conn=None
-#     sql="""SELECT * FROM booking WHERE cid=%s"""
-#     values=(cid,)
-#     Bookresult=None
-#     try:
-#         conn=Connect()
-#         cursor=conn.cursor()
-#         cursor.execute(sql, values)
-#         Bookresult=cursor.fetchall()
-#         cursor.close()
-#         conn.close()
-#
-#
-#     except:
-#         print("Error", sys.exc_info())
-#
-#     finally:
-#         del values, sql, conn
-#         return Bookresult
+def select_all():
+    conn=None
+    sql="""SELECT * FROM booking"""
+    Bookresult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        Bookresult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return Bookresult
 
 
 def total_booking():
@@ -67,3 +66,24 @@ def total_booking():
     finally:
         del sql, conn
         return bookingResult
+
+def customerbooking_selectall(cid):
+    conn=None
+    sql="""SELECT * FROM booking WHERE cid=%s"""
+    values=(cid,)
+    Bookresult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        Bookresult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return Bookresult

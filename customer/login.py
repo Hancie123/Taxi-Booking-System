@@ -111,26 +111,33 @@ class Login(customtkinter.CTk):
                 if user != None:
                     if user[9] == 'Customer':
                         Global.currentUser = user
+
+                        # myid = user[0]
+                        # my_system = platform.uname()
+                        # system11 = (f"{my_system.system}")
+                        # model11 = (f"{my_system.node}")
+                        # machine11 = (f"{my_system.machine}")
+                        # processor11 = (f"{my_system.processor}")
+                        #
+                        # date11 = date.today()
+                        # now = datetime.now()
+                        # current_time = now.strftime("%I:%M:%S")
+                        #
+                        # LoginActivity = MyActivity('', system=system11, model=model11, machine=machine11,
+                        #                            processor=processor11, date=date11, date2=current_time, cid=myid)
+                        # activityResult = activity_insert(LoginActivity)
+
+
                         self.root.destroy()
                         root = customtkinter.CTk()
                         obj2 = customer_dashboard.Customer_Dashboard(root)
                         root.mainloop()
 
-                        myid=user[0]
 
-                        my_system = platform.uname()
 
-                        system11=(f"{my_system.system}")
-                        model11=(f"{my_system.node}")
-                        machine11=(f"{my_system.machine}")
-                        processor11=(f"{my_system.processor}")
 
-                        date11=date.today()
-                        now = datetime.now()
-                        current_time = now.strftime("%I:%M:%S")
 
-                        LoginActivity=MyActivity('', system=system11, model=model11,machine=machine11, processor=processor11, date=date11,date2=current_time, cid=myid )
-                        activityResult=activity_insert(LoginActivity)
+
 
 
                 elif driverresult != None:
