@@ -18,8 +18,8 @@ from dbms.booking_backend import total_booking, select_all, update_booking
 from dbms.customer_backend import total_customer
 from dbms.driver_management import total_driver, available_driver, update_DriverStatus
 from dbms.employees_backend import total_employees
-from driver import driver_registration, driver_report
-from employees import employees_management
+from driver import driver_registration, driver_report, search_drivers
+from employees import employees_management, search_employees
 from libs.booking_libs import BookingLibs
 from libs.driver_libs import Driver_Libs
 
@@ -238,7 +238,7 @@ class Admin_Dashboard(customtkinter.CTk):
             bookingTable.column('#0', width=0, stretch=0)
             bookingTable.column('bookingid', width=50, anchor=CENTER)
             bookingTable.column('pickup', width=220, anchor=CENTER)
-            bookingTable.column('date', width=100, anchor=CENTER)
+            bookingTable.column('date', width=120, anchor=CENTER)
             bookingTable.column('time', width=100, anchor=CENTER)
             bookingTable.column('dropoff', width=200, anchor=CENTER)
             bookingTable.column('status', width=180, anchor=CENTER)
@@ -450,13 +450,21 @@ class Admin_Dashboard(customtkinter.CTk):
         # +++++++++++++++++++++++++++++++++++Service Tab 2 Frame++++++++++++++++++++++++++++++++++++
         tab2frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
         tab2frame2.place(x=310, y=20)
-        frame2_label2 = customtkinter.CTkButton(master=tab2frame2, text="Search \nDrivers", font=labelfont,fg_color='#2b2b2b', )
+        def search_drivers11():
+            root=customtkinter.CTkToplevel()
+            search_drivers.SearchDrivers(root)
+            root.mainloop()
+        frame2_label2 = customtkinter.CTkButton(master=tab2frame2, text="Search \nDrivers",command=search_drivers11, font=labelfont,fg_color='#2b2b2b', )
         frame2_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         # +++++++++++++++++++++++++++++++++++Service Tab 3 Frame++++++++++++++++++++++++++++++++++++
         tab2frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
         tab2frame3.place(x=590, y=20)
-        frame3_label3 = customtkinter.CTkButton(master=tab2frame3, text="Search \nEmployees", font=labelfont,fg_color='#2b2b2b', )
+        def search_employees11():
+            root=customtkinter.CTkToplevel()
+            search_employees.SearchEmployees(root)
+            root.mainloop()
+        frame3_label3 = customtkinter.CTkButton(master=tab2frame3, text="Search \nEmployees",command=search_employees11, font=labelfont,fg_color='#2b2b2b', )
         frame3_label3.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 

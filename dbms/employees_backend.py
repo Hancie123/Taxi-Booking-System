@@ -118,5 +118,25 @@ def total_employees():
         del sql, conn
         return employeesResult
 
+def select_allemployees():
+    conn=None
+    sql="""SELECT * FROM employees"""
+    employeesResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        employeesResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return employeesResult
+
 
 

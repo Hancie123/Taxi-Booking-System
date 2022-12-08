@@ -46,8 +46,8 @@ class DriverRegistration():
         topFrame.pack(side=TOP, fill=BOTH, padx=20, pady=(10,20))
 
         #+++++++++++++++++++++++++++++++++++Title Label+++++++++++++++++++++++++++++++++++++
-        titleLabel=customtkinter.CTkLabel(master=topFrame, text="Driver Registration Form",font=('',20,'bold'))
-        titleLabel.place(x=300,y=20)
+        titleLabel=customtkinter.CTkLabel(master=topFrame, text="DRIVER MANAGEMENT SYSTEM",font=('Times New Roman', 25, 'bold'))
+        titleLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         #++++++++++++++++++++++++++++++++Center Frame++++++++++++++++++++++++++++++++++
         centerFrame=customtkinter.CTkFrame(master=self.driver, width=855, height=380)

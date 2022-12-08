@@ -92,8 +92,8 @@ def update_record(driverInfo):
 
 def update_DriverStatus(driverInfo):
     conn=None
-    sql="""UPDATE drivers SET driverstatus=%s WHERE did=%s"""
-    values=(driverInfo.getDriverstatus(),driverInfo.getDid())
+    sql="""UPDATE drivers SET status=%s WHERE did=%s"""
+    values=(driverInfo.getStatus(),driverInfo.getDid())
     updateresult=False
     try:
         conn=Connect()
@@ -155,6 +155,25 @@ def total_driver():
 def available_driver():
     conn=None
     sql="SELECT * FROM drivers WHERE driverstatus='Active'"
+    availableDriver=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        availableDriver=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return availableDriver
+
+def select_alldriver():
+    conn=None
+    sql="SELECT * FROM drivers"
     availableDriver=None
     try:
         conn=Connect()
