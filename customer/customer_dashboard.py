@@ -24,6 +24,7 @@ from customer import login, customerprofile, Change_Password
 from dbms.booking_backend import insert_booking, customerbooking_selectall
 from dbms.customer_management import delete_record
 from dbms.myactivity_backend import delete_myactivity, selectall_myactivity
+from driver import driverhistory
 from libs import Global
 from libs.booking_libs import BookingLibs
 from tkinter import messagebox
@@ -125,8 +126,13 @@ class Customer_Dashboard(customtkinter.CTk):
         managecustomers_btn = customtkinter.CTkButton(master=left_frame, text="Booking History     ", hover_color='black',font=sidemenufont, width=200,image=managecustomers_btn_image, fg_color='#2b2b2b')
         managecustomers_btn.place(x=50, y=300)
 
+        def driverhistory720():
+            root=customtkinter.CTkToplevel()
+            driverhistory.DriverHistory(root)
+            root.mainloop()
+
         managedrivers_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\car-regular-24.png'))
-        managedrivers_btn = customtkinter.CTkButton(master=left_frame, text="Drivers History     ", hover_color='black',font=sidemenufont, width=200,image=managedrivers_btn_image, fg_color='#2b2b2b')
+        managedrivers_btn = customtkinter.CTkButton(master=left_frame, text="Drivers History     ",command=driverhistory720, hover_color='black',font=sidemenufont, width=200,image=managedrivers_btn_image, fg_color='#2b2b2b')
         managedrivers_btn.place(x=50, y=350)
 
         billing_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\id-card-regular-24.png'))

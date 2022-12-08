@@ -10,8 +10,8 @@ sql_engine=create_engine('mysql+pymysql://root:@localhost/hancie')
 db_connection=sql_engine.connect()
 
 
-query='SELECT Note_ID from notes'
-df=pandas.read_sql(query, db_connection)
+query='SELECT * from notes'
+df=pandas.read_sql(query, db_connection, index_col='User_ID')
 fig=df.plot.density(title="Hancie Phago", y='Note_ID', figsize=(5,5)).get_figure()
 
 app=Tk()

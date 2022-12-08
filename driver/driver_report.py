@@ -6,17 +6,17 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pymysql
 import customtkinter
 
-class CustomerReport():
+class DriverReport():
     def __init__(self, main):
         self.main=main
         customtkinter.set_appearance_mode('dark')
         customtkinter.set_default_color_theme('blue')
-        self.main.title("Customer Report")
+        self.main.title("Driver Report")
         self.main.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
         self.main.title("Taxi Booking System")
         self.main.resizable(0, 0)
         frame_width = 900
-        frame_height = 500
+        frame_height = 530
         screen_width = self.main.winfo_screenwidth()
         screen_height = self.main.winfo_screenheight()
         x_cordinate = int((screen_width / 2) - (frame_width / 2))
@@ -28,7 +28,7 @@ class CustomerReport():
         topFrame=customtkinter.CTkFrame(self.main, height=100)
         topFrame.pack(side=TOP, fill=BOTH)
 
-        titlelabel=customtkinter.CTkLabel(topFrame, text='CUSTOMER REPORT', font=font1)
+        titlelabel=customtkinter.CTkLabel(topFrame, text='DRIVER REPORT', font=font1)
         titlelabel.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         frame=Frame(self.main, bg="white")
@@ -37,16 +37,17 @@ class CustomerReport():
         create_engine1=create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
         dbConnection=create_engine1.connect()
 
-        query='select gender,count(cid) as Customer from customers group by gender'
-        df=pandas.read_sql(query, dbConnection, index_col='gender')
-        fig=df.plot.pie(title="No. of Male and Female Accounts", y='Customer',autopct='%1.0f%%', figsize=(5,5)).get_figure()
+        query='select driverstatus,count(did) as Driver from drivers group by driverstatus'
+        df=pandas.read_sql(query, dbConnection, index_col='driverstatus')
+        fig=df.plot.pie(title="Driver Status Report", y='Driver',autopct='%1.0f%%', figsize=(5,5)).get_figure()
         plot2=FigureCanvasTkAgg(fig, frame)
         plot2.get_tk_widget().place(x=20, y=30)
 
-
-        query2='select *,count(cid) as ID from booking group by date'
+        my_colors = [(x / 10.0, x / 20.0, .9)
+                     for x in range(len(df))]
+        query2='select date,count(did) as ID from booking where bookingstatus="Booked" group by date limit 4'
         df2=pandas.read_sql(query2, dbConnection, index_col='date')
-        fig2=df2.plot.line(title="Daily Customer Booking Analysis", y='ID', figsize=(5,5)).get_figure()
+        fig2=df2.plot.bar(title="Daily Booked Drivers Report", y='ID',color=my_colors,rot=360,figsize=(5,5)).get_figure()
         plot2=FigureCanvasTkAgg(fig2, frame)
         plot2.get_tk_widget().place(x=550, y=0)
 
@@ -54,5 +55,5 @@ class CustomerReport():
 
 if __name__=='__main__':
     main=customtkinter.CTk()
-    CustomerReport(main)
+    DriverReport(main)
     main.mainloop()

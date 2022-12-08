@@ -26,6 +26,36 @@ def insert_booking(bookingInfo):
         del values, sql, conn
         return insertResult
 
+
+def update_booking(bookingInfo):
+    conn=None
+    sql="""UPDATE booking SET pickupaddress=%s, date=%s, time=%s, dropoffaddress=%s, bookingstatus=%s,cid=%s, did=%s WHERE bookingid=%s"""
+    values=(bookingInfo.getPickupaddress(),
+            bookingInfo.getDate(),
+            bookingInfo.getTime(),
+            bookingInfo.getDropoffaddress(),
+            bookingInfo.getBookingstatus(),
+            bookingInfo.getCid(),
+            bookingInfo.getDid(),
+            bookingInfo.getBookingid()
+            )
+    updatebookingResult=False
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        updatebookingResult=True
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql, conn
+        return updatebookingResult
+
 #
 def select_all():
     conn=None
@@ -87,3 +117,5 @@ def customerbooking_selectall(cid):
     finally:
         del sql, conn
         return Bookresult
+
+

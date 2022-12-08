@@ -2,9 +2,7 @@ from sqlalchemy import create_engine
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pymysql
 import pandas
-import mysql.connector
-import matplotlib.pyplot as plt
-from tkcalendar import DateEntry
+
 
 
 sqlEngine = create_engine('mysql+pymysql://root:@localhost/hancie')

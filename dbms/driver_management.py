@@ -152,4 +152,23 @@ def total_driver():
         del sql, conn
         return driverResult
 
+def available_driver():
+    conn=None
+    sql="SELECT * FROM drivers WHERE driverstatus='Active'"
+    availableDriver=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        availableDriver=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return availableDriver
+
 

@@ -8,17 +8,20 @@ import math
 import tkinter as tk
 import time
 from time import strftime
-
+from tkinter import messagebox
 from sqlalchemy import create_engine
 from tktimepicker import AnalogPicker, AnalogThemes,constants
 
-from customer import customer_management
-from dbms.booking_backend import total_booking, select_all
+from admin import booking_report
+from customer import customer_management, login, customer_report, search_customers
+from dbms.booking_backend import total_booking, select_all, update_booking
 from dbms.customer_backend import total_customer
-from dbms.driver_management import total_driver
+from dbms.driver_management import total_driver, available_driver, update_DriverStatus
 from dbms.employees_backend import total_employees
-from driver import driver_registration
+from driver import driver_registration, driver_report
 from employees import employees_management
+from libs.booking_libs import BookingLibs
+from libs.driver_libs import Driver_Libs
 
 
 class Admin_Dashboard(customtkinter.CTk):
@@ -57,6 +60,8 @@ class Admin_Dashboard(customtkinter.CTk):
 
         self.main.config(menu=menubar)
 
+
+        #++++++++++++++++++++++++++++++++++++++Top Frame+++++++++++++++++++++++++++++++++++++++++++
         north_frame = customtkinter.CTkFrame(master=self.main, height=80, corner_radius=0)
         north_frame.pack(side=TOP, fill=BOTH)
 
@@ -164,16 +169,66 @@ class Admin_Dashboard(customtkinter.CTk):
             driveridlabel.place(x=30, y=300)
 
 
-            my_conn = create_engine("mysql+pymysql://root:@localhost/taxi_booking_system")
-            query = "SELECT DISTINCT(bookingid) as class FROM booking"
-
-            my_data = my_conn.execute(query)  # SQLAlchem engine result
-            my_list = (r for r, in my_data) # create a  list
-            driveridcombo = customtkinter.CTkComboBox(assignbookingFrame,font=font720, width=200, dropdown_font=font720)
+            driveridcombo = customtkinter.CTkEntry(assignbookingFrame,font=font720, width=200)
             driveridcombo.place(x=140, y=300)
 
-            assign_btn = customtkinter.CTkButton(assignbookingFrame, text="Assign Driver", font=font720, width=150)
-            assign_btn.place(x=150, y=350)
+            customerid=customtkinter.CTkEntry(assignbookingFrame)
+            bookingid = customtkinter.CTkEntry(assignbookingFrame)
+
+
+            def available_driver_gui():
+                drivergui=customtkinter.CTkToplevel()
+                drivergui.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
+                drivergui.title("Taxi Booking System")
+                drivergui.resizable(0, 0)
+                frame_width = 400
+                frame_height = 300
+                screen_width = drivergui.winfo_screenwidth()
+                screen_height = drivergui.winfo_screenheight()
+                x_cordinate = int((screen_width / 2) - (frame_width / 2))
+                y_cordinate = int((screen_height / 2) - (frame_height / 2))
+                drivergui.geometry("{}x{}+{}+{}".format(frame_width, frame_height, x_cordinate+200, y_cordinate))
+
+                availabledrivertable=ttk.Treeview(drivergui)
+                availabledrivertable.pack(side=TOP, fill=BOTH, expand=TRUE)
+                availabledrivertable['columns']=('id', 'name')
+                availabledrivertable.column('#0', width=0, stretch=0)
+                availabledrivertable.column('id', width=100, anchor=CENTER)
+                availabledrivertable.column('name', width=100, anchor=CENTER)
+
+                availabledrivertable.heading('#0', text='', anchor=CENTER)
+                availabledrivertable.heading('id', text='Driver ID', anchor=CENTER)
+                availabledrivertable.heading('name', text='Name', anchor=CENTER)
+
+                def get_availabledriver():
+
+                    availabledriver=available_driver()
+                    i=0
+                    for driver in availabledriver:
+                        availabledrivertable.insert(parent='', index='end', values=(driver[0], driver[1]))
+
+                get_availabledriver()
+
+                def select_availabledriver(a):
+                    driveridcombo.delete(0, END)
+                    selectitem=availabledrivertable.selection()[0]
+                    driveridcombo.insert(0, availabledrivertable.item(selectitem)['values'][0])
+
+
+
+                availabledrivertable.bind("<<TreeviewSelect>>", select_availabledriver)
+
+
+                root.mainloop()
+
+            availabledriver_btn = customtkinter.CTkButton(assignbookingFrame,command=available_driver_gui, text="Available Driver", font=font720, width=150)
+            availabledriver_btn.place(x=30, y=350)
+
+            updatebookingresultlbl=customtkinter.CTkLabel(assignbookingFrame, text="", font=font720)
+            updatebookingresultlbl.place(x=80, y=390)
+
+
+
 
             assinbookingframe2=customtkinter.CTkFrame(master=root, width=840)
             assinbookingframe2.pack(side=LEFT, fill=BOTH, padx=(0,10), pady=10)
@@ -208,15 +263,65 @@ class Admin_Dashboard(customtkinter.CTk):
                                         values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[5], ro[6], ro[7]))
                     i = i + 1
 
-            bookingtable()
             bookingTable.pack(padx=10, pady=10)
 
 
+            def getDriverDetail(a):
+                picuptxt.delete(0, END)
+                date_txt.delete(0, END)
+                pickuptxt.delete(0, END)
+                dropoff_txt.delete(0, END)
+                customerid.delete(0, END)
+                bookingid.delete(0, END)
 
+                selectitem2=bookingTable.selection()[0]
+
+                picuptxt.insert(0, bookingTable.item(selectitem2)['values'][1])
+                date_txt.insert(0, bookingTable.item(selectitem2)['values'][2])
+                pickuptxt.insert(0, bookingTable.item(selectitem2)['values'][3])
+                dropoff_txt.insert(0, bookingTable.item(selectitem2)['values'][4])
+                customerid.insert(0, bookingTable.item(selectitem2)['values'][6])
+                bookingid.insert(0, bookingTable.item(selectitem2)['values'][0])
+
+            bookingTable.bind("<<TreeviewSelect>>",getDriverDetail )
+
+            def update_customer_booking():
+                picuptxt.get()
+                date_txt.get()
+                pickuptxt.get()
+                dropoff_txt.get()
+                customerid.get()
+                driveridcombo.get()
+                bookingid.get()
+
+                updatebooking=BookingLibs(pickupaddress=picuptxt.get(),
+                date=date_txt.get(),time=pickuptxt.get(), dropoffaddress=dropoff_txt.get(),
+                cid=customerid.get(),bookingstatus='Booked', did= driveridcombo.get(), bookingid=bookingid.get())
+                updatebookingResult=update_booking(updatebooking)
+
+                driver=Driver_Libs(did=driveridcombo.get(), driverstatus='Booked')
+                updateresult=update_DriverStatus(driver)
+                if updatebookingResult==True:
+                    updatebookingresultlbl.configure(text="Driver is assigned successfully")
+                    bookingTable.delete(*bookingTable.get_children())
+                    bookingtable()
+                    bookingTable2.delete(*bookingTable2.get_children())
+                    bookingTable11()
+
+
+                else:
+                    updatebookingresultlbl.configure(text="Error Occurred")
+
+            assign_btn = customtkinter.CTkButton(assignbookingFrame,command=update_customer_booking, text="Assign Driver", font=font720, width=150)
+            assign_btn.place(x=190, y=350)
+
+            bookingtable()
             root.mainloop()
 
+
+
         assigndriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit-alt-regular-24.png'))
-        assigndriver_btn = customtkinter.CTkButton(master=left_frame, text="Assign Drivers   ",command=assign_driver, hover_color='black', font=sidemenufont, width=200,image=assigndriver_btn_image, fg_color='#2b2b2b')
+        assigndriver_btn = customtkinter.CTkButton(master=left_frame,text="Assign Drivers   ",command=assign_driver, hover_color='black', font=sidemenufont, width=200,image=assigndriver_btn_image, fg_color='#2b2b2b')
         assigndriver_btn.place(x=40, y=200)
 
         payment_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\paypal-logo-24.png'))
@@ -258,8 +363,14 @@ class Admin_Dashboard(customtkinter.CTk):
         viewdriver_btn = customtkinter.CTkButton(master=left_frame, text="View Drivers    ", hover_color='black',font=sidemenufont, width=200,image=viewdriver_btn_image, fg_color='#2b2b2b')
         viewdriver_btn.place(x=40, y=500)
 
+        def logout():
+            self.main.destroy()
+            root=customtkinter.CTk()
+            login.Login(root)
+            root.mainloop()
+
         logout_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
-        logout_btn = customtkinter.CTkButton(master=left_frame, text="Logout              ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,image=logout_btn_image)
+        logout_btn = customtkinter.CTkButton(master=left_frame,command=logout, text="Logout              ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,image=logout_btn_image)
         logout_btn.place(x=40, y=550)
 
         themelbl = customtkinter.CTkLabel(left_frame, text="Appearance Mode:", font=sidemenufont)
@@ -286,19 +397,18 @@ class Admin_Dashboard(customtkinter.CTk):
         parent_tab.place(x=15,y=10)
 
         parent_tab.add('Home')
-        parent_tab.add('Services')
-        parent_tab.add('View Record')
+        parent_tab.add('Search')
+        parent_tab.add('Records')
 
+        #+++++++++++++++++++++++++++++++++++Home Tab 1 Frame++++++++++++++++++++++++++++++++++++
         frame1 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame1.place(x=30, y=20)
-
         result = total_customer()
         tmpResult = result[0]
         frame1_label2 = customtkinter.CTkLabel(master=frame1, text="Total \nCustomers \n\n{}".format(tmpResult[0]), font=labelfont)
         frame1_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-
-
+        # +++++++++++++++++++++++++++++++++++Home Tab 2 Frame++++++++++++++++++++++++++++++++++++
         frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame2.place(x=310, y=20)
         bookingResult=total_booking()
@@ -306,6 +416,7 @@ class Admin_Dashboard(customtkinter.CTk):
         frame2_label2 = customtkinter.CTkLabel(master=frame2, text="Total \nBookings \n\n{}".format(bookingresult2[0]),font=labelfont)
         frame2_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
+        # +++++++++++++++++++++++++++++++++++Home Tab 3 Frame++++++++++++++++++++++++++++++++++++
         frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame3.place(x=590, y=20)
         driverResult=total_driver()
@@ -313,8 +424,7 @@ class Admin_Dashboard(customtkinter.CTk):
         frame3_label2 = customtkinter.CTkLabel(master=frame3, text="Total \nDrivers \n\n{}".format(driveresult2[0]),font=labelfont)
         frame3_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-
-
+        # +++++++++++++++++++++++++++++++++++Home Tab 4 Frame++++++++++++++++++++++++++++++++++++
         frame4 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame4.place(x=870, y=20)
         employeesResult=total_employees()
@@ -322,6 +432,75 @@ class Admin_Dashboard(customtkinter.CTk):
         frame4_label2 = customtkinter.CTkLabel(master=frame4, text="Total \nEmployees \n\n{}".format(employeesResult2[0]),
                                                font=labelfont)
         frame4_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+
+
+
+        # +++++++++++++++++++++++++++++++++++Service Tab 1 Frame++++++++++++++++++++++++++++++++++++
+        tab2frame1 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
+        tab2frame1.place(x=30, y=20)
+        def search_customers11():
+            root=customtkinter.CTkToplevel()
+            search_customers.SearchCustomer(root)
+            root.mainloop()
+
+        frame1_label1 = customtkinter.CTkButton(master=tab2frame1,text="Search \nCustomer",command=search_customers11,font=labelfont,fg_color='#2b2b2b',)
+        frame1_label1.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        # +++++++++++++++++++++++++++++++++++Service Tab 2 Frame++++++++++++++++++++++++++++++++++++
+        tab2frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
+        tab2frame2.place(x=310, y=20)
+        frame2_label2 = customtkinter.CTkButton(master=tab2frame2, text="Search \nDrivers", font=labelfont,fg_color='#2b2b2b', )
+        frame2_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        # +++++++++++++++++++++++++++++++++++Service Tab 3 Frame++++++++++++++++++++++++++++++++++++
+        tab2frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
+        tab2frame3.place(x=590, y=20)
+        frame3_label3 = customtkinter.CTkButton(master=tab2frame3, text="Search \nEmployees", font=labelfont,fg_color='#2b2b2b', )
+        frame3_label3.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+
+
+
+        # +++++++++++++++++++++++++++++++++++Report Tab 1 Frame++++++++++++++++++++++++++++++++++++
+        tab3frame1 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
+        tab3frame1.place(x=30, y=20)
+        def customer_report720():
+            root=customtkinter.CTkToplevel()
+            customer_report.CustomerReport(root)
+            root.mainloop()
+        tab3_label1 = customtkinter.CTkButton(master=tab3frame1, text="Customer \nReports",command=customer_report720, font=labelfont,fg_color='#2b2b2b', )
+        tab3_label1.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        # +++++++++++++++++++++++++++++++++++Report Tab 2 Frame++++++++++++++++++++++++++++++++++++
+        tab3frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
+        tab3frame2.place(x=310, y=20)
+        def driver_report720():
+            root=customtkinter.CTkToplevel()
+            driver_report.DriverReport(root)
+            root.mainloop()
+        tab3_label2 = customtkinter.CTkButton(master=tab3frame2, text="Driver \nReports",command=driver_report720, font=labelfont,fg_color='#2b2b2b', )
+        tab3_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        # +++++++++++++++++++++++++++++++++++Report Tab 3 Frame++++++++++++++++++++++++++++++++++++
+        tab3frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
+        tab3frame3.place(x=590, y=20)
+        def booking_report720():
+            root=customtkinter.CTkToplevel()
+            booking_report.BookingReport(root)
+            root.mainloop()
+        tab3_label3 = customtkinter.CTkButton(master=tab3frame3, text="Booking \nReports",command=booking_report720, font=labelfont,fg_color='#2b2b2b', )
+        tab3_label3.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        # +++++++++++++++++++++++++++++++++++Report Tab 4 Frame++++++++++++++++++++++++++++++++++++
+        tab4frame4 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
+        tab4frame4.place(x=870, y=20)
+        tab4_label4 = customtkinter.CTkButton(master=tab4frame4, text="Billing \nReports", font=labelfont,
+                                              fg_color='#2b2b2b', )
+        tab4_label4.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+
+
 
         style1 = ttk.Style()
         style1.theme_use("default")
@@ -343,38 +522,38 @@ class Admin_Dashboard(customtkinter.CTk):
         style1.map("Treeview.Heading",
                    background=[('active', '#3484F0')], )
 
-        bookingTable=ttk.Treeview(frameCenter)
-        bookingTable['columns']=('bookingid', 'pickup', 'date','time','dropoff','status', 'customerid', 'driverid')
-        bookingTable.column('#0', width=0, stretch=0)
-        bookingTable.column('bookingid', width=180, anchor=CENTER)
-        bookingTable.column('pickup', width=240, anchor=CENTER)
-        bookingTable.column('date', width=150, anchor=CENTER)
-        bookingTable.column('time', width=150, anchor=CENTER)
-        bookingTable.column('dropoff', width=220, anchor=CENTER)
-        bookingTable.column('status', width=220, anchor=CENTER)
-        bookingTable.column('customerid', width=150, anchor=CENTER)
-        bookingTable.column('driverid', width=150, anchor=CENTER)
+        bookingTable2=ttk.Treeview(frameCenter)
+        bookingTable2['columns']=('bookingid', 'pickup', 'date','time','dropoff','status', 'customerid', 'driverid')
+        bookingTable2.column('#0', width=0, stretch=0)
+        bookingTable2.column('bookingid', width=180, anchor=CENTER)
+        bookingTable2.column('pickup', width=240, anchor=CENTER)
+        bookingTable2.column('date', width=150, anchor=CENTER)
+        bookingTable2.column('time', width=150, anchor=CENTER)
+        bookingTable2.column('dropoff', width=220, anchor=CENTER)
+        bookingTable2.column('status', width=220, anchor=CENTER)
+        bookingTable2.column('customerid', width=150, anchor=CENTER)
+        bookingTable2.column('driverid', width=150, anchor=CENTER)
 
-        bookingTable.heading('#0', text='', anchor=CENTER)
-        bookingTable.heading('bookingid', text="ID", anchor=CENTER)
-        bookingTable.heading('pickup', text="Pickup", anchor=CENTER)
-        bookingTable.heading('date', text="Date", anchor=CENTER)
-        bookingTable.heading('time', text="Time", anchor=CENTER)
-        bookingTable.heading('dropoff', text="Drop Off", anchor=CENTER)
-        bookingTable.heading('status', text="Status", anchor=CENTER)
-        bookingTable.heading('customerid', text="ID", anchor=CENTER)
-        bookingTable.heading('driverid', text="ID", anchor=CENTER)
+        bookingTable2.heading('#0', text='', anchor=CENTER)
+        bookingTable2.heading('bookingid', text="Booking ID", anchor=CENTER)
+        bookingTable2.heading('pickup', text="Pickup", anchor=CENTER)
+        bookingTable2.heading('date', text="Date", anchor=CENTER)
+        bookingTable2.heading('time', text="Time", anchor=CENTER)
+        bookingTable2.heading('dropoff', text="Drop Off", anchor=CENTER)
+        bookingTable2.heading('status', text="Status", anchor=CENTER)
+        bookingTable2.heading('customerid', text="Customer ID", anchor=CENTER)
+        bookingTable2.heading('driverid', text="Driver ID", anchor=CENTER)
 
-        def bookingtable():
+        def bookingTable11():
             Bookresult = select_all()
             i = 0
             for ro in Bookresult:
-                bookingTable.insert(parent='', index='end',
+                bookingTable2.insert(parent='', index='end',
                                     values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[5], ro[6], ro[7]))
                 i = i + 1
 
-        bookingtable()
-        bookingTable.place(x=15, y=360)
+        bookingTable11()
+        bookingTable2.place(x=15, y=360)
 
 
 
