@@ -152,7 +152,7 @@ class DriverRegistration():
                 messagebox.showwarning("Taxi Booking System", "Please fill all the fields")
 
             else:
-                driver = Driver_Libs(name=nametxt.get(), mobile=mobiletxt.get(), email=emailtxt.get(),license=licensetxt.get(), password=passwordtxt.get(), status='Driver',driverstatus='')
+                driver = Driver_Libs(name=nametxt.get(), mobile=mobiletxt.get(), email=emailtxt.get(),license=licensetxt.get(), password=passwordtxt.get(),driverstatus='Active')
                 result = insert_record(driver)
                 if result == True:
                     msg1 = messagebox.showinfo("Taxi Booking System", "Driver is registered successfully!")

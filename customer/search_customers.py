@@ -5,7 +5,7 @@ from tkinter import ttk
 from tkinter import messagebox
 
 from dbms.customer_backend import select_allcustomer
-from dbms.customer_management import search_customer
+from dbms.customer_management import search_customer, search_customer2
 
 
 class SearchCustomer():
@@ -35,7 +35,7 @@ class SearchCustomer():
         idlbl.place(x=20, y=20)
 
         # ++++++++++++++++++++++++++++++ID TextField++++++++++++++++++++++++++++++++++++++++++++++++++
-        idtxt = customtkinter.CTkEntry(master=topFrame,font=font720,  placeholder_text="Enter Customer ID", width=200)
+        idtxt = customtkinter.CTkEntry(master=topFrame,font=font720,  placeholder_text="Customer Name", width=200)
         idtxt.place(x=100, y=20)
 
 
@@ -95,20 +95,20 @@ class SearchCustomer():
 
         def search():
             val = idtxt.get()
-            customerResult = search_customer(val)
-            id=str(idtxt.get())
+            customerResult = search_customer2(val)
+            customerTreeview.delete(*customerTreeview.get_children())
 
-            if id=='':
-                customerTreeview.delete(*customerTreeview.get_children())
-                search_customer1()
-            elif customerResult==None:
-                messagebox.showwarning("Taxi Booking System","The Customer ID {} Not Found".format(val))
+            for xx in customerResult:
 
 
+                customerTreeview.insert(parent='', index='end',
+                                        values=(xx[0], xx[1], xx[2], xx[3], xx[4], xx[5], xx[6], xx[8]))
 
-            else:
-                customerTreeview.delete(*customerTreeview.get_children())
-                customerTreeview.insert(parent='', index='end', values=(customerResult))
+
+
+
+
+
 
 
 

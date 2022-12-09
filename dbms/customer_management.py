@@ -99,5 +99,26 @@ def delete_record(cid):
         del values,sql,conn
         return deleteResult
 
+def search_customer2(name12):
+    conn=None
+    sql="""SELECT * FROM customers WHERE name LIKE '%{}%'""".format(name12)
+
+    customerResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        customerResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return customerResult
+
 
 

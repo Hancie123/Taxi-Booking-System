@@ -3,6 +3,7 @@ import customtkinter
 from tkinter import ttk
 
 from dbms.driver_history_backend import customer_driver_history
+from dbms.driver_management import driver_trip_history
 from libs import Global
 
 
@@ -11,7 +12,7 @@ class DriverHistory():
         self.main=main
         customtkinter.set_appearance_mode('dark')
         customtkinter.set_default_color_theme('blue')
-        self.main.title("{} Driver History".format(Global.currentUser[1]))
+        self.main.title("{} Trip History".format(Global.currentDriver[1]))
         self.main.resizable(0, 0)
         frame_width = 900
         frame_height = 500
@@ -28,7 +29,7 @@ class DriverHistory():
         topFrame = customtkinter.CTkFrame(self.main, height=80)
         topFrame.pack(side=TOP, fill=BOTH)
 
-        titlelabel = customtkinter.CTkLabel(topFrame, text='{} Driver History'.format(Global.currentUser[1]), font=font1)
+        titlelabel = customtkinter.CTkLabel(topFrame, text='{} Trip History'.format(Global.currentDriver[1]), font=font1)
         titlelabel.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         style1 = ttk.Style()
@@ -53,39 +54,39 @@ class DriverHistory():
 
         treeView=ttk.Treeview(self.main)
         treeView.pack(side=BOTTOM, fill=BOTH, expand=True)
-        treeView['columns']=('cid', 'customername','did', 'date','time','drivername','drivermobile')
+        treeView['columns']=('cid', 'name','date', 'time','pickupaddress','dropoffaddress')
         treeView.column('#0', width=0, stretch=0)
         treeView.column('cid', width=100, anchor=CENTER)
-        treeView.column('customername', width=100, anchor=CENTER)
-        treeView.column('did', width=100, anchor=CENTER)
+        treeView.column('name', width=100, anchor=CENTER)
         treeView.column('date', width=100, anchor=CENTER)
         treeView.column('time', width=100, anchor=CENTER)
-        treeView.column('drivername', width=100, anchor=CENTER)
-        treeView.column('drivermobile', width=100, anchor=CENTER)
+        treeView.column('pickupaddress', width=100, anchor=CENTER)
+        treeView.column('dropoffaddress', width=100, anchor=CENTER)
+
 
         treeView.heading('#0', text='', anchor=CENTER)
         treeView.heading('cid',text='Customer ID', anchor=CENTER)
-        treeView.heading('customername', text='Customer Name', anchor=CENTER)
-        treeView.heading('did', text='Driver ID', anchor=CENTER)
+        treeView.heading('name', text='Customer Name', anchor=CENTER)
         treeView.heading('date', text='Date', anchor=CENTER)
         treeView.heading('time', text='Time', anchor=CENTER)
-        treeView.heading('drivername', text='Driver Name', anchor=CENTER)
-        treeView.heading('drivermobile', text='Driver Mobile', anchor=CENTER)
-
-        customerid=Entry(self.main)
-        customerid.insert(0, Global.currentUser[0])
+        treeView.heading('pickupaddress', text='Pickup address', anchor=CENTER)
+        treeView.heading('dropoffaddress', text='Dropoff address', anchor=CENTER)
 
 
-        def bookinghistory():
-            customeridd=customerid.get()
-
-            historyResult=customer_driver_history(customeridd)
-
-            for ro in historyResult:
-                treeView.insert(parent='', index='end', values=(ro[0],ro[1],ro[2],ro[3],ro[4],ro[5],ro[6]))
+        driverid=Entry(self.main)
+        driverid.insert(0, Global.currentDriver[0])
 
 
-        bookinghistory()
+        def triphistory():
+            id=driverid.get()
+
+            driverResult=driver_trip_history(id)
+
+            for ro in driverResult:
+                treeView.insert(parent='', index='end', values=(ro[0],ro[1],ro[2],ro[3],ro[4],ro[5]))
+
+
+        triphistory()
 
 
 

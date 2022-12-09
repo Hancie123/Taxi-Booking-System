@@ -21,7 +21,7 @@ from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
 from customer import login, customerprofile, Change_Password
-from dbms.booking_backend import insert_booking, customerbooking_selectall
+from dbms.booking_backend import insert_booking, customerbooking_selectall, customerbooking_selectstatsubooked
 from dbms.customer_management import delete_record
 from dbms.myactivity_backend import delete_myactivity, selectall_myactivity
 from driver import driverhistory
@@ -290,6 +290,7 @@ class Customer_Dashboard(customtkinter.CTk):
             insertResult=insert_booking(booking)
             if insertResult==True:
                 messagebox.showinfo("Taxi Booking System", "The booking is requested successfully!")
+                updatebookingtable.delete(*updatebookingtable.get_children())
                 bookingtable()
 
             else:
@@ -411,8 +412,8 @@ class Customer_Dashboard(customtkinter.CTk):
         updatebookingtable.heading('date', text="Date", anchor=CENTER)
         updatebookingtable.heading('time', text="Time", anchor=CENTER)
         updatebookingtable.heading('dropoffaddress', text="Drop off address", anchor=CENTER)
-        updatebookingtable.heading('status', text="Status", anchor=CENTER)
         updatebookingtable.heading('driverid', text="Driver ID", anchor=CENTER)
+        updatebookingtable.heading('status', text="Status", anchor=CENTER)
 
         def displaySelectedItem(a):
 
@@ -430,18 +431,15 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
 
-
-
-
         def bookingtable():
             cusidd = Entry(self.root)
             cusidd.insert(0, Global.currentUser[0])
             iddd = cusidd.get()
-            Bookresult = customerbooking_selectall(iddd)
+            Bookresult = customerbooking_selectstatsubooked(iddd)
             i = 0
             for ro in Bookresult:
                 updatebookingtable.insert(parent='', index='end',
-                                    values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[5], ro[7]))
+                                    values=(ro[0], ro[1], ro[2], ro[3], ro[4], ro[7], ro[5]))
                 i = i + 1
 
 

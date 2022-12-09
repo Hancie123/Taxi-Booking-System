@@ -3,7 +3,7 @@ import customtkinter
 from PIL import ImageTk,Image
 from tkinter import ttk
 from tkinter import messagebox
-from dbms.employees_backend import select_allemployees, search_employees
+from dbms.employees_backend import select_allemployees, search_employees, search_employees111
 
 
 class SearchEmployees():
@@ -33,7 +33,7 @@ class SearchEmployees():
         idlbl.place(x=20, y=20)
 
         # ++++++++++++++++++++++++++++++ID TextField++++++++++++++++++++++++++++++++++++++++++++++++++
-        idtxt = customtkinter.CTkEntry(master=topFrame,font=font720,  placeholder_text="Enter Employees ID", width=200)
+        idtxt = customtkinter.CTkEntry(master=topFrame,font=font720,  placeholder_text="Employees Name", width=200)
         idtxt.place(x=100, y=20)
 
 
@@ -92,17 +92,12 @@ class SearchEmployees():
 
         def search():
             val = idtxt.get()
-            customerResult = search_employees(val)
-            id=str(idtxt.get())
+            customerResult = search_employees111(val)
+            customerTreeview.delete(*customerTreeview.get_children())
 
-            if id=='':
-                customerTreeview.delete(*customerTreeview.get_children())
-                search_customer1()
-            elif customerResult==None:
-                messagebox.showwarning("Taxi Booking System","The Employees ID {} Not Found".format(val))
-            else:
-                customerTreeview.delete(*customerTreeview.get_children())
-                customerTreeview.insert(parent='', index='end', values=(customerResult))
+            for xx in customerResult:
+                customerTreeview.insert(parent='', index='end',
+                                        values=(xx[0], xx[1], xx[2], xx[3], xx[4],xx[5], xx[6]))
 
 
 

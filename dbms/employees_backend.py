@@ -139,4 +139,25 @@ def select_allemployees():
         return employeesResult
 
 
+def search_employees111(name11):
+    conn=None
+    sql="""SELECT * FROM employees WHERE name LIKE '%{}%'""".format(name11)
+    employeesResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        employeesResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return employeesResult
+
+
 

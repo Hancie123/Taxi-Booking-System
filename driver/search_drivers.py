@@ -6,7 +6,7 @@ from tkinter import messagebox
 
 from dbms.customer_backend import select_allcustomer
 from dbms.customer_management import search_customer
-from dbms.driver_management import select_alldriver, driver_select_all
+from dbms.driver_management import select_alldriver, driver_select_all, driver_select_all22
 
 
 class SearchDrivers():
@@ -36,7 +36,7 @@ class SearchDrivers():
         idlbl.place(x=20, y=20)
 
         # ++++++++++++++++++++++++++++++ID TextField++++++++++++++++++++++++++++++++++++++++++++++++++
-        idtxt = customtkinter.CTkEntry(master=topFrame,font=font720,  placeholder_text="Enter Driver ID", width=200)
+        idtxt = customtkinter.CTkEntry(master=topFrame,font=font720,  placeholder_text="Driver Name", width=200)
         idtxt.place(x=100, y=20)
 
 
@@ -86,24 +86,19 @@ class SearchDrivers():
             result = select_alldriver()
             for x in result:
 
-                customerTreeview.insert(parent='', index='end', values=(x[0], x[1], x[2], x[3], x[4], x[7]))
+                customerTreeview.insert(parent='', index='end', values=(x[0], x[1], x[2], x[3], x[4], x[6]))
 
         search_customer1()
 
 
         def search():
             val = idtxt.get()
-            customerResult = driver_select_all(val)
-            id=str(idtxt.get())
+            customerResult = driver_select_all22(val)
+            customerTreeview.delete(*customerTreeview.get_children())
 
-            if id=='':
-                customerTreeview.delete(*customerTreeview.get_children())
-                search_customer1()
-            elif customerResult==None:
-                messagebox.showwarning("Taxi Booking System","The Driver ID {} Not Found".format(val))
-            else:
-                customerTreeview.delete(*customerTreeview.get_children())
-                customerTreeview.insert(parent='', index='end', values=(customerResult))
+            for xx in customerResult:
+                customerTreeview.insert(parent='', index='end',
+                                        values=(xx[0], xx[1], xx[2], xx[3], xx[4], xx[6]))
 
 
 

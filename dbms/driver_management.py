@@ -5,9 +5,9 @@ import sys
 
 def insert_record(driverInfo):
     conn=None
-    sql="""INSERT INTO `drivers`VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+    sql="""INSERT INTO `drivers`VALUES (%s,%s,%s,%s,%s,%s,%s)"""
     values=(driverInfo.getDid(), driverInfo.getName(), driverInfo.getMobile(), driverInfo.getEmail(),
-            driverInfo.getLicense(), driverInfo.getPassword(),driverInfo.getStatus(), driverInfo.getDriverstatus())
+            driverInfo.getLicense(), driverInfo.getPassword(),driverInfo.getDriverstatus())
     result=False
     try:
         conn=Connect()
@@ -92,8 +92,8 @@ def update_record(driverInfo):
 
 def update_DriverStatus(driverInfo):
     conn=None
-    sql="""UPDATE drivers SET status=%s WHERE did=%s"""
-    values=(driverInfo.getStatus(),driverInfo.getDid())
+    sql="""UPDATE drivers SET driverstatus=%s WHERE did=%s"""
+    values=(driverInfo.getDriverstatus(),driverInfo.getDid())
     updateresult=False
     try:
         conn=Connect()
@@ -189,5 +189,70 @@ def select_alldriver():
     finally:
         del sql, conn
         return availableDriver
+
+def driver_selectallbooking(did):
+    conn=None
+    sql="""select booking.bookingid, booking.pickupaddress, booking.date, booking.time, booking.dropoffaddress,
+     customers.name, booking.bookingstatus from booking inner join customers
+      on booking.cid=customers.cid where booking.did=%s and booking.bookingstatus='Booked'"""
+    values=(did,)
+    driverResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        driverResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return driverResult
+
+def driver_select_all22(name11):
+    conn=None
+    sql="""SELECT * FROM drivers WHERE name LIKE '%{}%'""".format(name11)
+
+    selectResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        selectResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return selectResult
+
+def driver_trip_history(did):
+    conn=None
+    sql="""select customers.cid, customers.name, booking.date, booking.time, 
+    booking.pickupaddress, booking.dropoffaddress from booking inner join customers
+     on booking.cid=customers.cid where booking.did=%s"""
+    values=(did,)
+    driverResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        driverResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return driverResult
 
 

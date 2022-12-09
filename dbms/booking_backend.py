@@ -119,3 +119,46 @@ def customerbooking_selectall(cid):
         return Bookresult
 
 
+def driver_update_booking(bookingInfo):
+    conn=None
+    sql="""UPDATE booking SET bookingstatus=%s WHERE bookingid=%s"""
+    values=(bookingInfo.getBookingstatus(),bookingInfo.getBookingid())
+    updatebookingResult=False
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        updatebookingResult=True
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql, conn
+        return updatebookingResult
+
+def customerbooking_selectstatsubooked(cid):
+    conn=None
+    sql="""SELECT * FROM booking WHERE cid=%s and bookingstatus='Pending'"""
+    values=(cid,)
+    Bookresult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        Bookresult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return Bookresult
+
+
