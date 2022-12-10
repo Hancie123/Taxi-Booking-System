@@ -237,7 +237,7 @@ def driver_trip_history(did):
     conn=None
     sql="""select customers.cid, customers.name, booking.date, booking.time, 
     booking.pickupaddress, booking.dropoffaddress from booking inner join customers
-     on booking.cid=customers.cid where booking.did=%s"""
+     on booking.cid=customers.cid where booking.did=%s and booking.bookingstatus='Bill Pending'"""
     values=(did,)
     driverResult=None
     try:

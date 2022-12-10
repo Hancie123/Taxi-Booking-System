@@ -213,10 +213,6 @@ class Driver_Dashboard():
         completetrip_btn = customtkinter.CTkButton(master=leftFrame, text="Complete Trips   ", command=assign_driver, hover_color='black', font=sidemenufont, width=200,image=completetrip_image, fg_color='#2b2b2b')
         completetrip_btn.place(x=40, y=250)
 
-        payment_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\paypal-logo-24.png'))
-        payment_btn = customtkinter.CTkButton(master=leftFrame, text="Payment              ", hover_color='black',font=sidemenufont, width=200, image=payment_btn_image, fg_color='#2b2b2b')
-        payment_btn.place(x=40, y=300)
-
         def trip_history_gui():
             root=customtkinter.CTkToplevel()
             drivertriphistory.DriverHistory(root)
@@ -224,7 +220,7 @@ class Driver_Dashboard():
 
         trip_image = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\Python\\Taxi Booking System\\Images\\user-regular-24.png'))
         trip_btn = customtkinter.CTkButton(master=leftFrame, text="Trips History        ", command=trip_history_gui,hover_color='black', font=sidemenufont, width=200,image=trip_image, fg_color='#2b2b2b')
-        trip_btn.place(x=40, y=350)
+        trip_btn.place(x=40, y=300)
 
         def logout():
             self.main.destroy()
@@ -234,7 +230,7 @@ class Driver_Dashboard():
 
         logout_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
         logout_btn = customtkinter.CTkButton(master=leftFrame,command=logout, text="Logout                 ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,image=logout_btn_image)
-        logout_btn.place(x=40, y=400)
+        logout_btn.place(x=40, y=350)
 
         def switch():
             global is_on

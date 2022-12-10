@@ -566,7 +566,7 @@ class Customer_Dashboard(customtkinter.CTk):
         df = pandas.read_sql(query, db_connection, index_col='date')
         fig = df.plot.bar(title="No of times account accessed", y='ID', figsize=(6, 6), color=my_colors, legend=True,grid=False).get_figure()
         plot = FigureCanvasTkAgg(fig, parent_tab.tab('Report'))
-        plot.get_tk_widget().place(x=5, y=5)
+        plot.get_tk_widget().place(x=100, y=5)
 
         query720 = "SELECT *, count(bookingid) as ID  FROM booking WHERE cid=" + iddd + " group by date"
         df = pandas.read_sql(query720, db_connection, index_col='date')

@@ -1,8 +1,11 @@
 from tkinter import *
 import customtkinter
 from tkinter import ttk
-
-from dbms.billing_backend import billing_table
+from tkinter import messagebox
+from dbms.billing_backend import billing_table, insert_billing
+from dbms.booking_backend import driver_update_booking
+from libs.billing_libs import BillingLibs
+from libs.booking_libs import BookingLibs
 
 
 class Admin_Payment():
@@ -59,34 +62,66 @@ class Admin_Payment():
         nametxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
         nametxt.place(x=140, y=100)
 
+        creditlbl = customtkinter.CTkLabel(assignbookingFrame, text="Credit No: ", font=font720)
+        creditlbl.place(x=30, y=150)
+
+        credittxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+        credittxt.place(x=140, y=150)
+
         kmlbl = customtkinter.CTkLabel(assignbookingFrame, text="Kilometer: ", font=font720)
-        kmlbl.place(x=30, y=150)
+        kmlbl.place(x=30, y=200)
 
         kmtxt = customtkinter.CTkEntry(assignbookingFrame,textvariable=self.kmtxt, validate='key', validatecommand=(validation, '%P'), font=font720, width=200)
-        kmtxt.place(x=140, y=150)
+        kmtxt.place(x=140, y=200)
 
         unitlbl = customtkinter.CTkLabel(assignbookingFrame, text="Unit:", font=font720)
-        unitlbl.place(x=30, y=200)
+        unitlbl.place(x=30, y=250)
 
         unittxt = customtkinter.CTkEntry(assignbookingFrame,textvariable=self.unittxt, validate='key', validatecommand=(validation, '%P'), font=font720, width=200)
         unittxt.insert(0, '100')
         unittxt.configure(state=DISABLED)
-        unittxt.place(x=140, y=200)
+        unittxt.place(x=140, y=250)
 
         totallbl = customtkinter.CTkLabel(assignbookingFrame, text="Grand Total:", font=font720)
-        totallbl.place(x=30, y=250)
+        totallbl.place(x=30, y=300)
 
 
         totaltxt = customtkinter.CTkEntry(assignbookingFrame,font=font720, width=200)
         totaltxt.bind("<Key>", lambda e: "break")
-        totaltxt.place(x=140, y=250)
+        totaltxt.place(x=140, y=300)
 
         # Trace the variables
         self.unittxt.trace_add('write', calculate)
         self.kmtxt.trace_add('write', calculate)
 
-        availabledriver_btn = customtkinter.CTkButton(assignbookingFrame,text="Generate Bill", font=font720, width=150)
-        availabledriver_btn.place(x=150, y=320)
+        bookingid=Entry(self.main)
+
+
+        def generate_bill():
+            name=nametxt.get()
+            km=kmtxt.get()
+            unit=unittxt.get()
+            total=totaltxt.get()
+            bookingid1=bookingid.get()
+
+            billing=BillingLibs(billingid='',name=name, km=km, unit=unit, total=total, bookingid=bookingid1)
+            result=insert_billing(billing)
+
+            booking=BookingLibs(bookingstatus='Billing Completed',bookingid=bookingid1)
+            updatebookingResult=driver_update_booking(booking)
+            if result==True:
+                messagebox.showinfo("Taxi Booking System","The billing is done successfully")
+                bookingTable.delete(*bookingTable.get_children())
+                billing_tabel()
+            else:
+                messagebox.showerror("Taxi Booking System","Error Occurred")
+
+
+
+
+
+        availabledriver_btn = customtkinter.CTkButton(assignbookingFrame,text="Generate Bill",command=generate_bill, font=font720, width=150)
+        availabledriver_btn.place(x=150, y=350)
 
         tableFrame = customtkinter.CTkFrame(master=self.main, width=840)
         tableFrame.pack(side=LEFT, fill=BOTH,expand=True, padx=(0, 10), pady=10)
@@ -113,12 +148,13 @@ class Admin_Payment():
 
         bookingTable = ttk.Treeview(tableFrame)
         bookingTable.pack(side=TOP, fill=BOTH,expand=True, padx=5, pady=5)
-        bookingTable['columns'] = ('cid', 'bookingid', 'did', 'name', 'date', 'time', 'pickupaddress', 'dropoffaddress','drivername')
+        bookingTable['columns'] = ('cid', 'bookingid', 'did', 'name','credit', 'date', 'time', 'pickupaddress', 'dropoffaddress','drivername')
         bookingTable.column('#0', width=0, stretch=0)
         bookingTable.column('cid', width=0, stretch=0)
         bookingTable.column('bookingid', width=0, stretch=0)
         bookingTable.column('did', width=0, stretch=0)
         bookingTable.column('name', width=200, anchor=CENTER)
+        bookingTable.column('credit', width=200, anchor=CENTER)
         bookingTable.column('date', width=120, anchor=CENTER)
         bookingTable.column('time', width=100, anchor=CENTER)
         bookingTable.column('pickupaddress', width=200, anchor=CENTER)
@@ -130,28 +166,35 @@ class Admin_Payment():
         bookingTable.heading('bookingid', text="", anchor=CENTER)
         bookingTable.heading('did', text="", anchor=CENTER)
         bookingTable.heading('name', text="Customer Name", anchor=CENTER)
+        bookingTable.heading('credit', text="Credit No", anchor=CENTER)
         bookingTable.heading('date', text="Date", anchor=CENTER)
         bookingTable.heading('time', text="Time", anchor=CENTER)
         bookingTable.heading('pickupaddress', text="Pickup Address", anchor=CENTER)
         bookingTable.heading('dropoffaddress', text="Dropoff Address", anchor=CENTER)
         bookingTable.heading('drivername', text="Driver Name", anchor=CENTER)
 
+
+
+        def get_selectitem(a):
+            nametxt.delete(0, END)
+            credittxt.delete(0, END)
+            bookingid.delete(0, END)
+
+            selectitem=bookingTable.selection()[0]
+            nametxt.insert(0, bookingTable.item(selectitem)['values'][3])
+            credittxt.insert(0, bookingTable.item(selectitem)['values'][4])
+            bookingid.insert(0, bookingTable.item(selectitem)['values'][1])
+
+        bookingTable.bind('<<TreeviewSelect>>', get_selectitem)
+
         def billing_tabel():
 
             bill720=billing_table()
 
             for b in bill720:
-                bookingTable.insert(parent='', index='end', values=(b[0],b[1],b[2],b[3],b[4],b[5],b[6],b[7],b[8]))
+                bookingTable.insert(parent='', index='end', values=(b[0],b[1],b[2],b[3],b[4],b[5],b[6],b[7],b[8],b[9]))
 
         billing_tabel()
-
-        def get_selectitem(a):
-            nametxt.delete(0, END)
-
-            selectitem=bookingTable.selection()[0]
-            nametxt.insert(0, bookingTable.item(selectitem)['values'][3])
-
-        bookingTable.bind('<<TreeviewSelect>>', get_selectitem)
 
 if __name__=='__main__':
     main=customtkinter.CTk()

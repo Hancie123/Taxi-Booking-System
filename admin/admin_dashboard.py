@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 from tktimepicker import AnalogPicker, AnalogThemes,constants
 
 from admin import booking_report
-from billing import admin_payment
+from billing import admin_payment, admin_billing_history
 from customer import customer_management, login, customer_report, search_customers
 from dbms.booking_backend import total_booking, select_all, update_booking
 from dbms.customer_backend import total_customer
@@ -365,8 +365,13 @@ class Admin_Dashboard(customtkinter.CTk):
         viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Booking History", hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2b2b2b')
         viewcustomer_btn.place(x=40, y=450)
 
+        def billing_history_gui():
+            main=customtkinter.CTkToplevel()
+            admin_billing_history.AdminBillingHistory(main)
+            main.mainloop()
+
         viewdriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\trip-advisor-logo-24.png'))
-        viewdriver_btn = customtkinter.CTkButton(master=left_frame, text="Billing History    ", hover_color='black',font=sidemenufont, width=200,image=viewdriver_btn_image, fg_color='#2b2b2b')
+        viewdriver_btn = customtkinter.CTkButton(master=left_frame, text="Billing History    ",command=billing_history_gui, hover_color='black',font=sidemenufont, width=200,image=viewdriver_btn_image, fg_color='#2b2b2b')
         viewdriver_btn.place(x=40, y=500)
 
         def logout():
