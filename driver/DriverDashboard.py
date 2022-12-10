@@ -14,6 +14,7 @@ from tktimepicker import AnalogThemes, AnalogPicker, constants
 from customer import login
 from dbms.booking_backend import total_booking, select_all, driver_update_booking
 from dbms.customer_backend import total_customer
+from dbms.driver_backend import driver_riding_total, driver_total_booked, driver_ridecompleted, driver_ridecancelled
 from dbms.driver_management import update_DriverStatus, driver_select_all, total_driver, driver_selectallbooking
 from dbms.employees_backend import total_employees
 from driver import drivertriphistory
@@ -57,9 +58,9 @@ class Driver_Dashboard():
             login.Login(main)
             main.mainloop()
 
-        #+++++++++++++++++++++++++++++++++++LOGOUT BUTTON++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        logoutbtn = customtkinter.CTkButton(master=self.main, text="Logout",command=logout, font=('Times New Roman', 20, 'bold'), text_color="white",fg_color="black", hover_color="red")
-        logoutbtn.place(x=1350, y=25)
+        #+++++++++++++++++++++++++++++++++++Welcome Label++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        welcomelabel = customtkinter.CTkLabel(master=self.main, text="Welcome {}".format(Global.currentDriver[1]),font=('Times New Roman', 20, 'bold'), text_color="white", fg_color="#2b2b2b")
+        welcomelabel.place(x=1290, y=25)
 
 #++++++++++++++++++++++++++++++++Left Frame+++++++++++++++++++++++++++++++++++++
         leftFrame=customtkinter.CTkFrame(self.main, width=300)
@@ -187,11 +188,16 @@ class Driver_Dashboard():
 
                 if updatebookingResult == True:
                     updatebookingresultlbl.configure(text="The Trip is {} Successfully".format(bookingCombo.get()))
+                    driver_ridecancelled(driverid.get())
+                    driver_ridecompleted(driverid.get())
+                    driver_total_booked(driverid.get())
+                    driver_riding_total(driverid.get())
                     bookingTable.delete(*bookingTable.get_children())
                     bookingtable()
                     treeView.delete(*treeView.get_children())
                     show_booking()
                     switch2()
+
 
 
                 else:
@@ -219,6 +225,16 @@ class Driver_Dashboard():
         trip_image = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\Python\\Taxi Booking System\\Images\\user-regular-24.png'))
         trip_btn = customtkinter.CTkButton(master=leftFrame, text="Trips History        ", command=trip_history_gui,hover_color='black', font=sidemenufont, width=200,image=trip_image, fg_color='#2b2b2b')
         trip_btn.place(x=40, y=350)
+
+        def logout():
+            self.main.destroy()
+            root=customtkinter.CTk()
+            login.Login(root)
+            root.mainloop()
+
+        logout_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
+        logout_btn = customtkinter.CTkButton(master=leftFrame,command=logout, text="Logout                 ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,image=logout_btn_image)
+        logout_btn.place(x=40, y=400)
 
         def switch():
             global is_on
@@ -319,130 +335,46 @@ class Driver_Dashboard():
         parent_tab.pack(side=TOP, fill=BOTH)
 
         parent_tab.add('Home')
-        parent_tab.add('Search')
-        parent_tab.add('Records')
 
         # +++++++++++++++++++++++++++++++++++Home Tab 1 Frame++++++++++++++++++++++++++++++++++++
         frame1 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame1.place(x=30, y=20)
-        result = total_customer()
+        driveridd=driverid.get()
+        result = driver_riding_total(driveridd)
         tmpResult = result[0]
-        frame1_label2 = customtkinter.CTkLabel(master=frame1, text="Total \nCustomers \n\n{}".format(tmpResult[0]),
+        frame1_label2 = customtkinter.CTkLabel(master=frame1, text="Total \nRiding \n\n{}".format(tmpResult[0]),
                                                font=labelfont)
         frame1_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         # +++++++++++++++++++++++++++++++++++Home Tab 2 Frame++++++++++++++++++++++++++++++++++++
         frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame2.place(x=310, y=20)
-        bookingResult = total_booking()
+        bookingResult = driver_total_booked(driverid.get())
         bookingresult2 = bookingResult[0]
-        frame2_label2 = customtkinter.CTkLabel(master=frame2, text="Total \nBookings \n\n{}".format(bookingresult2[0]),
+        frame2_label2 = customtkinter.CTkLabel(master=frame2, text="Total \nBooked \n\n{}".format(bookingresult2[0]),
                                                font=labelfont)
         frame2_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         # +++++++++++++++++++++++++++++++++++Home Tab 3 Frame++++++++++++++++++++++++++++++++++++
         frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame3.place(x=590, y=20)
-        driverResult = total_driver()
+        driverResult = driver_ridecompleted(driverid.get())
         driveresult2 = driverResult[0]
-        frame3_label2 = customtkinter.CTkLabel(master=frame3, text="Total \nDrivers \n\n{}".format(driveresult2[0]),
+        frame3_label2 = customtkinter.CTkLabel(master=frame3, text="Rides \nCompleted \n\n{}".format(driveresult2[0]),
                                                font=labelfont)
         frame3_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         # +++++++++++++++++++++++++++++++++++Home Tab 4 Frame++++++++++++++++++++++++++++++++++++
         frame4 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame4.place(x=870, y=20)
-        employeesResult = total_employees()
+        employeesResult = driver_ridecancelled(driverid.get())
         employeesResult2 = employeesResult[0]
         frame4_label2 = customtkinter.CTkLabel(master=frame4,
-                                               text="Total \nEmployees \n\n{}".format(employeesResult2[0]),
+                                               text="Ride \nCancelled \n\n{}".format(employeesResult2[0]),
                                                font=labelfont)
         frame4_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-        # # +++++++++++++++++++++++++++++++++++Service Tab 1 Frame++++++++++++++++++++++++++++++++++++
-        # tab2frame1 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
-        # tab2frame1.place(x=30, y=20)
-        #
-        # def search_customers11():
-        #     root = customtkinter.CTkToplevel()
-        #     search_customers.SearchCustomer(root)
-        #     root.mainloop()
-        #
-        # frame1_label1 = customtkinter.CTkButton(master=tab2frame1, text="Search \nCustomer", command=search_customers11,
-        #                                         font=labelfont, fg_color='#2b2b2b', )
-        # frame1_label1.place(relx=0.5, rely=0.5, anchor=CENTER)
-        #
-        # # +++++++++++++++++++++++++++++++++++Service Tab 2 Frame++++++++++++++++++++++++++++++++++++
-        # tab2frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
-        # tab2frame2.place(x=310, y=20)
-        #
-        # def search_drivers11():
-        #     root = customtkinter.CTkToplevel()
-        #     search_drivers.SearchDrivers(root)
-        #     root.mainloop()
-        #
-        # frame2_label2 = customtkinter.CTkButton(master=tab2frame2, text="Search \nDrivers", command=search_drivers11,
-        #                                         font=labelfont, fg_color='#2b2b2b', )
-        # frame2_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
-        #
-        # # +++++++++++++++++++++++++++++++++++Service Tab 3 Frame++++++++++++++++++++++++++++++++++++
-        # tab2frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Search'), width=250, height=150, corner_radius=20)
-        # tab2frame3.place(x=590, y=20)
-        #
-        # def search_employees11():
-        #     root = customtkinter.CTkToplevel()
-        #     search_employees.SearchEmployees(root)
-        #     root.mainloop()
-        #
-        # frame3_label3 = customtkinter.CTkButton(master=tab2frame3, text="Search \nEmployees",
-        #                                         command=search_employees11, font=labelfont, fg_color='#2b2b2b', )
-        # frame3_label3.place(relx=0.5, rely=0.5, anchor=CENTER)
-        #
-        # # +++++++++++++++++++++++++++++++++++Report Tab 1 Frame++++++++++++++++++++++++++++++++++++
-        # tab3frame1 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
-        # tab3frame1.place(x=30, y=20)
-        #
-        # def customer_report720():
-        #     root = customtkinter.CTkToplevel()
-        #     customer_report.CustomerReport(root)
-        #     root.mainloop()
-        #
-        # tab3_label1 = customtkinter.CTkButton(master=tab3frame1, text="Customer \nReports", command=customer_report720,
-        #                                       font=labelfont, fg_color='#2b2b2b', )
-        # tab3_label1.place(relx=0.5, rely=0.5, anchor=CENTER)
-        #
-        # # +++++++++++++++++++++++++++++++++++Report Tab 2 Frame++++++++++++++++++++++++++++++++++++
-        # tab3frame2 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
-        # tab3frame2.place(x=310, y=20)
-        #
-        # def driver_report720():
-        #     root = customtkinter.CTkToplevel()
-        #     driver_report.DriverReport(root)
-        #     root.mainloop()
-        #
-        # tab3_label2 = customtkinter.CTkButton(master=tab3frame2, text="Driver \nReports", command=driver_report720,
-        #                                       font=labelfont, fg_color='#2b2b2b', )
-        # tab3_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
-        #
-        # # +++++++++++++++++++++++++++++++++++Report Tab 3 Frame++++++++++++++++++++++++++++++++++++
-        # tab3frame3 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
-        # tab3frame3.place(x=590, y=20)
-        #
-        # def booking_report720():
-        #     root = customtkinter.CTkToplevel()
-        #     booking_report.BookingReport(root)
-        #     root.mainloop()
-        #
-        # tab3_label3 = customtkinter.CTkButton(master=tab3frame3, text="Booking \nReports", command=booking_report720,
-        #                                       font=labelfont, fg_color='#2b2b2b', )
-        # tab3_label3.place(relx=0.5, rely=0.5, anchor=CENTER)
-        #
-        # # +++++++++++++++++++++++++++++++++++Report Tab 4 Frame++++++++++++++++++++++++++++++++++++
-        # tab4frame4 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
-        # tab4frame4.place(x=870, y=20)
-        # tab4_label4 = customtkinter.CTkButton(master=tab4frame4, text="Billing \nReports", font=labelfont,
-        #                                       fg_color='#2b2b2b', )
-        # tab4_label4.place(relx=0.5, rely=0.5, anchor=CENTER)
+
 
         style1 = ttk.Style()
         style1.theme_use("default")

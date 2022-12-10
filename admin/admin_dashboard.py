@@ -13,6 +13,7 @@ from sqlalchemy import create_engine
 from tktimepicker import AnalogPicker, AnalogThemes,constants
 
 from admin import booking_report
+from billing import admin_payment
 from customer import customer_management, login, customer_report, search_customers
 from dbms.booking_backend import total_booking, select_all, update_booking
 from dbms.customer_backend import total_customer
@@ -20,6 +21,7 @@ from dbms.driver_management import total_driver, available_driver, update_Driver
 from dbms.employees_backend import total_employees
 from driver import driver_registration, driver_report, search_drivers
 from employees import employees_management, search_employees
+from libs import Global
 from libs.booking_libs import BookingLibs
 from libs.driver_libs import Driver_Libs
 
@@ -65,12 +67,11 @@ class Admin_Dashboard(customtkinter.CTk):
         north_frame = customtkinter.CTkFrame(master=self.main, height=80, corner_radius=0)
         north_frame.pack(side=TOP, fill=BOTH)
 
-        date1 = date.today()
-        today_date_lbl = customtkinter.CTkLabel(north_frame, text='Current Date: 'f"{date1:%a, %b %d %Y}",font=('', 14, 'normal'))
-        today_date_lbl.place(x=1060, y=25)
-
-        logout_combo = customtkinter.CTkComboBox(master=north_frame, values=['View Profile', 'Logout'],font=('', 14, 'normal'))
-        logout_combo.place(x=1350, y=25)
+        # +++++++++++++++++++++++++++++++++++Welcome Label++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        welcomelabel = customtkinter.CTkLabel(master=north_frame, text="Welcome {}".format(Global.currentAdmin[1]),
+                                              font=('Times New Roman', 20, 'bold'), text_color="white",
+                                              fg_color="#2b2b2b")
+        welcomelabel.place(x=1290, y=25)
 
         #+++++++++++++++++++++++++++++Title Label++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         title_lbl = customtkinter.CTkLabel(master=north_frame, text="Admin Dashboard",font=titlefont)
@@ -324,8 +325,13 @@ class Admin_Dashboard(customtkinter.CTk):
         assigndriver_btn = customtkinter.CTkButton(master=left_frame,text="Assign Drivers   ",command=assign_driver, hover_color='black', font=sidemenufont, width=200,image=assigndriver_btn_image, fg_color='#2b2b2b')
         assigndriver_btn.place(x=40, y=200)
 
+        def billing_gui():
+            main=customtkinter.CTkToplevel()
+            admin_payment.Admin_Payment(main)
+            main.mainloop()
+
         payment_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\paypal-logo-24.png'))
-        payment_btn = customtkinter.CTkButton(master=left_frame, text="Payment            ", hover_color='black', font=sidemenufont, width=200,image=payment_btn_image, fg_color='#2b2b2b')
+        payment_btn = customtkinter.CTkButton(master=left_frame, text="Payment            ",command=billing_gui, hover_color='black', font=sidemenufont, width=200,image=payment_btn_image, fg_color='#2b2b2b')
         payment_btn.place(x=40, y=250)
 
         def add_customer_gui():
@@ -356,11 +362,11 @@ class Admin_Dashboard(customtkinter.CTk):
         manageemployees_btn.place(x=40, y=400)
 
         viewcustomer_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\trip-advisor-logo-24.png'))
-        viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="View Customers", hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2b2b2b')
+        viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Booking History", hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2b2b2b')
         viewcustomer_btn.place(x=40, y=450)
 
         viewdriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\trip-advisor-logo-24.png'))
-        viewdriver_btn = customtkinter.CTkButton(master=left_frame, text="View Drivers    ", hover_color='black',font=sidemenufont, width=200,image=viewdriver_btn_image, fg_color='#2b2b2b')
+        viewdriver_btn = customtkinter.CTkButton(master=left_frame, text="Billing History    ", hover_color='black',font=sidemenufont, width=200,image=viewdriver_btn_image, fg_color='#2b2b2b')
         viewdriver_btn.place(x=40, y=500)
 
         def logout():

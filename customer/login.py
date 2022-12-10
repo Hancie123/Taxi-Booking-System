@@ -37,8 +37,7 @@ class Login(customtkinter.CTk):
         north_frame = customtkinter.CTkFrame(master=root, height=100)
         north_frame.pack(side=TOP, fill=BOTH)
 
-        title_label = customtkinter.CTkLabel(master=north_frame, text="TAXI BOOKING SYSTEM",
-                                             font=('Times New Roman', 35, 'bold'))
+        title_label = customtkinter.CTkLabel(master=north_frame, text="TAXI BOOKING SYSTEM", font=('Times New Roman', 35, 'bold'))
         title_label.place(x=650, y=40)
 
         frame1 = customtkinter.CTkFrame(master=root, width=400, height=400, corner_radius=20)
@@ -77,7 +76,7 @@ class Login(customtkinter.CTk):
         email_lbl.place(x=200, y=205)
 
         email_txt1 = customtkinter.CTkEntry(master=parent_tab.tab('Sign In'), corner_radius=10, font=font1, width=200)
-        email_txt1.insert(0, 'nitesh0hamal@gmail.com')
+        email_txt1.insert(0, 'neuve@gmail.com')
         email_txt1.place(x=330, y=200)
 
         password_lbl = customtkinter.CTkLabel(master=parent_tab.tab('Sign In'), text="Password: ", font=font1)
@@ -133,13 +132,6 @@ class Login(customtkinter.CTk):
                         obj2 = customer_dashboard.Customer_Dashboard(root)
                         root.mainloop()
 
-
-
-
-
-
-
-
                 elif driverresult != None:
                     Global.currentDriver=driverresult
                     self.root.destroy()
@@ -148,7 +140,7 @@ class Login(customtkinter.CTk):
                     root.mainloop()
 
                 elif adminresult != None:
-                    Global.currentUser = user
+                    Global.currentAdmin = adminresult
                     self.root.destroy()
                     root = customtkinter.CTk()
                     obj2 = admin_dashboard.Admin_Dashboard(root)

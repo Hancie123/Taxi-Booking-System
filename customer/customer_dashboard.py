@@ -21,7 +21,8 @@ from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
 from customer import login, customerprofile, Change_Password
-from dbms.booking_backend import insert_booking, customerbooking_selectall, customerbooking_selectstatsubooked
+from dbms.booking_backend import insert_booking, customerbooking_selectall, customerbooking_selectstatsubooked, \
+    update_customer_booking1, delete_booking
 from dbms.customer_management import delete_record
 from dbms.myactivity_backend import delete_myactivity, selectall_myactivity
 from driver import driverhistory
@@ -322,8 +323,8 @@ class Customer_Dashboard(customtkinter.CTk):
         pickup_address_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333" ,text="Pick up address: ", font=labelfont)
         pickup_address_lbl.place(x=20, y=150)
 
-        picuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
-        picuptxt.place(x=170, y=150)
+        pickupaddresstxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
+        pickupaddresstxt.place(x=170, y=150)
 
         date_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333", text="Pick up date: ", font=labelfont)
         date_lbl.place(x=20, y=200)
@@ -336,18 +337,18 @@ class Customer_Dashboard(customtkinter.CTk):
                         foreground='black',
                         arrowcolor='white')
 
-        datetxt = DateEntry(parent_tab.tab('Update Booking'), font=('Times New Roman', 20, 'normal'), width=22,
+        updatedatetxt = DateEntry(parent_tab.tab('Update Booking'), font=('Times New Roman', 20, 'normal'), width=22,
                                  date_pattern='yyyy-MM-dd',
                                  selectmode='day', style='my.DateEntry', background="green", bordercolor="red",
                                  selectbackground="green", mindate=dt, disableddaybackground="grey")
-        datetxt.place(x=210, y=240)
+        updatedatetxt.place(x=210, y=240)
 
         pickup_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333", text="Pickup time:", font=labelfont)
         pickup_lbl.place(x=20, y=250)
 
         def updateTime2(time):
-            pickuptxt1.delete(0, len(pickuptxt1.get()))
-            pickuptxt1.insert(0, str("{}:{} {}".format(*time)))
+            updatepickuptxt.delete(0, len(updatepickuptxt.get()))
+            updatepickuptxt.insert(0, str("{}:{} {}".format(*time)))
 
         def time720():
             top = customtkinter.CTkToplevel(parent_tab.tab('Update Booking'))
@@ -370,25 +371,59 @@ class Customer_Dashboard(customtkinter.CTk):
 
         time = ()
 
-        pickuptxt1 = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'),textvariable=self.pickuptxt1, font=font720, width=250)
-        pickuptxt1.place(x=170, y=250)
+        updatepickuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'),textvariable=self.pickuptxt1, font=font720, width=250)
+        updatepickuptxt.place(x=170, y=250)
 
-        time_img = customtkinter.CTkImage(light_image=Image.open(
-            "E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
-        pic_up_time_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), image=time_img, text="",
-                                                  fg_color="black", command=time720, font=font720, width=40)
+        time_img = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
+        pic_up_time_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), image=time_img, text="",fg_color="black", command=time720, font=font720, width=40)
         pic_up_time_btn.place(x=423, y=252)
 
         dropoff_lbl = customtkinter.CTkLabel(parent_tab.tab('Update Booking'),bg_color="#333333", text="Drop off address:", font=labelfont)
         dropoff_lbl.place(x=20, y=300)
 
-        dropoff_txt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
-        dropoff_txt.place(x=170, y=300)
 
-        update_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'),text="Update", font=labelfont)
+
+        updatedropofftxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'), font=font720, width=250)
+        updatedropofftxt.place(x=170, y=300)
+
+        updatebookingid = Entry(self.root)
+
+
+
+        def update_customer_booking():
+
+            updateBooking = BookingLibs(bookingid=updatebookingid.get(), pickupaddress=pickupaddresstxt.get(),
+                                        date=updatedatetxt.get(), time=updatepickuptxt.get(),
+                                        dropoffaddress=updatedropofftxt.get())
+
+            updatebookingResult = update_customer_booking1(updateBooking)
+            if updatebookingResult == True:
+
+                messagebox.showinfo("Taxi Booking System", "The booking request is updated successfully")
+                updatebookingtable.delete(*updatebookingtable.get_children())
+                bookingtable()
+
+
+            else:
+                messagebox.showerror("Taxi Booking System", "Error Occurred")
+
+
+
+        update_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'),text="Update",command=update_customer_booking, font=labelfont)
         update_booking_btn.place(x=170, y=350)
 
-        cancel_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'), text="Cancel",font=labelfont)
+        def cancel_booking():
+            updateID=updatebookingid.get()
+            Deleteresult=delete_booking(updateID)
+            if Deleteresult==True:
+                messagebox.showinfo("Taxi Booking System","The booking is cancel successfully!")
+                updatebookingtable.delete(*updatebookingtable.get_children())
+                bookingtable()
+
+            else:
+                messagebox.showerror("Taxi Booking System","Error Occurred")
+
+        cancel_booking_btn = customtkinter.CTkButton(master=parent_tab.tab('Update Booking'),command=cancel_booking, text="Cancel",font=labelfont)
         cancel_booking_btn.place(x=320, y=350)
 
 
@@ -417,12 +452,20 @@ class Customer_Dashboard(customtkinter.CTk):
 
         def displaySelectedItem(a):
 
-            dropoff_txt.delete(0, END)
-            pickuptxt1.delete(0, END)
+            pickupaddresstxt.delete(0, END)
+            updatedatetxt.delete(0, END)
+            updatepickuptxt.delete(0, END)
+            updatedropofftxt.delete(0, END)
+            updatebookingid.delete(0, END)
+
 
             selectedItem = updatebookingtable.selection()[0]
-            dropoff_txt.insert(0, updatebookingtable.item(selectedItem)['values'][0])
-            pickuptxt1.insert(0, updatebookingtable.item(selectedItem)['values'][1])
+            updatebookingid.insert(0, updatebookingtable.item(selectedItem)['values'][0])
+            pickupaddresstxt.insert(0, updatebookingtable.item(selectedItem)['values'][1])
+            updatedatetxt.insert(0, updatebookingtable.item(selectedItem)['values'][2])
+            updatepickuptxt.insert(0, updatebookingtable.item(selectedItem)['values'][3])
+            updatedropofftxt.insert(0, updatebookingtable.item(selectedItem)['values'][4])
+
 
 
         updatebookingtable.bind("<<TreeviewSelect>>", displaySelectedItem)
