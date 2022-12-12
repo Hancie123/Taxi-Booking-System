@@ -20,7 +20,8 @@ import pandas
 from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
-from customer import login, customerprofile, Change_Password
+from billing import customer_billing_history
+from customer import login, customerprofile, Change_Password, customer_booking_history
 from dbms.booking_backend import insert_booking, customerbooking_selectall, customerbooking_selectstatsubooked, \
     update_customer_booking1, delete_booking
 from dbms.customer_management import delete_record
@@ -123,8 +124,13 @@ class Customer_Dashboard(customtkinter.CTk):
         profile_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',font=sidemenufont, width=200,command=open_profile, image=profile_img, fg_color='#2b2b2b')
         profile_btn.place(x=50, y=250)
 
+        def customerBookingHistory():
+            main=customtkinter.CTkToplevel()
+            customer_booking_history.CustomerBookingHistory(main)
+            main.mainloop()
+
         managecustomers_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\Python\\Taxi Booking System\\Images\\user-regular-24.png'))
-        managecustomers_btn = customtkinter.CTkButton(master=left_frame, text="Booking History     ", hover_color='black',font=sidemenufont, width=200,image=managecustomers_btn_image, fg_color='#2b2b2b')
+        managecustomers_btn = customtkinter.CTkButton(master=left_frame, text="Booking History     ",command=customerBookingHistory, hover_color='black',font=sidemenufont, width=200,image=managecustomers_btn_image, fg_color='#2b2b2b')
         managecustomers_btn.place(x=50, y=300)
 
         def driverhistory720():
@@ -136,8 +142,13 @@ class Customer_Dashboard(customtkinter.CTk):
         managedrivers_btn = customtkinter.CTkButton(master=left_frame, text="Drivers History     ",command=driverhistory720, hover_color='black',font=sidemenufont, width=200,image=managedrivers_btn_image, fg_color='#2b2b2b')
         managedrivers_btn.place(x=50, y=350)
 
+        def customer_billing_history_gui():
+            main=customtkinter.CTkToplevel()
+            customer_billing_history.CustomerBillingHistory(main)
+            main.mainloop()
+
         billing_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\id-card-regular-24.png'))
-        billing_btn = customtkinter.CTkButton(master=left_frame, text="Billing                   ", hover_color='black',font=sidemenufont, width=200,image=billing_btn_image, fg_color='#2b2b2b')
+        billing_btn = customtkinter.CTkButton(master=left_frame, text="Billing                   ",command=customer_billing_history_gui, hover_color='black',font=sidemenufont, width=200,image=billing_btn_image, fg_color='#2b2b2b')
         billing_btn.place(x=50, y=400)
 
         def change_password_gui():
@@ -488,7 +499,38 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
 
+        #++++++++++++++++++++++++++++++++++Riding History Tab+++++++++++++++++++++++++++++++
         parent_tab.add("Riding History")
+
+        bookinghistoryTable=ttk.Treeview(parent_tab.tab('Riding History'))
+
+        bookinghistoryTable['columns']=('bookingid','pickupaddress','dropoffaddress','date','time')
+        bookinghistoryTable.column('#0', width=0, stretch=0)
+        bookinghistoryTable.column('bookingid', width=100, anchor=CENTER)
+        bookinghistoryTable.column('pickupaddress', width=100, anchor=CENTER)
+        bookinghistoryTable.column('dropoffaddress', width=100, anchor=CENTER)
+        bookinghistoryTable.column('date', width=100, anchor=CENTER)
+        bookinghistoryTable.column('time', width=100, anchor=CENTER)
+
+        bookinghistoryTable.heading('#0', text='', anchor=CENTER)
+        bookinghistoryTable.heading('bookingid', text='Booking ID', anchor=CENTER)
+        bookinghistoryTable.heading('pickupaddress', text='Pickup Address', anchor=CENTER)
+        bookinghistoryTable.heading('dropoffaddress', text='Dropoff Address', anchor=CENTER)
+        bookinghistoryTable.heading('date', text='Date', anchor=CENTER)
+        bookinghistoryTable.heading('time', text='Time', anchor=CENTER)
+        bookinghistoryTable.pack(side=TOP, fill=BOTH, expand=TRUE)
+
+        def bookinghistory():
+
+
+            Bookresult=customerbooking_selectall(customerid.get())
+
+            for x in Bookresult:
+                bookinghistoryTable.insert(parent='', index='end', values=(x[0],x[1],x[4],x[2],x[3]))
+
+        bookinghistory()
+
+
 
 
         parent_tab.add("Report")
@@ -562,7 +604,7 @@ class Customer_Dashboard(customtkinter.CTk):
         db_connection = sql_engine.connect()
 
         my_colors = [(.9, .4, .6), (.1, .3, .8)]
-        query = 'SELECT *,count(myid) as ID FROM myactivity group by date '
+        query = "SELECT *,count(myid) as ID FROM myactivity WHERE cid=" + iddd + " group by date "
         df = pandas.read_sql(query, db_connection, index_col='date')
         fig = df.plot.bar(title="No of times account accessed", y='ID', figsize=(6, 6), color=my_colors, legend=True,grid=False).get_figure()
         plot = FigureCanvasTkAgg(fig, parent_tab.tab('Report'))

@@ -45,7 +45,7 @@ class DriverReport():
 
         my_colors = [(x / 10.0, x / 20.0, .9)
                      for x in range(len(df))]
-        query2='select date,count(did) as ID from booking where bookingstatus="Booked" group by date limit 4'
+        query2='select date,count(did) as ID from booking group by date limit 4'
         df2=pandas.read_sql(query2, dbConnection, index_col='date')
         fig2=df2.plot.bar(title="Daily Booked Drivers Report", y='ID',color=my_colors,rot=360,figsize=(5,5)).get_figure()
         plot2=FigureCanvasTkAgg(fig2, frame)

@@ -5,9 +5,9 @@ import mysql.connector
 
 def insert_billing(billingID):
     conn=None
-    sql="""INSERT INTO billing VALUES (%s,%s,%s,%s,%s,%s)"""
+    sql="""INSERT INTO billing VALUES (%s,%s,%s,%s,%s,%s,%s)"""
     values=(billingID.getBillingid(), billingID.getName(), billingID.getKm(),
-            billingID.getUnit(), billingID.getTotal(), billingID.getBookingid())
+            billingID.getUnit(), billingID.getTotal(), billingID.getBookingid(), billingID.getDate())
     result=False
 
     try:
@@ -72,3 +72,26 @@ def billing_history12():
     finally:
         del sql, conn
         return billingResult
+
+def customer_billing_history(custInfo):
+    conn=None
+    sql="""select booking.pickupaddress, booking.dropoffaddress, booking.date,booking.time,
+     billing.km, billing.unit, billing.total from booking inner join 
+     billing on booking.bookingid=billing.billingid where cid=%s"""
+    values=(custInfo,)
+    billingHistory=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql,values)
+        billingHistory=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return billingHistory

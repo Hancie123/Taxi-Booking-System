@@ -1,11 +1,20 @@
+from datetime import date
+from time import strftime
 from tkinter import *
 import customtkinter
-from tkinter import ttk
+from tkinter import ttk, filedialog
 from tkinter import messagebox
+
+from reportlab.lib.units import inch
+
 from dbms.billing_backend import billing_table, insert_billing
 from dbms.booking_backend import driver_update_booking
 from libs.billing_libs import BillingLibs
 from libs.booking_libs import BookingLibs
+from reportlab.lib import units
+from reportlab.pdfgen import  canvas
+from reportlab.lib.pagesizes import letter,A4
+import random
 
 
 class Admin_Payment():
@@ -96,6 +105,11 @@ class Admin_Payment():
 
         bookingid=Entry(self.main)
 
+        pickupaddresstxt=Entry(self.main)
+        dropoffaddresstxt=Entry(self.main)
+        datetxt=Entry(self.main)
+        timetxt=Entry(self.main)
+
 
         def generate_bill():
             name=nametxt.get()
@@ -104,7 +118,9 @@ class Admin_Payment():
             total=totaltxt.get()
             bookingid1=bookingid.get()
 
-            billing=BillingLibs(billingid='',name=name, km=km, unit=unit, total=total, bookingid=bookingid1)
+            todatedate=date.today()
+
+            billing=BillingLibs(billingid='',name=name, km=km, unit=unit, total=total, bookingid=bookingid1, date=todatedate)
             result=insert_billing(billing)
 
             booking=BookingLibs(bookingstatus='Billing Completed',bookingid=bookingid1)
@@ -113,6 +129,102 @@ class Admin_Payment():
                 messagebox.showinfo("Taxi Booking System","The billing is done successfully")
                 bookingTable.delete(*bookingTable.get_children())
                 billing_tabel()
+
+                mypath = "C:\\Users\\Hanci\Desktop\\Taxi_Bill.pdf"
+                c = canvas.Canvas(mypath, pagesize=letter)
+                c.setFont('Helvetica', 20)
+                c.translate(inch, inch)
+                c.setStrokeColorRGB(1, 0, 0)
+                c.setLineWidth(2)
+                c.line(0, 8 * inch, 7 * inch, 8 * inch)
+                c.drawString(1 * inch, 9.1 * inch, "Taxi Booking System")
+                c.setFont('Helvetica', 14)
+                c.drawString(1 * inch, 8.8 * inch, 'Kathmandu, Nepal')
+
+                num = random.randint(1000, 100000)
+                c.drawString(5.8 * inch, 9.1 * inch, 'Bill No: {}'.format(num))
+
+                # Taxi Receipt Label
+                # txt1=txt.get()
+                c.setFont('Times-Bold', 18)
+                c.drawString(2.8 * inch, 8.1 * inch, 'TAXI RECEIPT')
+
+                c.drawImage('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo2.jpg',
+                            -0.8 * inch, 8.4 * inch)
+
+                c.setFont('Helvetica', 14)
+                # Date label
+                todaydate = date.today()
+                c.drawString(0.5 * inch, 7.5 * inch, 'Date:   {}'.format(todaydate))
+
+                # Time label
+                currenttime = strftime("%I:%M:%S")
+                c.drawString(5 * inch, 7.5 * inch, 'Time:   {}'.format(currenttime))
+
+                # Customer Name
+                c.drawString(0.5 * inch, 7 * inch, 'Name: {}'.format(nametxt.get()))
+
+                # Pickup address
+                c.drawString(0.5 * inch, 6.7 * inch, 'Pickup address: {}'.format(pickupaddresstxt.get()))
+
+                # Dropoff address
+                c.drawString(0.5 * inch, 6.4 * inch, 'Dropoff address: {}'.format(dropoffaddresstxt.get()))
+
+                # Date
+                c.drawString(0.5 * inch, 6.1 * inch, 'Date: {}'.format(datetxt.get()))
+
+                # Time
+                c.drawString(0.5 * inch, 5.8 * inch, 'Time: {}'.format(timetxt.get()))
+
+                c.setStrokeColorRGB(1, 0, 0)
+                c.setLineWidth(1)
+
+                # Open line
+                c.line(0, 5.5 * inch, 7 * inch, 5.5 * inch)
+                # Close line
+                c.line(0, 5 * inch, 7 * inch, 5 * inch)
+
+                # Description
+                c.drawString(0.5 * inch, 5.2 * inch, 'Description')
+
+                # Kilometer label
+                c.drawString(2.5 * inch, 5.2 * inch, 'Kilometer')
+
+                # Unit label
+                c.drawString(4.5 * inch, 5.2 * inch, 'Unit')
+
+                # Total Label
+                c.drawString(6 * inch, 5.2 * inch, 'Total')
+
+                # ++++++++++++++++++++++++++++++++++++++Table Data+++++++++++++++++++++++++++++++
+                # Description data
+                c.drawString(0.5 * inch, 4.7 * inch, 'From {}'.format(pickupaddresstxt.get()))
+
+                # Description data
+                c.drawString(0.5 * inch, 4.4 * inch, 'To {}'.format(dropoffaddresstxt.get()))
+
+                # Kilometer Data
+                c.drawString(2.5 * inch, 4.7 * inch, '{} KM'.format(kmtxt.get()))
+
+                # Unit Data
+                c.drawString(4.5 * inch, 4.7 * inch, '100')
+
+                # Total Data
+                c.drawString(5.9 * inch, 4.7 * inch, 'Rs. {}'.format(totaltxt.get()))
+
+                # Signature data
+                c.drawString(0.5 * inch, 1.7 * inch, 'Signature')
+
+                c.drawImage(
+                    'E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\hancieSignature.jpg',
+                    0.5 * inch,
+                    0.3 * inch)
+
+                c.showPage()
+                c.save()
+
+
+
             else:
                 messagebox.showerror("Taxi Booking System","Error Occurred")
 
@@ -154,7 +266,7 @@ class Admin_Payment():
         bookingTable.column('bookingid', width=0, stretch=0)
         bookingTable.column('did', width=0, stretch=0)
         bookingTable.column('name', width=200, anchor=CENTER)
-        bookingTable.column('credit', width=200, anchor=CENTER)
+        bookingTable.column('credit', width=0, stretch=0)
         bookingTable.column('date', width=120, anchor=CENTER)
         bookingTable.column('time', width=100, anchor=CENTER)
         bookingTable.column('pickupaddress', width=200, anchor=CENTER)
@@ -166,7 +278,7 @@ class Admin_Payment():
         bookingTable.heading('bookingid', text="", anchor=CENTER)
         bookingTable.heading('did', text="", anchor=CENTER)
         bookingTable.heading('name', text="Customer Name", anchor=CENTER)
-        bookingTable.heading('credit', text="Credit No", anchor=CENTER)
+        bookingTable.heading('credit', text="", anchor=CENTER)
         bookingTable.heading('date', text="Date", anchor=CENTER)
         bookingTable.heading('time', text="Time", anchor=CENTER)
         bookingTable.heading('pickupaddress', text="Pickup Address", anchor=CENTER)
@@ -179,11 +291,21 @@ class Admin_Payment():
             nametxt.delete(0, END)
             credittxt.delete(0, END)
             bookingid.delete(0, END)
+            pickupaddresstxt.delete(0, END)
+            dropoffaddresstxt.delete(0, END)
+            datetxt.delete(0, END)
+            timetxt.delete(0, END)
+
 
             selectitem=bookingTable.selection()[0]
             nametxt.insert(0, bookingTable.item(selectitem)['values'][3])
             credittxt.insert(0, bookingTable.item(selectitem)['values'][4])
             bookingid.insert(0, bookingTable.item(selectitem)['values'][1])
+
+            pickupaddresstxt.insert(0, bookingTable.item(selectitem)['values'][7])
+            dropoffaddresstxt.insert(0, bookingTable.item(selectitem)['values'][8])
+            datetxt.insert(0, bookingTable.item(selectitem)['values'][5])
+            timetxt.insert(0, bookingTable.item(selectitem)['values'][6])
 
         bookingTable.bind('<<TreeviewSelect>>', get_selectitem)
 

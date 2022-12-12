@@ -6,16 +6,15 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pymysql
 import customtkinter
 
-class CustomerReport():
+class BillingReport():
     def __init__(self, main):
         self.main=main
         customtkinter.set_appearance_mode('dark')
         customtkinter.set_default_color_theme('blue')
-        self.main.title("Customer Report")
         self.main.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
         self.main.title("Taxi Booking System")
         self.main.resizable(0, 0)
-        frame_width = 900
+        frame_width = 950
         frame_height = 500
         screen_width = self.main.winfo_screenwidth()
         screen_height = self.main.winfo_screenheight()
@@ -28,7 +27,7 @@ class CustomerReport():
         topFrame=customtkinter.CTkFrame(self.main, height=100)
         topFrame.pack(side=TOP, fill=BOTH)
 
-        titlelabel=customtkinter.CTkLabel(topFrame, text='CUSTOMER REPORT', font=font1)
+        titlelabel=customtkinter.CTkLabel(topFrame, text='BILLING REPORT', font=font1)
         titlelabel.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         frame=Frame(self.main, bg="white")
@@ -37,22 +36,22 @@ class CustomerReport():
         create_engine1=create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
         dbConnection=create_engine1.connect()
 
-        query='select gender,count(cid) as Customer from customers group by gender'
-        df=pandas.read_sql(query, dbConnection, index_col='gender')
-        fig=df.plot.pie(title="No. of Male and Female Accounts", y='Customer',autopct='%1.0f%%', figsize=(5,5)).get_figure()
+        query='select *,sum(total) as Total from billing group by date'
+        df=pandas.read_sql(query, dbConnection, index_col='date')
+        fig=df.plot.bar(title="Daily Income Analysis", y='Total',rot=360, figsize=(6,5)).get_figure()
         plot2=FigureCanvasTkAgg(fig, frame)
-        plot2.get_tk_widget().place(x=20, y=30)
+        plot2.get_tk_widget().place(x=20, y=0)
 
 
-        query2='select *,count(cid) as ID from booking group by date'
+        query2="""select *,sum(total) as Total from billing group by date"""
         df2=pandas.read_sql(query2, dbConnection, index_col='date')
-        fig2=df2.plot.line(title="Daily Customer Booking Analysis", y='ID', figsize=(5,5)).get_figure()
+        fig2=df2.plot.line(title="Daily Income Analysis", y='Total', figsize=(6,5)).get_figure()
         plot2=FigureCanvasTkAgg(fig2, frame)
-        plot2.get_tk_widget().place(x=550, y=0)
+        plot2.get_tk_widget().place(x=570, y=0)
 
 
 
 if __name__=='__main__':
     main=customtkinter.CTk()
-    CustomerReport(main)
+    BillingReport(main)
     main.mainloop()

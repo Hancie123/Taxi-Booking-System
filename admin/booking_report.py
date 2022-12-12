@@ -43,7 +43,7 @@ class BookingReport():
         plot2.get_tk_widget().place(x=20, y=30)
 
 
-        query2='select date,count(bookingid) as ID from booking where bookingstatus="Booked" group by date limit 4'
+        query2='select date,count(bookingid) as ID from booking group by date limit 4'
         df2=pandas.read_sql(query2, dbConnection, index_col='date')
         fig2=df2.plot.bar(title="Daily Booked Report", y='ID',color="green",rot=360,figsize=(5,5)).get_figure()
         plot2=FigureCanvasTkAgg(fig2, frame)

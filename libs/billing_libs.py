@@ -1,12 +1,13 @@
 
 class BillingLibs():
-    def __init__(self, billingid=0, name=None, km=None, unit=None, total=None, bookingid=None):
+    def __init__(self, billingid=0, name=None, km=None, unit=None, total=None, bookingid=None, date=None):
         self.billingid=billingid
         self.name=name
         self.km=km
         self.unit=unit
         self.total=total
         self.bookingid=bookingid
+        self.date=date
 
     def getBillingid(self):
         return self.billingid
@@ -25,6 +26,9 @@ class BillingLibs():
 
     def getBookingid(self):
         return self.bookingid
+
+    def getDate(self):
+        return self.date
 
 
     def setBilling(self, billingid):
@@ -45,9 +49,12 @@ class BillingLibs():
     def setBookingid(self, bookingid):
         self.bookingid=bookingid
 
+    def setDate(self, date):
+        self.date=date
+
 
     def __str__(self):
-        return ('{},{},{},{},{},{}'.format(self.billingid, self.name, self.km, self.unit, self.total, self.bookingid))
+        return ('{},{},{},{},{},{},{}'.format(self.billingid, self.name, self.km, self.unit, self.total, self.bookingid, self.date))
 
 
 

@@ -15,7 +15,6 @@ from libs import Global
 from libs.customer_libs import Customer_Libs
 from dbms.login_management import login, driverlogin, adminLogin
 import platform
-
 from libs.myactivity_libs import MyActivity
 
 
@@ -76,7 +75,7 @@ class Login(customtkinter.CTk):
         email_lbl.place(x=200, y=205)
 
         email_txt1 = customtkinter.CTkEntry(master=parent_tab.tab('Sign In'), corner_radius=10, font=font1, width=200)
-        # email_txt1.insert(0, 'neuve@gmail.com')
+        # email_txt1.insert(0, 'nitesh0hamal@gmail.com')
         email_txt1.place(x=330, y=200)
 
         password_lbl = customtkinter.CTkLabel(master=parent_tab.tab('Sign In'), text="Password: ", font=font1)

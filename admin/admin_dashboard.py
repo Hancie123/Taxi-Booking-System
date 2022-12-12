@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 from tktimepicker import AnalogPicker, AnalogThemes,constants
 
 from admin import booking_report
-from billing import admin_payment, admin_billing_history
+from billing import admin_payment, admin_billing_history, billing_report
 from customer import customer_management, login, customer_report, search_customers
 from dbms.booking_backend import total_booking, select_all, update_booking
 from dbms.customer_backend import total_customer
@@ -366,6 +366,7 @@ class Admin_Dashboard(customtkinter.CTk):
         viewcustomer_btn.place(x=40, y=450)
 
         def billing_history_gui():
+
             main=customtkinter.CTkToplevel()
             admin_billing_history.AdminBillingHistory(main)
             main.mainloop()
@@ -514,7 +515,11 @@ class Admin_Dashboard(customtkinter.CTk):
         # +++++++++++++++++++++++++++++++++++Report Tab 4 Frame++++++++++++++++++++++++++++++++++++
         tab4frame4 = customtkinter.CTkFrame(master=parent_tab.tab('Records'), width=250, height=150, corner_radius=20)
         tab4frame4.place(x=870, y=20)
-        tab4_label4 = customtkinter.CTkButton(master=tab4frame4, text="Billing \nReports", font=labelfont,
+        def billing_report720():
+            root=customtkinter.CTkToplevel()
+            billing_report.BillingReport(root)
+            root.mainloop()
+        tab4_label4 = customtkinter.CTkButton(master=tab4frame4,command=billing_report720, text="Billing \nReports", font=labelfont,
                                               fg_color='#2b2b2b', )
         tab4_label4.place(relx=0.5, rely=0.5, anchor=CENTER)
 
