@@ -23,7 +23,7 @@ from tktimepicker import AnalogPicker, AnalogThemes, constants
 from billing import customer_billing_history
 from customer import login, customerprofile, Change_Password, customer_booking_history
 from dbms.booking_backend import insert_booking, customerbooking_selectall, customerbooking_selectstatsubooked, \
-    update_customer_booking1, delete_booking
+    update_customer_booking1, delete_booking, customer_checkbooking
 from dbms.customer_management import delete_record
 from dbms.myactivity_backend import delete_myactivity, selectall_myactivity
 from driver import driverhistory
@@ -298,15 +298,31 @@ class Customer_Dashboard(customtkinter.CTk):
             dropoff=dropoff_txt1.get()
             cid11=customerid.get()
 
-            booking=BookingLibs(bookingid='', pickupaddress=pickup, date=date720, time=picuptime, dropoffaddress=dropoff, bookingstatus='Pending', cid=cid11)
-            insertResult=insert_booking(booking)
-            if insertResult==True:
+            booking=BookingLibs(cid=cid11, date=date720)
+            checkResult=customer_checkbooking(booking)
+
+
+
+            if pickup_address_txt.get()=='' or pick_up_time_lbl.get()=='' or dropoff_txt1.get()=='' or date_lbl_txt.get()=='':
+                messagebox.showwarning("Taxi Booking System","Please enter all the field")
+
+            elif checkResult!=None:
+                messagebox.showwarning("Taxi Booking System","You have already requested on this date")
+
+
+
+            else:
+                booking = BookingLibs(bookingid='', pickupaddress=pickup, date=date720, time=picuptime,
+                                      dropoffaddress=dropoff, bookingstatus='Pending', cid=cid11)
+                insertResult = insert_booking(booking)
                 messagebox.showinfo("Taxi Booking System", "The booking is requested successfully!")
                 updatebookingtable.delete(*updatebookingtable.get_children())
                 bookingtable()
 
-            else:
-                messagebox.showerror("Taxi Booking System", "Error Occurred!")
+
+
+
+
 
 
 

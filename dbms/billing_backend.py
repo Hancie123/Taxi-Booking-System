@@ -77,7 +77,7 @@ def customer_billing_history(custInfo):
     conn=None
     sql="""select booking.pickupaddress, booking.dropoffaddress, booking.date,booking.time,
      billing.km, billing.unit, billing.total from booking inner join 
-     billing on booking.bookingid=billing.billingid where cid=%s"""
+     billing on booking.bookingid=billing.bookingid where booking.cid=%s"""
     values=(custInfo,)
     billingHistory=None
     try:

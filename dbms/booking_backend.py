@@ -210,4 +210,43 @@ def delete_booking(bookingID):
         del values, sql,conn
         return Deleteresult
 
+def customer_checkbooking(cidInfo):
+    conn=None
+    sql="""select date from booking where cid=%s and date=%s and bookingstatus='Pending'"""
+    values=(cidInfo.getCid(),cidInfo.getDate())
+    checkResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        checkResult=cursor.fetchone()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql, conn
+        return checkResult
+
+
+def active_booking12():
+    conn=None
+    sql="""select booking.bookingid, customers.name, booking.pickupaddress, 
+    booking.dropoffaddress, booking.date, booking.time,drivers.name, booking.bookingstatus
+     from booking inner join customers on booking.cid=customers.cid inner join drivers 
+     on booking.did=drivers.did where booking.bookingstatus='Booked'"""
+    activeResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        activeResult=cursor.fetchall()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return activeResult
+
 

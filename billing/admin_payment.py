@@ -40,6 +40,8 @@ class Admin_Payment():
         labelfont = customtkinter.CTkFont(family='Times New Roman', size=25, weight='normal')
         sidemenufont = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
 
+        num = random.randint(1000, 100000)
+
         def only_numbers(char):
             # Validate for numbers only
             if ((char.isdigit()) or (char == "")):
@@ -130,7 +132,7 @@ class Admin_Payment():
                 bookingTable.delete(*bookingTable.get_children())
                 billing_tabel()
 
-                mypath = "C:\\Users\\Hanci\Desktop\\Taxi_Bill.pdf"
+                mypath = "C:\\Users\\Hanci\Desktop\\Taxi Booking Bill\\{}.pdf".format(num)
                 c = canvas.Canvas(mypath, pagesize=letter)
                 c.setFont('Helvetica', 20)
                 c.translate(inch, inch)
@@ -141,7 +143,7 @@ class Admin_Payment():
                 c.setFont('Helvetica', 14)
                 c.drawString(1 * inch, 8.8 * inch, 'Kathmandu, Nepal')
 
-                num = random.randint(1000, 100000)
+
                 c.drawString(5.8 * inch, 9.1 * inch, 'Bill No: {}'.format(num))
 
                 # Taxi Receipt Label

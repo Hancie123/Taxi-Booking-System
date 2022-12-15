@@ -75,7 +75,7 @@ class Login(customtkinter.CTk):
         email_lbl.place(x=200, y=205)
 
         email_txt1 = customtkinter.CTkEntry(master=parent_tab.tab('Sign In'), corner_radius=10, font=font1, width=200)
-        # email_txt1.insert(0, 'nitesh0hamal@gmail.com')
+        email_txt1.insert(0, 'hanciephago@gmail.com')
         email_txt1.place(x=330, y=200)
 
         password_lbl = customtkinter.CTkLabel(master=parent_tab.tab('Sign In'), text="Password: ", font=font1)
@@ -90,7 +90,7 @@ class Login(customtkinter.CTk):
         i=customtkinter.IntVar()
 
         password_txt1 = customtkinter.CTkEntry(master=parent_tab.tab('Sign In'), show="*", corner_radius=10, font=font1, width=200)
-        # password_txt1.insert(0,'0720')
+        password_txt1.insert(0,'0720')
         password_txt1.place(x=330, y=250)
 
         password_show = customtkinter.CTkCheckBox(master=parent_tab.tab('Sign In'), text="Show password", variable=i, command=show_password)
@@ -110,20 +110,20 @@ class Login(customtkinter.CTk):
                     if user[9] == 'Customer':
                         Global.currentUser = user
 
-                        myid = user[0]
-                        my_system = platform.uname()
-                        system11 = (f"{my_system.system}")
-                        model11 = (f"{my_system.node}")
-                        machine11 = (f"{my_system.machine}")
-                        processor11 = (f"{my_system.processor}")
-
-                        date11 = date.today()
-                        now = datetime.now()
-                        current_time = now.strftime("%I:%M:%S")
-
-                        LoginActivity = MyActivity('', system=system11, model=model11, machine=machine11,
-                                                   processor=processor11, date=date11, date2=current_time, cid=myid)
-                        activityResult = activity_insert(LoginActivity)
+                        # myid = user[0]
+                        # my_system = platform.uname()
+                        # system11 = (f"{my_system.system}")
+                        # model11 = (f"{my_system.node}")
+                        # machine11 = (f"{my_system.machine}")
+                        # processor11 = (f"{my_system.processor}")
+                        #
+                        # date11 = date.today()
+                        # now = datetime.now()
+                        # current_time = now.strftime("%I:%M:%S")
+                        #
+                        # LoginActivity = MyActivity('', system=system11, model=model11, machine=machine11,
+                        #                            processor=processor11, date=date11, date2=current_time, cid=myid)
+                        # activityResult = activity_insert(LoginActivity)
 
 
                         self.root.destroy()
