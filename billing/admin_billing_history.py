@@ -64,7 +64,7 @@ class AdminBillingHistory():
         treeView.column('time', width=100, anchor=CENTER)
         treeView.column('km', width=100, anchor=CENTER)
         treeView.column('unit', width=100, anchor=CENTER)
-        treeView.column('total', width=100, anchor=CENTER)
+        treeView.column('total', width=150, anchor=CENTER)
 
         treeView.heading('#0', text='', anchor=CENTER)
         treeView.heading('bookingid',text='Booking ID', anchor=CENTER)
@@ -89,6 +89,16 @@ class AdminBillingHistory():
 
 
         billingtable()
+
+        def getSum(item=""):
+            val = 0
+            for row in treeView.get_children(item):
+                # print(trv.item(row)["values"][3])# print price
+                val = val + treeView.item(row)["values"][8]
+            print(val)
+            treeView.insert(parent='', index='end', values=('','','','','','','','',"Total: {}".format(val)))
+
+        getSum()
 
 
 

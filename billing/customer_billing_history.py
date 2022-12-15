@@ -88,6 +88,16 @@ class CustomerBillingHistory():
 
         billingtable()
 
+        def getSum(item=""):
+            val = 0
+            for row in treeView.get_children(item):
+                # print(trv.item(row)["values"][3])# print price
+                val = val + treeView.item(row)["values"][6]
+            print(val)
+            treeView.insert(parent='', index='end', values=('','','','','','',"Total: {}".format(val)))
+
+        getSum()
+
 
 
 
