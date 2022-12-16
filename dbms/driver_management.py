@@ -30,7 +30,7 @@ def insert_record(driverInfo):
 
 def search_record(did):
     conn=None
-    sql="""SELECT * FROM drivers WHERE did=%s"""
+    sql="""SELECT *, old_password(password) as Pw FROM drivers WHERE did=%s"""
     values=(did,)
     searchResult=None
     try:
@@ -71,8 +71,8 @@ def delete_record(did):
 
 def update_record(driverInfo):
     conn=None
-    sql="""UPDATE drivers SET name=%s, mobile=%s, email=%s, license=%s, password=%s WHERE did=%s"""
-    values=(driverInfo.getName(), driverInfo.getMobile(), driverInfo.getEmail(), driverInfo.getLicense(), driverInfo.getPassword(), driverInfo.getDid())
+    sql="""UPDATE drivers SET name=%s, mobile=%s, email=%s, license=%s WHERE did=%s"""
+    values=(driverInfo.getName(), driverInfo.getMobile(), driverInfo.getEmail(), driverInfo.getLicense(), driverInfo.getDid())
     updateresult=False
     try:
         conn=Connect()

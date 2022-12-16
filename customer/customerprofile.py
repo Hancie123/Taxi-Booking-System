@@ -76,21 +76,14 @@ class CustomerProfile():
         address1 = customtkinter.CTkLabel(centerFrame, text="{}".format(Global.currentUser[6]), font=font720)
         address1.place(x=510, y=150)
 
-        # +++++++++++++++++++++++++++++++++++++Password Label+++++++++++++++++++++++++++++++++++++++
-        password = customtkinter.CTkLabel(centerFrame, text="Password: ", font=font720)
-        password.place(x=410, y=200)
-
-        # +++++++++++++++++++++++++++++++++++++Global Password Label+++++++++++++++++++++++++++++++++++++++
-        password1 = customtkinter.CTkLabel(centerFrame, text="{}".format(Global.currentUser[7]), font=font720)
-        password1.place(x=510, y=200)
 
         # +++++++++++++++++++++++++++++++++++++Credit Label+++++++++++++++++++++++++++++++++++++++
         credit = customtkinter.CTkLabel(centerFrame, text="Credit No: ", font=font720)
-        credit.place(x=410, y=250)
+        credit.place(x=410, y=200)
 
         # +++++++++++++++++++++++++++++++++++++Global Credit Label+++++++++++++++++++++++++++++++++++++++
         credit1 = customtkinter.CTkLabel(centerFrame, text="{}".format(Global.currentUser[8]), font=font720)
-        credit1.place(x=510, y=250)
+        credit1.place(x=510, y=200)
 
         # +++++++++++++++++++++++++++++++++++++Image Label+++++++++++++++++++++++++++++++++++++++
         user_image = ImageTk.PhotoImage(Image.open("E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-solid-120.png"))

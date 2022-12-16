@@ -32,9 +32,9 @@ def insert_record(customerInfo):
 
 def update_record(customerInfo):
     conn=None
-    sql="""UPDATE customers SET name=%s, dob=%s, gender=%s, mobile=%s, email=%s, address=%s, password=%s, credit=%s, status=%s WHERE cid=%s"""
+    sql="""UPDATE customers SET name=%s, dob=%s, gender=%s, mobile=%s, email=%s, address=%s,credit=%s, status=%s WHERE cid=%s"""
     values=(customerInfo.getName(), customerInfo.getDob(), customerInfo.getGender(),
-            customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(), customerInfo.getPassword(), customerInfo.getCredit(), customerInfo.getStatus(), customerInfo.getCid())
+            customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(),customerInfo.getCredit(), customerInfo.getStatus(), customerInfo.getCid())
     updateResult=False
     try:
         conn=Connect()
@@ -59,7 +59,7 @@ def update_record(customerInfo):
 
 def search_customer(cid):
     conn=None
-    sql="""SELECT * FROM customers WHERE cid=%s"""
+    sql="""SELECT *, old_password(password) as Pw FROM customers WHERE cid=%s"""
     values=(cid,)
     customerResult=None
     try:

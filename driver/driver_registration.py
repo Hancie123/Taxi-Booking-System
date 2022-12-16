@@ -80,7 +80,7 @@ class DriverRegistration():
                     licensetxt.insert(0, searchResult[4])
 
                     passwordtxt.delete(0, len(passwordtxt.get()))
-                    passwordtxt.insert(0, searchResult[5])
+                    passwordtxt.insert(0, searchResult[7])
 
 
 
@@ -170,7 +170,7 @@ class DriverRegistration():
 
         def update():
             driver = Driver_Libs(name=nametxt.get(), mobile=mobiletxt.get(), email=emailtxt.get(),
-                                 license=licensetxt.get(), password=passwordtxt.get(), did=idtxt.get())
+                                 license=licensetxt.get(), did=idtxt.get())
             updateresult=update_record(driver)
 
             if updateresult==True:

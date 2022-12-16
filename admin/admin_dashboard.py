@@ -15,7 +15,7 @@ from tktimepicker import AnalogPicker, AnalogThemes,constants
 from admin import booking_report, active_booking
 from billing import admin_payment, admin_billing_history, billing_report
 from customer import customer_management, login, customer_report, search_customers
-from dbms.booking_backend import total_booking, select_all, update_booking
+from dbms.booking_backend import total_booking, select_all, update_booking, total_revenue
 from dbms.customer_backend import total_customer
 from dbms.driver_management import total_driver, available_driver, update_DriverStatus
 from dbms.employees_backend import total_employees
@@ -445,9 +445,9 @@ class Admin_Dashboard(customtkinter.CTk):
         # +++++++++++++++++++++++++++++++++++Home Tab 4 Frame++++++++++++++++++++++++++++++++++++
         frame4 = customtkinter.CTkFrame(master=parent_tab.tab('Home'), width=250, height=150, corner_radius=20)
         frame4.place(x=870, y=20)
-        employeesResult=total_employees()
-        employeesResult2=employeesResult[0]
-        frame4_label2 = customtkinter.CTkLabel(master=frame4, text="Total \nEmployees \n\n{}".format(employeesResult2[0]),
+        totalResult=total_revenue()
+        totalResult2=totalResult[0]
+        frame4_label2 = customtkinter.CTkLabel(master=frame4, text="Total \nRevenues \n\n{}".format(totalResult2[0]),
                                                font=labelfont)
         frame4_label2.place(relx=0.5, rely=0.5, anchor=CENTER)
 

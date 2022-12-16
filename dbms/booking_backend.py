@@ -250,3 +250,23 @@ def active_booking12():
         return activeResult
 
 
+def total_revenue():
+    conn=None
+    sql="""SELECT SUM(total) from billing"""
+    totalResult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        totalResult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return totalResult
+
+

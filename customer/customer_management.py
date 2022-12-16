@@ -76,7 +76,7 @@ class CustomerManagement(customtkinter.CTk):
                 addresstxt.insert(0, customerResult[6])
 
                 passwordtxt.delete(0, len(passwordtxt.get()))
-                passwordtxt.insert(0, customerResult[7])
+                passwordtxt.insert(0, customerResult[10])
 
                 credittxt.delete(0, len(credittxt.get()))
                 credittxt.insert(0, customerResult[8])
@@ -193,7 +193,7 @@ class CustomerManagement(customtkinter.CTk):
         def update():
             customer_info = Customer_Libs(cid=idtxt.get(), name=nametxt.get(), dob=dobtxt.get(), gender=gendertxt.get(),
                                           mobile=mobiletxt.get(), email=emailtxt.get(), address=addresstxt.get(),
-                                          password=passwordtxt.get(), credit=credittxt.get(), status="Customer")
+                                          credit=credittxt.get(), status="Customer")
             updateResult=update_record(customer_info)
             if updateResult==True:
                 messagebox.showinfo("Taxi Booking System","The record is updated")

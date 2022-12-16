@@ -1,10 +1,11 @@
 import tkinter
 from tkinter import *
 import customtkinter
-from datetime import date, time
+from datetime import date, time, datetime
 from tkinter import ttk
 from tkinter.ttk import Notebook, Style
 from datetime import time, date
+import datetime
 import math
 import tkinter as tk
 import time
@@ -26,11 +27,14 @@ from dbms.booking_backend import insert_booking, customerbooking_selectall, cust
     update_customer_booking1, delete_booking, customer_checkbooking
 from dbms.customer_management import delete_record
 from dbms.myactivity_backend import delete_myactivity, selectall_myactivity
+from dbms.passwordchange_backend import passwordChange
 from driver import driverhistory
 from libs import Global
 from libs.booking_libs import BookingLibs
 from tkinter import messagebox
 from sqlalchemy import create_engine
+
+from libs.customer_libs import Customer_Libs
 
 
 class Customer_Dashboard(customtkinter.CTk):
@@ -83,6 +87,8 @@ class Customer_Dashboard(customtkinter.CTk):
 
         title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM", font=titlefont)
         title_lbl.pack(side=LEFT, pady=20, padx=10)
+
+
 
         log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),
                                             font=titlefont)
@@ -153,8 +159,83 @@ class Customer_Dashboard(customtkinter.CTk):
 
         def change_password_gui():
             password=customtkinter.CTkToplevel()
-            Change_Password.Password_Change(password)
-            password.mainloop()
+            password.title("Taxi Booking System | Change Customer Password")
+            password.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
+            frame_width = 530
+            frame_height = 400
+            password.resizable(0, 0)
+            screen_width = password.winfo_screenwidth()
+            screen_height = password.winfo_screenheight()
+            x_cordinate = int((screen_width / 2) - (frame_width / 2))
+            y_cordinate = int((screen_height / 2) - (frame_height / 2))
+            password.geometry('{}x{}+{}+{}'.format(frame_width, frame_height, x_cordinate + 70, y_cordinate - 70))
+
+
+            frame = customtkinter.CTkFrame(password)
+            frame.pack(fill=BOTH, expand=TRUE)
+
+            font720 = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
+
+            img = ImageTk.PhotoImage(Image.open("E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-solid-72.png"))
+            image_label = Label(password, image=img, bg="#2b2b2b")
+            image_label.image = img
+            image_label.place(x=150, y=40)
+
+            title_lbl = customtkinter.CTkLabel(master=password,text="Changing password for\n{}".format(Global.currentUser[1]),font=font720, bg_color="#2b2b2b")
+            title_lbl.place(x=200, y=40)
+
+            currentpw_lbl = customtkinter.CTkLabel(master=password, text="New Password: ", font=font720,
+                                                   bg_color="#2b2b2b")
+            currentpw_lbl.place(x=60, y=150)
+
+            currentpw_txt = customtkinter.CTkEntry(master=password, font=font720, show='*', width=200)
+            currentpw_txt.place(x=240, y=150)
+
+            confirmpw_lbl = customtkinter.CTkLabel(master=password, text="Confirm Password: ", font=font720,
+                                                   bg_color="#2b2b2b")
+            confirmpw_lbl.place(x=60, y=220)
+
+            conformpw_txt = customtkinter.CTkEntry(master=password, show='*', font=font720, width=200)
+            conformpw_txt.place(x=240, y=220)
+
+            def show_password():
+                if i.get() == 1:
+                    conformpw_txt.configure(show='')
+                    currentpw_txt.configure(show='')
+                else:
+                    conformpw_txt.configure(show='*')
+                    currentpw_txt.configure(show='*')
+
+            i = customtkinter.IntVar()
+
+            password_show = customtkinter.CTkCheckBox(password, text="Show password", variable=i,command=show_password, bg_color="#2b2b2b")
+            password_show.place(x=240, y=260)
+
+            idtxt = Entry(password)
+            idtxt.insert(0, "{}".format(Global.currentUser[0]))
+
+            def change_password():
+                customerid = idtxt.get()
+                password1 = currentpw_txt.get()
+                newpassword = conformpw_txt.get()
+
+                if password1 == newpassword:
+                    password720 = Customer_Libs(cid=customerid, password=newpassword)
+                    result = passwordChange(password720)
+                    if result == True:
+                        messagebox.showinfo("Taxi Booking System", "The password is changed successfully!")
+                        self.root.destroy()
+                        root=customtkinter.CTk()
+                        login.Login(root)
+                        root.mainloop()
+                    else:
+                        messagebox.showerror("Taxi Booking System", "Error occurred!")
+
+                else:
+                    messagebox.showerror("Taxi Booking System", "The password does not match. Please try again!")
+
+            confirm_btn = customtkinter.CTkButton(master=password, command=change_password, text="Change Password!",font=font720)
+            confirm_btn.place(x=230, y=310)
 
 
         viewcustomer_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\key-solid-24.png'))
@@ -223,7 +304,17 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
         #+++++++++++++++++++++++++Welcome Label+++++++++++++++++++
-        welcome_lbl=customtkinter.CTkLabel(master=parent_tab.tab('Home'), text="Welcome {}".format(Global.currentUser[1]), font=titlefont)
+        currentTime = datetime.datetime.now()
+        currentTime.hour
+        if currentTime.hour < 12:
+            text="Good Morning"
+        elif 12 <= currentTime.hour < 18:
+            text="Good Afternoon"
+        elif currentTime.hour>=20 and currentTime.hour<=23:
+            text = "Good Night"
+        else:
+            text="Good Evening"
+        welcome_lbl=customtkinter.CTkLabel(master=parent_tab.tab('Home'), text="{} {}!".format(text,Global.currentUser[1]), font=titlefont)
         welcome_lbl.place(x=10,y=20)
 
         pickup_address_lbl=customtkinter.CTkLabel(parent_tab.tab('Home'), text="Pick up address: ",font=labelfont)
@@ -318,13 +409,6 @@ class Customer_Dashboard(customtkinter.CTk):
                 messagebox.showinfo("Taxi Booking System", "The booking is requested successfully!")
                 updatebookingtable.delete(*updatebookingtable.get_children())
                 bookingtable()
-
-
-
-
-
-
-
 
 
         booking_btn=customtkinter.CTkButton(master=parent_tab.tab('Home'),command=request_booking, text="Request Booking", font=labelfont)
@@ -622,7 +706,7 @@ class Customer_Dashboard(customtkinter.CTk):
         my_colors = [(.9, .4, .6), (.1, .3, .8)]
         query = "SELECT *,count(myid) as ID FROM myactivity WHERE cid=" + iddd + " group by date "
         df = pandas.read_sql(query, db_connection, index_col='date')
-        fig = df.plot.bar(title="No of times account accessed", y='ID', figsize=(6, 6), color=my_colors, legend=True,grid=False).get_figure()
+        fig = df.plot.bar(title="No of times account accessed", y='ID',rot=360, figsize=(6, 6), color=my_colors, legend=True,grid=False).get_figure()
         plot = FigureCanvasTkAgg(fig, parent_tab.tab('Report'))
         plot.get_tk_widget().place(x=100, y=5)
 
