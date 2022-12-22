@@ -255,4 +255,24 @@ def driver_trip_history(did):
         del sql, conn
         return driverResult
 
+def driver_password_change(Driver):
+    conn=None
+    sql="""UPDATE drivers SET password=%s WHERE did=%s"""
+    values=(Driver.getPassword(), Driver.getDid())
+    changepasswordresult=False
+
+    try:
+        conn = Connect()
+        cursor = conn.cursor()
+        cursor.execute(sql, values)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        changepasswordresult = True
+    except:
+        print("Error", sys.exc_info())
+    finally:
+        del values, sql,conn
+        return changepasswordresult
+
 

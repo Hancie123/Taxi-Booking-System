@@ -7,7 +7,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
 from time import strftime
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 from tktimepicker import AnalogThemes, AnalogPicker, constants
 
@@ -15,9 +15,10 @@ from customer import login
 from dbms.booking_backend import total_booking, select_all, driver_update_booking
 from dbms.customer_backend import total_customer
 from dbms.driver_backend import driver_riding_total, driver_total_booked, driver_ridecompleted, driver_ridecancelled
-from dbms.driver_management import update_DriverStatus, driver_select_all, total_driver, driver_selectallbooking
+from dbms.driver_management import update_DriverStatus, driver_select_all, total_driver, driver_selectallbooking, \
+    driver_password_change
 from dbms.employees_backend import total_employees
-from driver import drivertriphistory
+from driver import drivertriphistory, driverprofile
 from libs import Global
 from libs.booking_libs import BookingLibs
 from libs.driver_libs import Driver_Libs
@@ -43,6 +44,26 @@ class Driver_Dashboard():
 
         driverid=Entry(self.main)
         driverid.insert(0, Global.currentDriver[0])
+
+        style1 = ttk.Style()
+        style1.theme_use("default")
+        style1.configure("Treeview",
+                         background="#2b2b2b",
+                         foreground="white",
+                         rowheight=25,
+                         fieldbackground="#2b2b2b",
+                         bordercolor="#343638",
+                         borderwidth=0,
+                         font=('Times New Roman', 16))
+        style1.map('Treeview', background=[('selected', '#22559b')])
+
+        style1.configure("Treeview.Heading",
+                         background="#565b5e",
+                         foreground="white",
+                         relief="flat",
+                         font=('Times New Roman', 17))
+        style1.map("Treeview.Heading",
+                   background=[('active', '#3484F0')], )
 
         #++++++++++++++++++++++++++++TOP FRAME+++++++++++++++++++++++++++++++++++
         topFrame=customtkinter.CTkFrame(self.main, height=80)
@@ -222,6 +243,102 @@ class Driver_Dashboard():
         trip_btn = customtkinter.CTkButton(master=leftFrame, text="Trips History        ", command=trip_history_gui,hover_color='black', font=sidemenufont, width=200,image=trip_image, fg_color='#2b2b2b')
         trip_btn.place(x=40, y=300)
 
+        def myprofile():
+            root=customtkinter.CTkToplevel()
+            driverprofile.DriverProfile(root)
+            root.mainloop()
+
+        profile_image = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\Python\\Taxi Booking System\\Images\\user-account-solid-24.png'))
+        profile_btn = customtkinter.CTkButton(master=leftFrame, text="My Profile          ", command=myprofile,hover_color='black', font=sidemenufont, width=200, image=profile_image,fg_color='#2b2b2b')
+        profile_btn.place(x=40, y=350)
+
+        def change_password_gui():
+            password=customtkinter.CTkToplevel()
+            password.title("Taxi Booking System | Change {} Password".format(Global.currentDriver[1]))
+            password.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
+            frame_width = 530
+            frame_height = 400
+            password.resizable(0, 0)
+            screen_width = password.winfo_screenwidth()
+            screen_height = password.winfo_screenheight()
+            x_cordinate = int((screen_width / 2) - (frame_width / 2))
+            y_cordinate = int((screen_height / 2) - (frame_height / 2))
+            password.geometry('{}x{}+{}+{}'.format(frame_width, frame_height, x_cordinate + 70, y_cordinate - 70))
+
+
+            frame = customtkinter.CTkFrame(password)
+            frame.pack(fill=BOTH, expand=TRUE)
+
+            font720 = customtkinter.CTkFont(family='Times New Roman', size=20, weight='normal')
+
+            img = ImageTk.PhotoImage(Image.open("E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-solid-72.png"))
+            image_label = Label(password, image=img, bg="#2b2b2b")
+            image_label.image = img
+            image_label.place(x=150, y=40)
+
+            title_lbl = customtkinter.CTkLabel(master=password,text="Changing password for\n{}".format(Global.currentDriver[1]),font=font720, bg_color="#2b2b2b")
+            title_lbl.place(x=200, y=40)
+
+            currentpw_lbl = customtkinter.CTkLabel(master=password, text="New Password: ", font=font720,
+                                                   bg_color="#2b2b2b")
+            currentpw_lbl.place(x=60, y=150)
+
+            currentpw_txt = customtkinter.CTkEntry(master=password, font=font720, show='*', width=200)
+            currentpw_txt.place(x=240, y=150)
+
+            confirmpw_lbl = customtkinter.CTkLabel(master=password, text="Confirm Password: ", font=font720,
+                                                   bg_color="#2b2b2b")
+            confirmpw_lbl.place(x=60, y=220)
+
+            conformpw_txt = customtkinter.CTkEntry(master=password, show='*', font=font720, width=200)
+            conformpw_txt.place(x=240, y=220)
+
+            def show_password():
+                if i.get() == 1:
+                    conformpw_txt.configure(show='')
+                    currentpw_txt.configure(show='')
+                else:
+                    conformpw_txt.configure(show='*')
+                    currentpw_txt.configure(show='*')
+
+            i = customtkinter.IntVar()
+
+            password_show = customtkinter.CTkCheckBox(password, text="Show password", variable=i,command=show_password, bg_color="#2b2b2b")
+            password_show.place(x=240, y=260)
+
+            idtxt = Entry(password)
+            idtxt.insert(0, "{}".format(Global.currentDriver[0]))
+
+            def change_password():
+                id = idtxt.get()
+                password1 = currentpw_txt.get()
+                newpassword = conformpw_txt.get()
+
+                if password1 == newpassword:
+                    password720 = Driver_Libs(did=id, password=newpassword)
+                    changepasswordresult = driver_password_change(password720)
+
+                    if changepasswordresult == True:
+                        messagebox.showinfo("Taxi Booking System", "The password is changed successfully!")
+                        self.main.destroy()
+                        root=customtkinter.CTk()
+                        login.Login(root)
+                        root.mainloop()
+                    else:
+                        messagebox.showerror("Taxi Booking System", "Error occurred!")
+
+                else:
+                    messagebox.showerror("Taxi Booking System", "The password does not match. Please try again!")
+                    password.destroy()
+
+            confirm_btn = customtkinter.CTkButton(master=password,command=change_password,  text="Change Password!",font=font720)
+            confirm_btn.place(x=230, y=310)
+
+
+        changepasswordimage = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\key-solid-24.png'))
+        passwordchangebtn = customtkinter.CTkButton(master=leftFrame, text="Change Password",command=change_password_gui, hover_color='black',font=sidemenufont, width=200,image=changepasswordimage, fg_color='#2b2b2b')
+        passwordchangebtn.place(x=40, y=400)
+
         def logout():
             self.main.destroy()
             root=customtkinter.CTk()
@@ -229,8 +346,8 @@ class Driver_Dashboard():
             root.mainloop()
 
         logout_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
-        logout_btn = customtkinter.CTkButton(master=leftFrame,command=logout, text="Logout                 ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,image=logout_btn_image)
-        logout_btn.place(x=40, y=350)
+        logout_btn = customtkinter.CTkButton(master=leftFrame,command=logout, text="Logout               ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,image=logout_btn_image)
+        logout_btn.place(x=40, y=450)
 
         def switch():
             global is_on
@@ -310,9 +427,22 @@ class Driver_Dashboard():
             if choice=='light':
                 Cover_Image_label['bg']="#dbdbdb"
                 toggleButton['bg']="#dbdbdb"
+                style1.configure("Treeview",
+                                 background="#dbdbdb",
+                                 fieldbackground="#dbdbdb")
+                welcomelabel.configure(fg_color="#dbdbdb")
+                welcomelabel.configure(text_color="#2b2b2b")
+                welcomelbl.configure(fg_color="#dbdbdb")
             if choice=='dark':
                 Cover_Image_label['bg'] = "#2b2b2b"
                 toggleButton['bg'] = "#2b2b2b"
+                welcomelabel.configure(fg_color="#2b2b2b")
+                welcomelabel.configure(text_color="white")
+                style1.configure("Treeview",
+                                 background="#2b2b2b",
+                                 fieldbackground="#2b2b2b")
+                welcomelbl.configure(fg_color="#2b2b2b")
+
 
 
         combobox = customtkinter.CTkComboBox(master=leftFrame, values=["dark",'light'],
@@ -372,25 +502,7 @@ class Driver_Dashboard():
 
 
 
-        style1 = ttk.Style()
-        style1.theme_use("default")
-        style1.configure("Treeview",
-                         background="#2b2b2b",
-                         foreground="white",
-                         rowheight=25,
-                         fieldbackground="#2b2b2b",
-                         bordercolor="#343638",
-                         borderwidth=0,
-                         font=('Times New Roman', 16))
-        style1.map('Treeview', background=[('selected', '#22559b')])
 
-        style1.configure("Treeview.Heading",
-                         background="#565b5e",
-                         foreground="white",
-                         relief="flat",
-                         font=('Times New Roman', 17))
-        style1.map("Treeview.Heading",
-                   background=[('active', '#3484F0')], )
 
         treeView=ttk.Treeview(centerFrame)
         treeView.pack(side=BOTTOM, fill=BOTH, expand=TRUE)

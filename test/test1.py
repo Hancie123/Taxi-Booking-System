@@ -1,47 +1,39 @@
-from tkinter import *
-from tkinter import ttk 
+import tkinter as tk
+from tktimepicker import SpinTimePickerModern, SpinTimePickerOld
+from tktimepicker import constants
 
 
-root = Tk()
-root.title("Hancie e-Learning Studio")
+def updateTime(time):
+    time_lbl.configure(text="{}:{}".format(*time)) # if you are using 24 hours, remove the 3rd flower bracket its for period
 
 
-data = [
-        [1,"Hancie","Phago","hanciephago@mail.com",20],
-        [3,"Nitesh","Hamal","nitesh0hamal@mail.com",20],
-        [4,"Naindra","Phago","naindraraj@mail.com",47],
-        [7,"Padam","Kumari","padam@mail.com",46],
-        [8,"Bina","Phago","pq@mail.com",43],
-        [9,"Sunita","Phago","rs@mail.com",35],
-       ]
+def get_time():
+
+    top = tk.Toplevel(root)
+
+    time_picker = SpinTimePickerModern(top)
+    # time_picker = SpinTimePickerOld(top)
+    time_picker.addAll(constants.HOURS24)  # adds hours clock, minutes and period
+    time_picker.configureAll(bg="#404040", height=1, fg="#ffffff", font=("Times", 16), hoverbg="#404040",
+                            hovercolor="#d73333", clickedbg="#2e2d2d", clickedcolor="#d73333")
+    time_picker.configure_separator(bg="#404040", fg="#ffffff")
+    # time_picker.addHours12()
+    # time_picker.addHours24()
+
+    time_picker.pack(expand=True, fill="both")
+
+    ok_btn = tk.Button(top, text="ok", command=lambda: updateTime(time_picker.time()))
+    ok_btn.pack()
 
 
-treeView = ttk.Treeview(root)
-treeView['columns']=(1,2,3,4,5)
-treeView.column('#0', width=0, stretch=0)
-treeView.column(1, anchor='center', width=50)
-treeView.column(2, anchor='center', width=100)
-treeView.column(3, anchor='center', width=100)
-treeView.column(4, anchor='center', width=100)
-treeView.column(5, anchor='center', width=100)
+root = tk.Tk()
 
-treeView.heading('#0', text='')
-treeView.heading(1, text='ID')
-treeView.heading(2, text='First Name')
-treeView.heading(3, text='Last Name')
-treeView.heading(4, text='Email')
-treeView.heading(5, text='Age')
+time = ()
 
-# create a function to display data in treeview
-def displayData():
-    for row in data:
-        treeView.insert('',END, values=row)
+time_lbl = tk.Label(root, text="Time:")
+time_lbl.pack()
 
-
-displayData()
-
-
-treeView.grid(row=0, column=0, padx=10, pady=10)
-
+time_btn = tk.Button(root, text="Get Time", command=get_time)
+time_btn.pack()
 
 root.mainloop()
