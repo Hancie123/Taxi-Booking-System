@@ -1,39 +1,26 @@
-import tkinter as tk
-from tktimepicker import SpinTimePickerModern, SpinTimePickerOld
-from tktimepicker import constants
+from tkinter import *
+from tkinter import messagebox
+from test.regex import timevalidation
+
+app=Tk()
+app.geometry("500x400")
+app.title("Hancie e-Learning Studio")
 
 
-def updateTime(time):
-    time_lbl.configure(text="{}:{}".format(*time)) # if you are using 24 hours, remove the 3rd flower bracket its for period
+def check():
+    txt = text.get()
+    timeResult=timevalidation(txt)
+    if timeResult==True:
+        messagebox.showinfo("Info","The time is valid")
+    else:
+        messagebox.showerror("Error","Invalid time")
 
 
-def get_time():
+text=Entry(app,font=("Times New Roman",16))
+text.pack()
 
-    top = tk.Toplevel(root)
-
-    time_picker = SpinTimePickerModern(top)
-    # time_picker = SpinTimePickerOld(top)
-    time_picker.addAll(constants.HOURS24)  # adds hours clock, minutes and period
-    time_picker.configureAll(bg="#404040", height=1, fg="#ffffff", font=("Times", 16), hoverbg="#404040",
-                            hovercolor="#d73333", clickedbg="#2e2d2d", clickedcolor="#d73333")
-    time_picker.configure_separator(bg="#404040", fg="#ffffff")
-    # time_picker.addHours12()
-    # time_picker.addHours24()
-
-    time_picker.pack(expand=True, fill="both")
-
-    ok_btn = tk.Button(top, text="ok", command=lambda: updateTime(time_picker.time()))
-    ok_btn.pack()
+btn=Button(app,text="Check Time",font=("Times New Roman",16), command=check)
+btn.pack()
 
 
-root = tk.Tk()
-
-time = ()
-
-time_lbl = tk.Label(root, text="Time:")
-time_lbl.pack()
-
-time_btn = tk.Button(root, text="Get Time", command=get_time)
-time_btn.pack()
-
-root.mainloop()
+app.mainloop()

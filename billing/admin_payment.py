@@ -71,18 +71,24 @@ class Admin_Payment():
         namelnl.place(x=30, y=100)
 
         nametxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+        nametxt.bind("<Button-1>", lambda e: "break")
+        nametxt.bind("<Key>", lambda e: "break")
         nametxt.place(x=140, y=100)
 
         creditlbl = customtkinter.CTkLabel(assignbookingFrame, text="Credit No: ", font=font720)
         creditlbl.place(x=30, y=150)
 
         credittxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+        credittxt.bind("<Button-1>", lambda e: "break")
+        credittxt.bind("<Key>", lambda e: "break")
         credittxt.place(x=140, y=150)
 
         kmlbl = customtkinter.CTkLabel(assignbookingFrame, text="Kilometer: ", font=font720)
         kmlbl.place(x=30, y=200)
 
         kmtxt = customtkinter.CTkEntry(assignbookingFrame,textvariable=self.kmtxt, validate='key', validatecommand=(validation, '%P'), font=font720, width=200)
+        kmtxt.bind("<Button-1>", lambda e: "break")
+        kmtxt.bind("<Key>", lambda e: "break")
         kmtxt.place(x=140, y=200)
 
         unitlbl = customtkinter.CTkLabel(assignbookingFrame, text="Unit:", font=font720)
@@ -90,7 +96,8 @@ class Admin_Payment():
 
         unittxt = customtkinter.CTkEntry(assignbookingFrame,textvariable=self.unittxt, validate='key', validatecommand=(validation, '%P'), font=font720, width=200)
         unittxt.insert(0, '100')
-        unittxt.configure(state=DISABLED)
+        unittxt.bind("<Button-1>", lambda e: "break")
+        unittxt.bind("<Key>", lambda e: "break")
         unittxt.place(x=140, y=250)
 
         totallbl = customtkinter.CTkLabel(assignbookingFrame, text="Grand Total:", font=font720)
@@ -98,6 +105,7 @@ class Admin_Payment():
 
 
         totaltxt = customtkinter.CTkEntry(assignbookingFrame,font=font720, width=200)
+        totaltxt.bind("<Button-1>", lambda e: "break")
         totaltxt.bind("<Key>", lambda e: "break")
         totaltxt.place(x=140, y=300)
 
@@ -128,7 +136,7 @@ class Admin_Payment():
             booking=BookingLibs(bookingstatus='Billing Completed',bookingid=bookingid1)
             updatebookingResult=driver_update_booking(booking)
             if result==True:
-                messagebox.showinfo("Taxi Booking System","The billing is done successfully")
+                updatebookingresultlbl.configure(text="The bill is generated successfully")
                 bookingTable.delete(*bookingTable.get_children())
                 billing_tabel()
 
@@ -236,6 +244,9 @@ class Admin_Payment():
 
         availabledriver_btn = customtkinter.CTkButton(assignbookingFrame,text="Generate Bill",command=generate_bill, font=font720, width=150)
         availabledriver_btn.place(x=150, y=350)
+
+        updatebookingresultlbl = customtkinter.CTkLabel(assignbookingFrame, text="", font=font720)
+        updatebookingresultlbl.place(x=80, y=390)
 
         tableFrame = customtkinter.CTkFrame(master=self.main, width=840)
         tableFrame.pack(side=LEFT, fill=BOTH,expand=True, padx=(0, 10), pady=10)

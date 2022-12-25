@@ -121,4 +121,30 @@ def search_customer2(name12):
         return customerResult
 
 
+def update_customer_record(customerInfo):
+    conn=None
+    sql="""UPDATE customers SET name=%s, dob=%s, gender=%s, mobile=%s, email=%s, address=%s,credit=%s WHERE cid=%s"""
+    values=(customerInfo.getName(), customerInfo.getDob(), customerInfo.getGender(),customerInfo.getMobile(), customerInfo.getEmail(), customerInfo.getAddress(),customerInfo.getCredit(), customerInfo.getCid())
+    updateResult=False
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql,values)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        updateResult=True
+
+    except:
+
+        print("Error", sys.exc_info())
+
+    finally:
+
+        del sql
+        del conn
+        return updateResult
+        return values
+
+
 

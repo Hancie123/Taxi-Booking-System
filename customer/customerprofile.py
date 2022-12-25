@@ -9,6 +9,7 @@ class CustomerProfile():
         self.main = main
         customtkinter.set_appearance_mode('dark')
         customtkinter.set_default_color_theme('blue')
+        self.main.resizable(0, 0)
         self.main.title("{} Profile".format(Global.currentUser[1]))
         self.main.iconbitmap("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\logo.ico")
         width = 750

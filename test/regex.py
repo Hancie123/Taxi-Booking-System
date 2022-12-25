@@ -1,12 +1,14 @@
 import re
 
-regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
-def emailvalidation(email):
-    if re.fullmatch(regex, email):
-        result=True
+# Function to validate Gender
+def timevalidation(time):
 
+    # Regex to check valid time
+    regex=re.compile("(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)")
+    if re.fullmatch(regex, time):
+        timeResult=True
     else:
-        result=False
+        timeResult=False
 
-    return result
+    return timeResult
 

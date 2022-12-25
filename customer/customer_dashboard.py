@@ -22,7 +22,7 @@ from tkintermapview import TkinterMapView
 from tkcalendar import DateEntry, Calendar
 from tktimepicker import AnalogPicker, AnalogThemes, constants
 from billing import customer_billing_history
-from customer import login, customerprofile, Change_Password, customer_booking_history
+from customer import login, customerprofile, Change_Password, customer_booking_history, viewprofilegui
 from dbms.booking_backend import insert_booking, customerbooking_selectall, customerbooking_selectstatsubooked, \
     update_customer_booking1, delete_booking, customer_checkbooking
 from dbms.customer_management import delete_record
@@ -85,13 +85,13 @@ class Customer_Dashboard(customtkinter.CTk):
         Top_Frame = customtkinter.CTkFrame(master=self.root, height=100)
         Top_Frame.pack(side=TOP, fill=BOTH, padx=10, pady=10)
 
+        #-----------------------------Title Label-----------------------------------------
         title_lbl = customtkinter.CTkLabel(master=Top_Frame, text="TAXI BOOKING SYSTEM", font=titlefont)
         title_lbl.pack(side=LEFT, pady=20, padx=10)
 
 
-
-        log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),
-                                            font=titlefont)
+        #-------------------------------------Welcome Label----------------------------------
+        log_name_lbl=customtkinter.CTkLabel(master=Top_Frame, text="Welcome: {}".format(Global.currentUser[1]),font=titlefont)
         log_name_lbl.pack(side=RIGHT, pady=20, padx=10)
 
 
@@ -121,13 +121,13 @@ class Customer_Dashboard(customtkinter.CTk):
                                                    image=assigndriver_btn_image, fg_color='#2b2b2b')
         assigndriver_btn.place(x=50, y=200)
 
-        def open_profile():
+        def open_viewprofile():
             main = customtkinter.CTkToplevel()
-            customerprofile.CustomerProfile(main)
+            viewprofilegui.ViewCustomerProfile(main)
             main.mainloop()
 
         profile_img = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-account-solid-24.png'))
-        profile_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',font=sidemenufont, width=200,command=open_profile, image=profile_img, fg_color='#2b2b2b')
+        profile_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',font=sidemenufont, width=200,command=open_viewprofile, image=profile_img, fg_color='#2b2b2b')
         profile_btn.place(x=50, y=250)
 
         def customerBookingHistory():
@@ -346,6 +346,7 @@ class Customer_Dashboard(customtkinter.CTk):
             pick_up_time_lbl.delete(0, len(pick_up_time_lbl.get()))
             pick_up_time_lbl.insert(0, str("{}:{} {}".format(*time)))
 
+
         def time720():
             top = customtkinter.CTkToplevel(parent_tab.tab('Home'))
             top.title("Taxi Booking System")
@@ -365,9 +366,12 @@ class Customer_Dashboard(customtkinter.CTk):
             ok_btn = customtkinter.CTkButton(master=top, text="Ok",command=lambda: updateTime(time_picker.time()))
             ok_btn.pack()
 
+
         time = ()
 
         pick_up_time_lbl = customtkinter.CTkEntry(master=parent_tab.tab('Home'),font=font720,  width=250)
+        pick_up_time_lbl.bind("<Button-1>", lambda e: "break")
+        pick_up_time_lbl.bind("<Key>", lambda e: "break")
         pick_up_time_lbl.place(x=230, y=270)
 
         time_img=customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
@@ -483,6 +487,8 @@ class Customer_Dashboard(customtkinter.CTk):
         time = ()
 
         updatepickuptxt = customtkinter.CTkEntry(master=parent_tab.tab('Update Booking'),textvariable=self.pickuptxt1, font=font720, width=250)
+        updatepickuptxt.bind("<Button-1>", lambda e: "break")
+        updatepickuptxt.bind("<Key>", lambda e: "break")
         updatepickuptxt.place(x=170, y=250)
 
         time_img = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
@@ -704,7 +710,7 @@ class Customer_Dashboard(customtkinter.CTk):
         db_connection = sql_engine.connect()
 
         my_colors = [(.9, .4, .6), (.1, .3, .8)]
-        query = "SELECT *,count(myid) as ID FROM myactivity WHERE cid=" + iddd + " group by date "
+        query = "SELECT *,count(myid) as ID FROM myactivity WHERE cid=" + iddd + " group by date limit 5 "
         df = pandas.read_sql(query, db_connection, index_col='date')
         fig = df.plot.bar(title="No of times account accessed", y='ID',rot=360, figsize=(6, 6), color=my_colors, legend=True,grid=False).get_figure()
         plot = FigureCanvasTkAgg(fig, parent_tab.tab('Report'))

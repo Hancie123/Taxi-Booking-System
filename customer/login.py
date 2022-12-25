@@ -9,6 +9,7 @@ from customer import Customer_Register, customer_dashboard
 from customer.customer_dashboard import Customer_Dashboard
 from dbms.customer_management import insert_record
 from dbms.myactivity_backend import activity_insert
+from dbms.regex import checkemail, checkphone, checkcredit
 from driver import DriverDashboard, driverhistory
 from driver.driverhistory import DriverHistory
 from libs import Global
@@ -75,7 +76,7 @@ class Login(customtkinter.CTk):
         email_lbl.place(x=200, y=205)
 
         email_txt1 = customtkinter.CTkEntry(master=parent_tab.tab('Sign In'), corner_radius=10, font=font1, width=200)
-        email_txt1.insert(0, 'neuve@gmail.com')
+        email_txt1.insert(0, 'nitesh0hamal@gmail.com')
         email_txt1.place(x=330, y=200)
 
         password_lbl = customtkinter.CTkLabel(master=parent_tab.tab('Sign In'), text="Password: ", font=font1)
@@ -128,7 +129,7 @@ class Login(customtkinter.CTk):
 
                         self.root.destroy()
                         root = customtkinter.CTk()
-                        obj2 = customer_dashboard.Customer_Dashboard(root)
+                        customer_dashboard.Customer_Dashboard(root)
                         root.mainloop()
 
                 elif driverresult != None:
@@ -252,21 +253,74 @@ class Login(customtkinter.CTk):
         credit_txt.place(x=480, y=300)
 
         def save_customer_info():
+            emailResult=checkemail(email_txt.get())
+            mobileResult=checkphone(mobile_txt.get())
+            creditResult=checkcredit(credit_txt.get())
 
-            if (name_txt.get() == '') or (dob_txt.get() == '') or (gender_txt.get() == '') or (mobile_txt.get() == '') \
-                    or (email_txt.get() == '') or (address_txt.get() == '') or (password_txt.get() == '') or (
-                    credit_txt.get() == 0):
-                warning = messagebox.showwarning("Taxi Booking System", "Please enter all the field!")
 
-            else:
-                customer_info = Customer_Libs('', name_txt.get(), dob_txt.get(), gender_txt.get(),
-                                              mobile_txt.get(), email_txt.get(), address_txt.get(),
-                                              password_txt.get(), credit_txt.get(), status="Customer")
-                result = insert_record(customer_info)
-                if result == True:
-                    promt = messagebox.showinfo('Taxi Booking System', "Customer is registered successfully")
+            if name_txt.get()!='':
+
+                if dob_txt.get()!='':
+
+                    if gender_txt.get()!='':
+
+                        if mobile_txt.get()!='':
+
+                            if email_txt.get()!='':
+
+                                if address_txt.get!='':
+
+                                    if password_txt.get()!='':
+
+                                        if credit_txt.get()!='':
+
+                                            if mobileResult==True:
+
+                                                if emailResult==True:
+                                                    if creditResult==True:
+
+                                                        customer_info = Customer_Libs('', name_txt.get(), dob_txt.get(),gender_txt.get(),mobile_txt.get(), email_txt.get(),address_txt.get(),password_txt.get(),credit_txt.get(),status="Customer")
+                                                        result = insert_record(customer_info)
+
+                                                        if result == True:
+                                                            promt = messagebox.showinfo('Taxi Booking System',"Customer is registered successfully")
+                                                        else:
+                                                            promt1 = messagebox.showerror("Error!","Registration of customer info is unsuccessful!")
+
+                                                    else:
+                                                        messagebox.showwarning("Taxi Booking System","Invalid credit number")
+
+                                                else:
+                                                    messagebox.showwarning("Taxi Booking System","Invalid email address")
+
+                                            else:
+                                                messagebox.showwarning("Taxi Booking System","Invalid mobile number (Enter country code)")
+
+                                        else:
+                                            messagebox.showwarning("Taxi Booking System","Please enter customer credit number")
+
+                                    else:
+                                        messagebox.showwarning("Taxi Booking System", "Please enter customer password")
+
+                                else:
+                                    messagebox.showwarning("Taxi Booking System", "Please enter customer address")
+                            else:
+                                messagebox.showwarning("Taxi Booking System", "Please enter customer email")
+
+                        else:
+                            messagebox.showwarning("Taxi Booking System", "Please enter customer mobile number")
+
+
+                    else:
+                        messagebox.showwarning("Taxi Booking System","Please enter customer gender")
                 else:
-                    promt1 = messagebox.showerror("Error!", "Registration of customer info is unsuccessful!")
+                    messagebox.showwarning("Taxi Booking System","Please enter customer date of birth")
+            else:
+                messagebox.showwarning("Taxi Booking System","Please enter customer name")
+
+
+
+
 
         register_btn_image = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit.png"))
         register_btn = customtkinter.CTkButton(master=parent_tab.tab('Sign Up'),command=save_customer_info, text="Register",image=register_btn_image,hover_color='black', font=('Tahoma', 20, 'bold'))

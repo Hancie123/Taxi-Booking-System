@@ -118,12 +118,16 @@ class Admin_Dashboard(customtkinter.CTk):
             pickup_address_lbl.place(x=30, y=100)
 
             picuptxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            picuptxt.bind("<Button-1>", lambda e: "break")
+            picuptxt.bind("<Key>", lambda e: "break")
             picuptxt.place(x=140, y=100)
 
             date_lbl = customtkinter.CTkLabel(assignbookingFrame, text="Date: ", font=font720)
             date_lbl.place(x=30, y=150)
 
             date_txt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            date_txt.bind("<Button-1>", lambda e: "break")
+            date_txt.bind("<Key>", lambda e: "break")
             date_txt.place(x=140, y=150)
 
             pickup_lbl = customtkinter.CTkLabel(assignbookingFrame, text="Time:", font=font720)
@@ -154,6 +158,8 @@ class Admin_Dashboard(customtkinter.CTk):
 
 
             pickuptxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            pickuptxt.bind("<Button-1>", lambda e: "break")
+            pickuptxt.bind("<Key>", lambda e: "break")
             pickuptxt.place(x=140, y=200)
 
             time_img = customtkinter.CTkImage(light_image=Image.open("E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\time-five-regular-24.png"))
@@ -164,6 +170,8 @@ class Admin_Dashboard(customtkinter.CTk):
             dropoff_lbl.place(x=30, y=250)
 
             dropoff_txt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
+            dropoff_txt.bind("<Button-1>", lambda e: "break")
+            dropoff_txt.bind("<Key>", lambda e: "break")
             dropoff_txt.place(x=140, y=250)
 
             driveridlabel = customtkinter.CTkLabel(assignbookingFrame, text="Driver id:", font=font720)
@@ -171,6 +179,8 @@ class Admin_Dashboard(customtkinter.CTk):
 
 
             driveridcombo = customtkinter.CTkEntry(assignbookingFrame,font=font720, width=200)
+            driveridcombo.bind("<Button-1>", lambda e: "break")
+            driveridcombo.bind("<Key>", lambda e: "break")
             driveridcombo.place(x=140, y=300)
 
             customerid=customtkinter.CTkEntry(assignbookingFrame)
@@ -295,23 +305,37 @@ class Admin_Dashboard(customtkinter.CTk):
                 driveridcombo.get()
                 bookingid.get()
 
-                updatebooking=BookingLibs(pickupaddress=picuptxt.get(),
-                date=date_txt.get(),time=pickuptxt.get(), dropoffaddress=dropoff_txt.get(),
-                cid=customerid.get(),bookingstatus='Booked', did= driveridcombo.get(), bookingid=bookingid.get())
-                updatebookingResult=update_booking(updatebooking)
 
-                driver=Driver_Libs(did=driveridcombo.get(), driverstatus='Booked')
-                updateresult=update_DriverStatus(driver)
-                if updatebookingResult==True:
-                    updatebookingresultlbl.configure(text="Driver is assigned successfully")
-                    bookingTable.delete(*bookingTable.get_children())
-                    bookingtable()
-                    bookingTable2.delete(*bookingTable2.get_children())
-                    bookingTable11()
 
+                if bookingid.get() == '':
+                    updatebookingresultlbl.configure(text="You have not select booking id")
+
+                elif driveridcombo.get()=='':
+                    updatebookingresultlbl.configure(text="Please enter driver ID")
 
                 else:
-                    updatebookingresultlbl.configure(text="Error Occurred")
+                    updatebooking = BookingLibs(pickupaddress=picuptxt.get(),
+                                                date=date_txt.get(), time=pickuptxt.get(),
+                                                dropoffaddress=dropoff_txt.get(),
+                                                cid=customerid.get(), bookingstatus='Booked', did=driveridcombo.get(),
+                                                bookingid=bookingid.get())
+                    updatebookingResult = update_booking(updatebooking)
+
+                    driver = Driver_Libs(did=driveridcombo.get(), driverstatus='Booked')
+                    updateresult = update_DriverStatus(driver)
+                    if updatebookingResult == True:
+                        updatebookingresultlbl.configure(text="Driver is assigned successfully")
+                        bookingTable.delete(*bookingTable.get_children())
+                        bookingtable()
+                        bookingTable2.delete(*bookingTable2.get_children())
+                        bookingTable11()
+
+
+                    else:
+                        updatebookingresultlbl.configure(text="Error Occurred")
+
+
+
 
             assign_btn = customtkinter.CTkButton(assignbookingFrame,command=update_customer_booking, text="Assign Driver", font=font720, width=150)
             assign_btn.place(x=190, y=350)
@@ -399,8 +423,22 @@ class Admin_Dashboard(customtkinter.CTk):
             if choice == 'light':
                 user_image_label['bg'] = "#dbdbdb"
 
+
+                style1.configure("Treeview",
+                                 background="#dbdbdb",
+                                 fieldbackground="#dbdbdb")
+                welcomelabel.configure(fg_color="#dbdbdb")
+                welcomelabel.configure(text_color="#2b2b2b")
+
+
             if choice == 'dark':
                 user_image_label['bg'] = "#2b2b2b"
+
+                welcomelabel.configure(fg_color="#2b2b2b")
+                welcomelabel.configure(text_color="white")
+                style1.configure("Treeview",
+                                 background="#2b2b2b",
+                                 fieldbackground="#2b2b2b")
 
         combobox = customtkinter.CTkComboBox(master=left_frame, values=["dark",'light'],
                                              command=combobox_callback, font=sidemenufont)
