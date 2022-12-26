@@ -9,7 +9,7 @@ from customer import Customer_Register, customer_dashboard
 from customer.customer_dashboard import Customer_Dashboard
 from dbms.customer_management import insert_record
 from dbms.myactivity_backend import activity_insert
-from dbms.regex import checkemail, checkphone, checkcredit
+from dbms.regex import checkemail, checkphone, checkcredit, namevalidation, passwordvalidation
 from driver import DriverDashboard, driverhistory
 from driver.driverhistory import DriverHistory
 from libs import Global
@@ -253,6 +253,8 @@ class Login(customtkinter.CTk):
         credit_txt.place(x=480, y=300)
 
         def save_customer_info():
+            nameResult=namevalidation(name_txt.get())
+            passwordResult=passwordvalidation(password_txt.get())
             emailResult=checkemail(email_txt.get())
             mobileResult=checkphone(mobile_txt.get())
             creditResult=checkcredit(credit_txt.get())
@@ -274,27 +276,48 @@ class Login(customtkinter.CTk):
 
                                         if credit_txt.get()!='':
 
-                                            if mobileResult==True:
+                                            if nameResult==True:
 
-                                                if emailResult==True:
-                                                    if creditResult==True:
+                                                if passwordResult==True:
 
-                                                        customer_info = Customer_Libs('', name_txt.get(), dob_txt.get(),gender_txt.get(),mobile_txt.get(), email_txt.get(),address_txt.get(),password_txt.get(),credit_txt.get(),status="Customer")
-                                                        result = insert_record(customer_info)
+                                                    if mobileResult == True:
 
-                                                        if result == True:
-                                                            promt = messagebox.showinfo('Taxi Booking System',"Customer is registered successfully")
+                                                        if emailResult == True:
+
+                                                            if creditResult == True:
+                                                                customer_info = Customer_Libs('', name_txt.get(),
+                                                                                              dob_txt.get(),
+                                                                                              gender_txt.get(),
+                                                                                              mobile_txt.get(),
+                                                                                              email_txt.get(),
+                                                                                              address_txt.get(),
+                                                                                              password_txt.get(),
+                                                                                              credit_txt.get(),
+                                                                                              status="Customer")
+                                                                result = insert_record(customer_info)
+
+                                                                if result == True:
+                                                                        promt = messagebox.showinfo('Taxi Booking System',"Customer is registered successfully")
+                                                                else:
+                                                                        promt1 = messagebox.showerror("Error!","Registration of customer info is unsuccessful!")
+
+
+
+
+                                                            else:
+                                                                messagebox.showwarning("Taxi Booking System","Please enter credit card in xxxx-xxxx-xxxx-xxxx format")
+
                                                         else:
-                                                            promt1 = messagebox.showerror("Error!","Registration of customer info is unsuccessful!")
+                                                            messagebox.showwarning("Taxi Booking System","Please enter valid email address")
 
                                                     else:
-                                                        messagebox.showwarning("Taxi Booking System","Invalid credit number")
+                                                        messagebox.showwarning("Taxi Booking System","Invalid mobile number (Enter country code)")
 
                                                 else:
-                                                    messagebox.showwarning("Taxi Booking System","Invalid email address")
+                                                    messagebox.showwarning("Taxi Booking System","Please enter valid password")
 
                                             else:
-                                                messagebox.showwarning("Taxi Booking System","Invalid mobile number (Enter country code)")
+                                                messagebox.showwarning("Taxi Booking System","Please enter valid customer name")
 
                                         else:
                                             messagebox.showwarning("Taxi Booking System","Please enter customer credit number")

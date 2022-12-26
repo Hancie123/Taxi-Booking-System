@@ -26,3 +26,21 @@ def checkcredit(credit):
     else:
         creditResult=False
     return creditResult
+
+
+def namevalidation(name):
+    regex=re.compile("^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)")
+    if re.fullmatch(regex, name):
+        nameResult=True
+    else:
+        nameResult=False
+    return nameResult
+
+
+def passwordvalidation(password):
+    regex=re.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
+    if re.fullmatch(regex, password):
+        passwordResult=True
+    else:
+        passwordResult=False
+    return passwordResult
