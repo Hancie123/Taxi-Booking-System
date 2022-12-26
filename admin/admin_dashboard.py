@@ -15,7 +15,8 @@ from tktimepicker import AnalogPicker, AnalogThemes,constants
 from admin import booking_report, active_booking
 from billing import admin_payment, admin_billing_history, billing_report
 from customer import customer_management, login, customer_report, search_customers
-from dbms.booking_backend import total_booking, select_all, update_booking, total_revenue
+from dbms.booking_backend import total_booking, select_all, update_booking, total_revenue, validateadminbooking, \
+    update_booking11
 from dbms.customer_backend import total_customer
 from dbms.driver_management import total_driver, available_driver, update_DriverStatus
 from dbms.employees_backend import total_employees
@@ -99,7 +100,7 @@ class Admin_Dashboard(customtkinter.CTk):
             root=customtkinter.CTkToplevel()
             root.title("Taxi Booking System")
             width = 1250
-            height = 450
+            height = 490
             myscreenwidth = self.main.winfo_screenwidth()
             myscreenheight = self.main.winfo_screenheight()
             xCordinate = int((myscreenwidth / 2) - (width / 2))
@@ -235,8 +236,24 @@ class Admin_Dashboard(customtkinter.CTk):
             availabledriver_btn = customtkinter.CTkButton(assignbookingFrame,command=available_driver_gui, text="Available Driver", font=font720, width=150)
             availabledriver_btn.place(x=30, y=350)
 
+            def cancelbooking():
+                updatebookingResult=update_booking11(bookingid.get())
+                if updatebookingResult==True:
+                    updatebookingresultlbl.configure(text="The booking is cancelled successfully")
+                    bookingTable.delete(*bookingTable.get_children())
+                    bookingtable()
+                    bookingTable2.delete(*bookingTable2.get_children())
+                    bookingTable11()
+                else:
+                    updatebookingresultlbl.configure(text="Error Occurred")
+
+
+
+            availabledriver_btn = customtkinter.CTkButton(assignbookingFrame, command=cancelbooking,text="Cancel Booking", font=font720, width=150)
+            availabledriver_btn.place(x=30, y=390)
+
             updatebookingresultlbl=customtkinter.CTkLabel(assignbookingFrame, text="", font=font720)
-            updatebookingresultlbl.place(x=80, y=390)
+            updatebookingresultlbl.place(x=50, y=430)
 
 
 
@@ -305,6 +322,9 @@ class Admin_Dashboard(customtkinter.CTk):
                 driveridcombo.get()
                 bookingid.get()
 
+                validateresult = validateadminbooking()
+                today = date.today()
+                today720 = str(today)
 
 
                 if bookingid.get() == '':
@@ -313,26 +333,38 @@ class Admin_Dashboard(customtkinter.CTk):
                 elif driveridcombo.get()=='':
                     updatebookingresultlbl.configure(text="Please enter driver ID")
 
-                else:
-                    updatebooking = BookingLibs(pickupaddress=picuptxt.get(),
-                                                date=date_txt.get(), time=pickuptxt.get(),
-                                                dropoffaddress=dropoff_txt.get(),
-                                                cid=customerid.get(), bookingstatus='Booked', did=driveridcombo.get(),
-                                                bookingid=bookingid.get())
-                    updatebookingResult = update_booking(updatebooking)
 
-                    driver = Driver_Libs(did=driveridcombo.get(), driverstatus='Booked')
-                    updateresult = update_DriverStatus(driver)
-                    if updatebookingResult == True:
-                        updatebookingresultlbl.configure(text="Driver is assigned successfully")
-                        bookingTable.delete(*bookingTable.get_children())
-                        bookingtable()
-                        bookingTable2.delete(*bookingTable2.get_children())
-                        bookingTable11()
-
+                elif validateresult!=None:
+                    date3 = date_txt.get()
+                    if date3 < today720:
+                        updatebookingresultlbl.configure(text="This customer has outdated pickup date")
 
                     else:
-                        updatebookingresultlbl.configure(text="Error Occurred")
+                        updatebooking = BookingLibs(pickupaddress=picuptxt.get(),
+                                                    date=date_txt.get(), time=pickuptxt.get(),
+                                                    dropoffaddress=dropoff_txt.get(),
+                                                    cid=customerid.get(), bookingstatus='Booked',
+                                                    did=driveridcombo.get(),
+                                                    bookingid=bookingid.get())
+                        updatebookingResult = update_booking(updatebooking)
+
+                        driver = Driver_Libs(did=driveridcombo.get(), driverstatus='Booked')
+                        updateresult = update_DriverStatus(driver)
+                        if updatebookingResult == True:
+                            updatebookingresultlbl.configure(text="Driver is assigned successfully")
+                            bookingTable.delete(*bookingTable.get_children())
+                            bookingtable()
+                            bookingTable2.delete(*bookingTable2.get_children())
+                            bookingTable11()
+
+
+                        else:
+                            updatebookingresultlbl.configure(text="Error Occurred")
+
+
+
+
+
 
 
 

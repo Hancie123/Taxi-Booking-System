@@ -25,6 +25,7 @@ from billing import customer_billing_history
 from customer import login, customerprofile, Change_Password, customer_booking_history, viewprofilegui
 from dbms.booking_backend import insert_booking, customerbooking_selectall, customerbooking_selectstatsubooked, \
     update_customer_booking1, delete_booking, customer_checkbooking
+from dbms.customer_backend import validaecustomerbooking
 from dbms.customer_management import delete_record
 from dbms.myactivity_backend import delete_myactivity, selectall_myactivity
 from dbms.passwordchange_backend import passwordChange
@@ -508,21 +509,41 @@ class Customer_Dashboard(customtkinter.CTk):
 
 
         def update_customer_booking():
+            today=date.today()
+            today720=str(today)
 
-            updateBooking = BookingLibs(bookingid=updatebookingid.get(), pickupaddress=pickupaddresstxt.get(),
-                                        date=updatedatetxt.get(), time=updatepickuptxt.get(),
-                                        dropoffaddress=updatedropofftxt.get())
+            validateresult=validaecustomerbooking(customerid.get())
+            val3=validateresult[0]
+            val4=val3[0]
 
-            updatebookingResult = update_customer_booking1(updateBooking)
-            if updatebookingResult == True:
+            if updatebookingid.get()=='' or pickupaddresstxt.get()=='' or updatedatetxt.get()=='' or updatepickuptxt.get()=='' or updatedropofftxt.get()=='':
+                messagebox.showwarning("Taxi Booking System","Please fill all the fields")
 
-                messagebox.showinfo("Taxi Booking System", "The booking request is updated successfully")
-                updatebookingtable.delete(*updatebookingtable.get_children())
-                bookingtable()
+            elif validateresult!=None:
+                date3=updatedatetxt.get()
+                if date3<today720:
+                    messagebox.showwarning("Taxi Booking System","You have outdated date. Please select new pickup date!")
+
+                else:
+                    updateBooking = BookingLibs(bookingid=updatebookingid.get(), pickupaddress=pickupaddresstxt.get(),
+                                                date=updatedatetxt.get(), time=updatepickuptxt.get(),
+                                                dropoffaddress=updatedropofftxt.get())
+
+                    updatebookingResult = update_customer_booking1(updateBooking)
+                    if updatebookingResult == True:
+
+                        messagebox.showinfo("Taxi Booking System", "The booking request is updated successfully")
+                        updatebookingtable.delete(*updatebookingtable.get_children())
+                        bookingtable()
 
 
-            else:
-                messagebox.showerror("Taxi Booking System", "Error Occurred")
+                    else:
+                        messagebox.showerror("Taxi Booking System", "Error Occurred")
+
+
+
+
+
 
 
 

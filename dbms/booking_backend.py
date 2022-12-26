@@ -270,3 +270,45 @@ def total_revenue():
         return totalResult
 
 
+def validateadminbooking():
+    conn=None
+    sql="""select date from booking where bookingstatus='Pending'"""
+    validateresult=None
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql)
+        validateresult=cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del sql, conn
+        return validateresult
+
+
+def update_booking11(bid):
+    conn=None
+    sql="""UPDATE booking SET bookingstatus='Cancel' WHERE bookingid=%s"""
+    values=(bid,)
+    updatebookingResult=False
+    try:
+        conn=Connect()
+        cursor=conn.cursor()
+        cursor.execute(sql, values)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        updatebookingResult=True
+
+    except:
+        print("Error", sys.exc_info())
+
+    finally:
+        del values, sql, conn
+        return updatebookingResult
+
+

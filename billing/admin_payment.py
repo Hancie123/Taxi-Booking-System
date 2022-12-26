@@ -87,8 +87,6 @@ class Admin_Payment():
         kmlbl.place(x=30, y=200)
 
         kmtxt = customtkinter.CTkEntry(assignbookingFrame,textvariable=self.kmtxt, validate='key', validatecommand=(validation, '%P'), font=font720, width=200)
-        kmtxt.bind("<Button-1>", lambda e: "break")
-        kmtxt.bind("<Key>", lambda e: "break")
         kmtxt.place(x=140, y=200)
 
         unitlbl = customtkinter.CTkLabel(assignbookingFrame, text="Unit:", font=font720)
