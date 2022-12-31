@@ -6,7 +6,8 @@ import sys
 def customer_driver_history(cid):
     conn=None
     sql="""select booking.did,drivers.name, booking.date, booking.time, booking.pickupaddress, 
-    booking.dropoffaddress, drivers.mobile from customers inner join booking on customers.cid=booking.cid inner join drivers
+    booking.dropoffaddress, drivers.mobile from customers 
+    inner join booking on customers.cid=booking.cid inner join drivers
 on booking.did=drivers.did where customers.cid=%s order by booking.bookingid desc;"""
     values=(cid,)
     historyResult=None

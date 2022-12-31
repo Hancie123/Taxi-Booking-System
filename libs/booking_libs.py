@@ -1,7 +1,8 @@
 
 class BookingLibs():
 
-    def __init__(self, bookingid=0, pickupaddress=None, date=None, time=None,dropoffaddress=None, bookingstatus=None, cid=None, did=None):
+    def __init__(self, bookingid=0, pickupaddress=None, date=None, time=None,dropoffaddress=None, bookingstatus=None,
+                 cid=None, did=None):
 
         self.bookingid=bookingid
         self.pickupaddress=pickupaddress

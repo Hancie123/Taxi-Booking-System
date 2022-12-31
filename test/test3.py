@@ -1,14 +1,21 @@
 from tkinter import *
+import datetime
+
+from test import Global
 
 
-app=Tk()
-app.geometry("500x400")
-app.title("Hancie e-Learning Studio")
+class learn():
+    def __init__(self, root):
+        self.root=root
+        self.root.title("Hancie e-Learning Studio")
+        self.root.geometry("500x400")
 
-txt=Entry(app, font=('Times New Roman',14))
-txt.bind("<Button-1>", lambda e: "break")
-txt.bind("<Key>", lambda e: "break")
-txt.pack()
+        num=100
+        Global.data=num
 
 
-app.mainloop()
+
+if __name__=='__main__':
+    root=Tk()
+    learn(root)
+    root.mainloop()

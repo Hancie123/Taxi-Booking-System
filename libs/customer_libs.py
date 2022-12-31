@@ -1,6 +1,7 @@
 
 class Customer_Libs():
-    def __init__(self, cid=0, name=None, dob=None, gender=None, mobile=None, email=None, address=None, password=None, credit=None, status=None):
+    def __init__(self, cid=0, name=None, dob=None, gender=None, mobile=None, email=None,
+                 address=None, password=None, credit=None, status=None):
         self.cid=cid
         self.name=name
         self.dob=dob

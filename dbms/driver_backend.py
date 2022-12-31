@@ -46,7 +46,7 @@ def driver_total_booked(did):
 
 def driver_ridecompleted(did):
     conn=None
-    sql="""select count(bookingid) from booking where did=%s and bookingstatus='Bill Pending'"""
+    sql="""select count(bookingid) from booking where did=%s and bookingstatus='Billing Completed'"""
     values=(did,)
     result=None
     try:
