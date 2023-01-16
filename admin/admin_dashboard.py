@@ -81,6 +81,7 @@ class Admin_Dashboard(customtkinter.CTk):
         left_frame = customtkinter.CTkFrame(master=self.main, width=300)
         left_frame.pack(side=LEFT, fill=BOTH, padx=10, pady=10)
 
+        # +++++++++++++++++++++++++++++++Image+++++++++++++++++++++++++++++++++++++++
         user_image = ImageTk.PhotoImage(Image.open("E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-solid-120.png"))
         user_image_label = Label(left_frame, image=user_image, bg="#2b2b2b")
         user_image_label.image = user_image
@@ -114,8 +115,10 @@ class Admin_Dashboard(customtkinter.CTk):
             title11lbl=customtkinter.CTkLabel(master=assignbookingFrame, text="ASSIGN DRIVERS", font=font720)
             title11lbl.place(x=110, y=20)
 
+            # +++++++++++++++++++++++++++++++Pickup label+++++++++++++++++++++++++++++++++++++++
             pickup_address_lbl = customtkinter.CTkLabel(assignbookingFrame, text="Pick up: ",font=font720)
             pickup_address_lbl.place(x=30, y=100)
+
 
             picuptxt = customtkinter.CTkEntry(assignbookingFrame, font=font720, width=200)
             picuptxt.bind("<Button-1>", lambda e: "break")
@@ -457,7 +460,8 @@ class Admin_Dashboard(customtkinter.CTk):
 
                 style1.configure("Treeview",
                                  background="#dbdbdb",
-                                 fieldbackground="#dbdbdb")
+                                 fieldbackground="#dbdbdb",
+                                 foreground="black")
                 welcomelabel.configure(fg_color="#dbdbdb")
                 welcomelabel.configure(text_color="#2b2b2b")
 
@@ -469,7 +473,8 @@ class Admin_Dashboard(customtkinter.CTk):
                 welcomelabel.configure(text_color="white")
                 style1.configure("Treeview",
                                  background="#2b2b2b",
-                                 fieldbackground="#2b2b2b")
+                                 fieldbackground="#2b2b2b",
+                                 foreground="white")
 
         combobox = customtkinter.CTkComboBox(master=left_frame, values=["dark",'light'],
                                              command=combobox_callback, font=sidemenufont)

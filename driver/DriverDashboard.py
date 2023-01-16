@@ -429,7 +429,8 @@ class Driver_Dashboard():
                 toggleButton['bg']="#dbdbdb"
                 style1.configure("Treeview",
                                  background="#dbdbdb",
-                                 fieldbackground="#dbdbdb")
+                                 fieldbackground="#dbdbdb",
+                                 foreground="black")
                 welcomelabel.configure(fg_color="#dbdbdb")
                 welcomelabel.configure(text_color="#2b2b2b")
                 welcomelbl.configure(fg_color="#dbdbdb")
@@ -440,7 +441,8 @@ class Driver_Dashboard():
                 welcomelabel.configure(text_color="white")
                 style1.configure("Treeview",
                                  background="#2b2b2b",
-                                 fieldbackground="#2b2b2b")
+                                 fieldbackground="#2b2b2b",
+                                 foreground="white")
                 welcomelbl.configure(fg_color="#2b2b2b")
 
 

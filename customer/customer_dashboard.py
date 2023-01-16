@@ -52,9 +52,11 @@ class Customer_Dashboard(customtkinter.CTk):
         #++++++++++++++++++++++++++++++Menu+++++++++++++++++++++++++++++++=
         parent_menu=Menu(self.root)
 
+        #-------------------------Exit function-----------------------
         def exit():
             self.root.destroy()
 
+        #------------------------Logout function--------------------------
         def logout():
             self.root.destroy()
             root=customtkinter.CTk()
@@ -113,48 +115,58 @@ class Customer_Dashboard(customtkinter.CTk):
         l1.place(x=90, y=150)
         my_time()
 
+        #------------------------------Dashboard button-----------------------------------------
         assigndriver_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\edit-alt-regular-24.png'))
         assigndriver_btn = customtkinter.CTkButton(master=left_frame, text="Dashboard             ", hover_color='black',
                                                    font=sidemenufont, width=200,
                                                    image=assigndriver_btn_image, fg_color='#2b2b2b')
         assigndriver_btn.place(x=50, y=200)
 
+        #---------------------------Open profile function----------------------------
         def open_viewprofile():
             main = customtkinter.CTkToplevel()
             viewprofilegui.ViewCustomerProfile(main)
             main.mainloop()
 
+        #-----------------------------My Profile Button------------------------------------------
         profile_img = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\\Python\\Taxi Booking System\\Images\\user-account-solid-24.png'))
         profile_btn = customtkinter.CTkButton(master=left_frame, text="My Profile            ", hover_color='black',font=sidemenufont, width=200,command=open_viewprofile, image=profile_img, fg_color='#2b2b2b')
         profile_btn.place(x=50, y=250)
 
+        # -----------------------------Booking History Function------------------------------------------
         def customerBookingHistory():
             main=customtkinter.CTkToplevel()
             customer_booking_history.CustomerBookingHistory(main)
             main.mainloop()
 
+        # -----------------------------Booking History Button------------------------------------------
         managecustomers_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\\College Assignments\\Second Semester\Python\\Taxi Booking System\\Images\\user-regular-24.png'))
         managecustomers_btn = customtkinter.CTkButton(master=left_frame, text="Booking History     ",command=customerBookingHistory, hover_color='black',font=sidemenufont, width=200,image=managecustomers_btn_image, fg_color='#2b2b2b')
         managecustomers_btn.place(x=50, y=300)
 
+        # -----------------------------Driver History Function------------------------------------------
         def driverhistory720():
             root=customtkinter.CTkToplevel()
             driverhistory.DriverHistory(root)
             root.mainloop()
 
+        # -----------------------------Driver History Button------------------------------------------
         managedrivers_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\car-regular-24.png'))
         managedrivers_btn = customtkinter.CTkButton(master=left_frame, text="Drivers History     ",command=driverhistory720, hover_color='black',font=sidemenufont, width=200,image=managedrivers_btn_image, fg_color='#2b2b2b')
         managedrivers_btn.place(x=50, y=350)
 
+        # -----------------------------Billing History Function------------------------------------------
         def customer_billing_history_gui():
             main=customtkinter.CTkToplevel()
             customer_billing_history.CustomerBillingHistory(main)
             main.mainloop()
 
+        # -----------------------------Billing Button------------------------------------------
         billing_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\id-card-regular-24.png'))
         billing_btn = customtkinter.CTkButton(master=left_frame, text="Billing                   ",command=customer_billing_history_gui, hover_color='black',font=sidemenufont, width=200,image=billing_btn_image, fg_color='#2b2b2b')
         billing_btn.place(x=50, y=400)
 
+        # -----------------------------Change password toplevel gui------------------------------------------
         def change_password_gui():
             password=customtkinter.CTkToplevel()
             password.title("Taxi Booking System | Change Customer Password")
@@ -235,11 +247,12 @@ class Customer_Dashboard(customtkinter.CTk):
             confirm_btn = customtkinter.CTkButton(master=password, command=change_password, text="Change Password!",font=font720)
             confirm_btn.place(x=230, y=310)
 
-
+        # -----------------------------Change Password Button------------------------------------------
         viewcustomer_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\key-solid-24.png'))
         viewcustomer_btn = customtkinter.CTkButton(master=left_frame, text="Change Password     ",command=change_password_gui, hover_color='black',font=sidemenufont, width=200,image=viewcustomer_btn_image, fg_color='#2b2b2b')
         viewcustomer_btn.place(x=50, y=450)
 
+        # -----------------------------Delete account function------------------------------------------
         def delete_account():
             delete_account_dialog = customtkinter.CTkInputDialog(text="Do you want to delete you account? if you want to delete then type YES or NO to cancel", title="Delete an account")
             dialogResult=delete_account_dialog.get_input()
@@ -256,19 +269,19 @@ class Customer_Dashboard(customtkinter.CTk):
             else:
                 messagebox.showinfo("Taxi Booking System", "The account delete is cancelled")
 
-
-
-
+        # -----------------------------Delete Account Button------------------------------------------
         delete_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\\user-x-regular-24.png'))
         detete_account_btn = customtkinter.CTkButton(master=left_frame,command=delete_account, text="Delete Account         ", hover_color='black',font=sidemenufont, width=200,image=delete_btn_image, fg_color='#2b2b2b')
         detete_account_btn.place(x=50, y=500)
 
+        # -----------------------------Logout Function------------------------------------------
         def logout():
             self.root.destroy()
             root=customtkinter.CTk()
             login.Login(root)
             root.mainloop()
 
+        # -----------------------------Logout Button------------------------------------------
         logout_btn_image = customtkinter.CTkImage(light_image=Image.open('E:\College Assignments\Second Semester\Python\Taxi Booking System\Images\log-out-circle-regular-24.png'))
         logout_btn = customtkinter.CTkButton(master=left_frame, text="Logout                   ", fg_color='#2b2b2b',hover_color='black',font=sidemenufont, width=200,command=logout,  image=logout_btn_image)
         logout_btn.place(x=50, y=550)
@@ -566,11 +579,12 @@ class Customer_Dashboard(customtkinter.CTk):
         updatebookingtable=ttk.Treeview(parent_tab.tab('Update Booking'))
         updatebookingtable.pack(side=RIGHT, fill=BOTH, pady=(70,0))
 
+        # -----------------------------Update Booking Table-----------------------------------------
         updatebookingtable['columns']=('id', 'pickupaddress','date','time','dropoffaddress','driverid','status')
         updatebookingtable.column('#0', width=0, stretch=0)
         updatebookingtable.column('id', width=100, anchor=CENTER)
         updatebookingtable.column('pickupaddress', width=200, anchor=CENTER)
-        updatebookingtable.column('date', width=100, anchor=CENTER)
+        updatebookingtable.column('date', width=120, anchor=CENTER)
         updatebookingtable.column('time', width=100, anchor=CENTER)
         updatebookingtable.column('dropoffaddress', width=200, anchor=CENTER)
         updatebookingtable.column('status', width=100, anchor=CENTER)
@@ -605,10 +619,7 @@ class Customer_Dashboard(customtkinter.CTk):
 
         updatebookingtable.bind("<<TreeviewSelect>>", displaySelectedItem)
 
-
-
-
-
+        # -----------------------------Display data in table function------------------------------------------
         def bookingtable():
             cusidd = Entry(self.root)
             cusidd.insert(0, Global.currentUser[0])
@@ -727,6 +738,7 @@ class Customer_Dashboard(customtkinter.CTk):
         sql_engine = create_engine('mysql+pymysql://root:@localhost/taxi_booking_system')
         db_connection = sql_engine.connect()
 
+        # -----------------------------No of time account accessed report------------------------------------------
         my_colors = [(.9, .4, .6), (.1, .3, .8)]
         query = "SELECT *,count(myid) as ID FROM myactivity WHERE cid=" + iddd + " group by date limit 5 "
         df = pandas.read_sql(query, db_connection, index_col='date')
@@ -734,6 +746,7 @@ class Customer_Dashboard(customtkinter.CTk):
         plot = FigureCanvasTkAgg(fig, parent_tab.tab('Report'))
         plot.get_tk_widget().place(x=100, y=5)
 
+        # -----------------------------Booking analysis------------------------------------------
         query720 = "SELECT *, count(bookingid) as ID  FROM booking WHERE cid=" + iddd + " group by date"
         df = pandas.read_sql(query720, db_connection, index_col='date')
         fig2 = df.plot.line(title="Booking Records", y='ID', figsize=(5.5, 6)).get_figure();
